@@ -74,7 +74,7 @@ export default function OrientationTest() {
     return (
       <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white shadow sm:rounded-lg p-6">
+          <div className="bg-white shadow-sm sm:rounded-lg p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Vos résultats</h2>
             <p className="text-gray-600 mb-6">
               Basé sur vos réponses, voici les métiers qui semblent le mieux vous correspondre :
@@ -103,7 +103,7 @@ export default function OrientationTest() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white shadow sm:rounded-lg p-6">
+        <div className="bg-white shadow-sm sm:rounded-lg p-6">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900">Test d'Orientation IA</h2>
             <p className="mt-2 text-gray-600">
@@ -120,7 +120,7 @@ export default function OrientationTest() {
                 <textarea
                   id={q.id}
                   rows={4}
-                  className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                  className="shadow-xs focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
                   placeholder="Votre réponse..."
                   value={answers[q.id] || ''}
                   onChange={(e) => handleChange(q.id, e.target.value)}
@@ -146,7 +146,7 @@ export default function OrientationTest() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-xs text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
                   loading ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >

@@ -79,7 +79,7 @@ export default function Dashboard() {
             {isUserA ? (
               <>
                 {!hasTestResults ? (
-                  <div className="bg-white shadow rounded-lg p-6 text-center">
+                  <div className="bg-white shadow-sm rounded-lg p-6 text-center">
                     <h3 className="text-lg font-medium text-gray-900">Bienvenue !</h3>
                     <p className="mt-2 text-gray-500">Commencez par passer le test d'orientation.</p>
                     <button
@@ -90,15 +90,15 @@ export default function Dashboard() {
                     </button>
                   </div>
                 ) : (
-                  <div className="bg-white shadow rounded-lg p-6">
+                  <div className="bg-white shadow-sm rounded-lg p-6">
                     <h2 className="text-xl font-bold mb-4">Vos résultats</h2>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {profile.details.test_results.map((job: string, idx: number) => (
-                        <div key={idx} className="border rounded p-4 bg-indigo-50 text-indigo-900 font-medium flex flex-col justify-between">
+                        <div key={idx} className="border rounded-sm p-4 bg-indigo-50 text-indigo-900 font-medium flex flex-col justify-between">
                           <span className="mb-2">{job}</span>
                           <button
                             onClick={() => setSelectedJob(job)}
-                            className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200"
+                            className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-sm hover:bg-indigo-200"
                           >
                             Trouver un pro
                           </button>
@@ -117,7 +117,7 @@ export default function Dashboard() {
         );
       case 'appointments':
         return (
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white shadow-sm rounded-lg p-6">
             <h2 className="text-xl font-bold mb-4">Mes Rendez-vous</h2>
             <AppointmentList />
           </div>
@@ -125,7 +125,7 @@ export default function Dashboard() {
       case 'map':
         return (
           <div className="space-y-4">
-            <div className="bg-white shadow rounded-lg p-4">
+            <div className="bg-white shadow-sm rounded-lg p-4">
               <div className="flex gap-4 items-center">
                 <label className="font-medium">Ville :</label>
                 <div className="flex gap-2 flex-1">
@@ -141,7 +141,7 @@ export default function Dashboard() {
                         }
                       }}
                       placeholder="Entrez une ville..."
-                      className="border rounded px-2 py-1 pl-8 w-full"
+                      className="border rounded-sm px-2 py-1 pl-8 w-full"
                     />
                   </div>
                   <button
@@ -180,7 +180,7 @@ export default function Dashboard() {
                         setTimeout(() => setToast(null), 3000);
                       }
                     }}
-                    className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 flex items-center gap-2"
+                    className="bg-green-600 text-white px-4 py-1 rounded-sm hover:bg-green-700 flex items-center gap-2"
                     title="Utiliser ma position"
                   >
                     <Navigation size={18} />
@@ -192,7 +192,7 @@ export default function Dashboard() {
             {hasTestResults ? (
               <Map city={cityFilter} suggestedJobs={profile.details?.test_results || []} />
             ) : (
-              <div className="bg-white shadow rounded-lg p-8 text-center">
+              <div className="bg-white shadow-sm rounded-lg p-8 text-center">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Carte verrouillée 🔒</h3>
                 <p className="text-gray-500 mb-4">Vous devez d'abord passer le test d'orientation pour voir les établissements correspondant à vos métiers suggérés.</p>
                 <button

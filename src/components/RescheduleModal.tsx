@@ -149,10 +149,10 @@ export default function RescheduleModal({ isOpen, onClose, onSubmit, currentDate
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white flex justify-between items-start">
+        <div className="bg-linear-to-r from-blue-600 to-indigo-600 p-6 text-white flex justify-between items-start">
           <div>
             <h2 className="text-xl font-bold">Proposer une nouvelle date</h2>
             <p className="text-blue-100 text-sm mt-1">Suggérez un autre créneau pour ce rendez-vous</p>
@@ -192,7 +192,7 @@ export default function RescheduleModal({ isOpen, onClose, onSubmit, currentDate
                   value={time.split(':')[0]}
                   onChange={(e) => setTime(`${e.target.value.padStart(2, '0')}:00`)}
                   disabled={!date || availableHours.length === 0}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-hidden transition-all appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
                 >
                   <option value="">Choisir une heure</option>
                   {availableHours.map(hour => (
@@ -228,7 +228,7 @@ export default function RescheduleModal({ isOpen, onClose, onSubmit, currentDate
             <button
               type="submit"
               disabled={!date || !time}
-              className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Proposer
             </button>

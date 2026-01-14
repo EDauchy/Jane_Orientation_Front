@@ -135,12 +135,12 @@ export default function AvailableDatePicker({
       {isOpen && (
         <>
           <div
-            className="fixed inset-0 z-[60]"
+            className="fixed inset-0 z-60"
             onClick={() => setIsOpen(false)}
           />
           {buttonRect && (
             <div
-              className="bg-white border border-gray-200 rounded-xl shadow-2xl p-4 z-[70]"
+              className="bg-white border border-gray-200 rounded-xl shadow-2xl p-4 z-70"
               style={calendarStyle}
             >
               <div className="flex items-center justify-between mb-4">
@@ -194,7 +194,7 @@ export default function AvailableDatePicker({
                           : 'text-gray-300 cursor-not-allowed bg-gray-50/50'
                         }
                         ${isSelected
-                          ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm'
+                          ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-xs'
                           : available ? 'text-gray-700' : ''
                         }
                       `}
@@ -208,7 +208,7 @@ export default function AvailableDatePicker({
               {availability && Object.keys(availability).length > 0 && (
                 <div className="mt-4 pt-3 border-t border-gray-100">
                   <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <div className="w-4 h-4 bg-gray-50 border border-gray-200 rounded" />
+                    <div className="w-4 h-4 bg-gray-50 border border-gray-200 rounded-sm" />
                     <span>Jours non disponibles</span>
                   </div>
                 </div>

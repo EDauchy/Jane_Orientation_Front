@@ -70,11 +70,11 @@ export default function ProfileEdit({ profile, onUpdate }: ProfileEditProps) {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
+    <div className="bg-white shadow-sm rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">Mes Informations</h2>
 
       {message && (
-        <div className={`mb-4 p-3 rounded ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+        <div className={`mb-4 p-3 rounded-sm ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
           {message.text}
         </div>
       )}
@@ -148,7 +148,7 @@ export default function ProfileEdit({ profile, onUpdate }: ProfileEditProps) {
 
         {profile.role === 'user_pro' && (
           <>
-            <div className="bg-gray-50 p-4 rounded">
+            <div className="bg-gray-50 p-4 rounded-sm">
               <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
               <p className="text-gray-600">{profile.details?.profession || 'Non renseignée'}</p>
               <p className="text-xs text-gray-500 mt-1">La profession ne peut pas être modifiée pour éviter les abus.</p>

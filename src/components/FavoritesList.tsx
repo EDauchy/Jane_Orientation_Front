@@ -100,7 +100,7 @@ export default function FavoritesList() {
 
   if (loading) {
     return (
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white shadow-sm rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4">Vos Favoris</h2>
         <p className="text-gray-500">Chargement...</p>
       </div>
@@ -109,7 +109,7 @@ export default function FavoritesList() {
 
   if (favorites.length === 0) {
     return (
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white shadow-sm rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
           <Star className="text-yellow-500" size={24} />
           Vos Favoris
@@ -121,7 +121,7 @@ export default function FavoritesList() {
 
   return (
     <>
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-white shadow-sm rounded-lg p-6">
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
           <Star className="text-yellow-500" size={24} />
           Vos Favoris ({favorites.length})
@@ -134,7 +134,7 @@ export default function FavoritesList() {
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     <h3 className="font-semibold text-lg mb-1">{data.name || 'Établissement'}</h3>
-                    <span className={`text-xs px-2 py-1 rounded ${getTypeColor(favorite.item_type)}`}>
+                    <span className={`text-xs px-2 py-1 rounded-sm ${getTypeColor(favorite.item_type)}`}>
                       {getTypeLabel(favorite.item_type)}
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export default function FavoritesList() {
 
                 {data.address && (
                   <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
-                    <MapPin size={16} className="mt-0.5 flex-shrink-0" />
+                    <MapPin size={16} className="mt-0.5 shrink-0" />
                     <span className="line-clamp-2">{data.address}</span>
                   </div>
                 )}
@@ -191,10 +191,10 @@ export default function FavoritesList() {
                 {data.tags && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {data.tags.financed && (
-                      <span className="text-[10px] bg-green-100 text-green-800 px-1 rounded">Financé</span>
+                      <span className="text-[10px] bg-green-100 text-green-800 px-1 rounded-sm">Financé</span>
                     )}
                     {data.tags.alternance && (
-                      <span className="text-[10px] bg-blue-100 text-blue-800 px-1 rounded">Alternance</span>
+                      <span className="text-[10px] bg-blue-100 text-blue-800 px-1 rounded-sm">Alternance</span>
                     )}
                   </div>
                 )}
