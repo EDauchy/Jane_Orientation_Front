@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
+import TextInput from './TextInput';
 
 export default function SecuritySettings() {
   const [passwords, setPasswords] = useState({
@@ -52,8 +53,8 @@ export default function SecuritySettings() {
   };
 
   return (
-    <div className="bg-white shadow rounded-lg p-6">
-      <h2 className="text-xl font-bold mb-4">Sécurité</h2>
+    <div className='flex flex-col gap-22 items-center'>
+      <h2 className="headline-primary">Sécurité</h2>
 
       {message && (
         <div className={`mb-4 p-3 rounded ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -61,40 +62,33 @@ export default function SecuritySettings() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nouveau mot de passe</label>
-          <input
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8 h-full w-full max-w-[30rem]">
+        <div className='gap-4 flex flex-col'>
+          <TextInput
+            label='Nouveau mot de passe'
             type="password"
             name="newPassword"
             value={passwords.newPassword}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-            minLength={6}
-          />
-        </div>
+            required />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Confirmer le mot de passe</label>
-          <input
+          <TextInput
+            label='Confirmer le mot de passe'
             type="password"
             name="confirmPassword"
             value={passwords.confirmPassword}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-            minLength={6}
-          />
+            required />
         </div>
-
-        <button
-          type="submit"
-          disabled={saving}
-          className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
-        >
-          {saving ? 'Modification...' : 'Modifier le mot de passe'}
-        </button>
+        <div className='flex justify-end'>
+          <button
+            type="submit"
+            disabled={saving}
+            className="button-primary"
+          >
+            {saving ? 'Modification...' : 'Modifier le mot de passe'}
+          </button>
+        </div>
       </form>
     </div>
   );

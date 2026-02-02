@@ -4,10 +4,11 @@ import { supabase } from '../lib/supabase';
 import AvailableDatePicker from './AvailableDatePicker';
 import Toast from './Toast';
 
-interface Professional {
+export interface Professional {
   id: string;
   first_name: string;
   last_name: string;
+  avatar_url?: string;
   user_b_details: {
     profession: string;
     availability: any;
@@ -41,22 +42,22 @@ export default function FindPro({ job, onClose }: { job: string; onClose: () => 
     };
 
     const fetchUserAppointments = async () => {
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.access_token) return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) return;
 
-            const res = await fetch('/api/appointments', {
-                headers: { 'Authorization': `Bearer ${session.access_token}` }
-            });
-            if (res.ok) {
-                const data = await res.json();
-                setUserAppointments(data.appointments || []);
-            }
-        } catch (error) {
-            console.error('Error fetching appointments', error);
-        } finally {
-            setLoadingAppointments(false);
+        const res = await fetch('/api/appointments', {
+          headers: { 'Authorization': `Bearer ${session.access_token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUserAppointments(data.appointments || []);
         }
+      } catch (error) {
+        console.error('Error fetching appointments', error);
+      } finally {
+        setLoadingAppointments(false);
+      }
     };
 
     fetchPros();
@@ -122,27 +123,27 @@ export default function FindPro({ job, onClose }: { job: string; onClose: () => 
   };
 
   const getBookingStatus = (proId: string) => {
-      if (loadingAppointments) return { disabled: true, reason: 'Chargement...' };
+    if (loadingAppointments) return { disabled: true, reason: 'Chargement...' };
 
-      const professionCount = userAppointments.filter(a =>
-          (a.status === 'CONFIRMED' || a.status === 'COMPLETED') &&
-          a.user_b?.user_b_details?.profession === job
-      ).length;
+    const professionCount = userAppointments.filter(a =>
+      (a.status === 'CONFIRMED' || a.status === 'COMPLETED') &&
+      a.user_b?.user_b_details?.profession === job
+    ).length;
 
-      if (professionCount >= 2) {
-          return { disabled: true, reason: 'Limite de 2 RDV atteinte pour ce métier' };
-      }
+    if (professionCount >= 2) {
+      return { disabled: true, reason: 'Limite de 2 RDV atteinte pour ce métier' };
+    }
 
-      const hasActiveWithPro = userAppointments.some(a =>
-          a.user_b_id === proId &&
-          ['PENDING', 'CONFIRMED', 'RESCHEDULED'].includes(a.status)
-      );
+    const hasActiveWithPro = userAppointments.some(a =>
+      a.user_b_id === proId &&
+      ['PENDING', 'CONFIRMED', 'RESCHEDULED'].includes(a.status)
+    );
 
-      if (hasActiveWithPro) {
-          return { disabled: true, reason: 'RDV actif en cours' };
-      }
+    if (hasActiveWithPro) {
+      return { disabled: true, reason: 'RDV actif en cours' };
+    }
 
-      return { disabled: false, reason: '' };
+    return { disabled: false, reason: '' };
   };
 
   const bookAppointment = async (proId: string) => {
@@ -249,11 +250,10 @@ export default function FindPro({ job, onClose }: { job: string; onClose: () => 
                 return (
                   <div
                     key={pro.id}
-                    className={`border rounded-xl p-5 transition-all ${
-                      isThisProSelected
-                        ? 'border-indigo-500 bg-indigo-50/50 shadow-md'
-                        : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                    }`}
+                    className={`border rounded-xl p-5 transition-all ${isThisProSelected
+                      ? 'border-indigo-500 bg-indigo-50/50 shadow-md'
+                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                      }`}
                   >
                     <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                       {/* Professional Info */}
@@ -331,11 +331,10 @@ export default function FindPro({ job, onClose }: { job: string; onClose: () => 
                         <button
                           onClick={() => bookAppointment(pro.id)}
                           disabled={disabled || !selectedDate || !selectedDate.includes('T') || !isAvailableDay || !isThisProSelected}
-                          className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all ${
-                            disabled || !selectedDate || !selectedDate.includes('T') || !isAvailableDay || !isThisProSelected
-                              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                              : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg'
-                          }`}
+                          className={`w-full py-2.5 px-4 rounded-lg font-medium text-sm transition-all ${disabled || !selectedDate || !selectedDate.includes('T') || !isAvailableDay || !isThisProSelected
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-md hover:shadow-lg'
+                            }`}
                           title={reason || (!isAvailableDay ? 'Professionnel non disponible ce jour' : '')}
                         >
                           {disabled ? reason : 'Confirmer le rendez-vous'}

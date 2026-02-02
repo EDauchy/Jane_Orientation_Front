@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { FaCalendarAlt } from "react-icons/fa";
 
 interface AvailableDatePickerProps {
   availability: Record<string, string[]> | null;
@@ -69,15 +70,16 @@ export default function AvailableDatePicker({
     return days;
   };
 
+  // Format selected date for display: JJ/MM/AAAA
   const formatDateForDisplay = (date: Date | null) => {
     if (!date) return '';
-    return date.toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
+  // Format date for value (YYYY-MM-DD)
   const formatDateForValue = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -122,14 +124,12 @@ export default function AvailableDatePicker({
         ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white hover:bg-gray-50 transition-colors text-left flex items-center justify-between"
+        className="w-full px-3 py-2 text-sm bg-white hover:bg-gray-50 transition-colors text-left flex items-center justify-between"
       >
         <span className={selectedDateObj ? 'text-gray-900' : 'text-gray-400'}>
-          {selectedDateObj ? formatDateForDisplay(selectedDateObj) : 'Sélectionner une date'}
+          {selectedDateObj ? formatDateForDisplay(selectedDateObj) : 'JJ/MM/AAAA'}
         </span>
-        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
+        <FaCalendarAlt className="text-primary text-lg" />
       </button>
 
       {isOpen && (
@@ -220,3 +220,4 @@ export default function AvailableDatePicker({
     </div>
   );
 }
+

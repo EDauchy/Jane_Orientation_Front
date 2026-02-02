@@ -11,6 +11,7 @@ import ProDashboard from '../components/ProDashboard';
 import FavoritesList from '../components/FavoritesList';
 import Toast from '../components/Toast';
 import { User, MapPin, Briefcase, Calendar, Settings, LogOut, Search, Navigation } from 'lucide-react';
+import ProsCarousel from '../components/ProsCarousel';
 
 export default function Dashboard() {
   const { signOut } = useAuth();
@@ -117,9 +118,17 @@ export default function Dashboard() {
         );
       case 'appointments':
         return (
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-bold mb-4">Mes Rendez-vous</h2>
-            <AppointmentList />
+          <div className='flex flex-col gap-8'>
+            <h2 className="headline-primary">Dashboard</h2>
+            <div className='flex flex-col gap-5 w-full max-w-2xl h-[500px]'>
+              <h3 className='text-2xl font-bold uppercase text-primary'>Mes RDV</h3>
+              <AppointmentList />
+            </div>
+            <div className='w-full bg-secondary h-1 opacity-[0.4] rounded-full'></div>
+            <div className='flex flex-col gap-5 w-full max-w-2xl h-full max-h-[600px]'>
+              <h3 className='text-2xl font-bold uppercase text-primary'>Demander un Rendez-vous</h3>
+              <ProsCarousel jobs={profile.details.test_results} />
+            </div>
           </div>
         );
       case 'map':
@@ -247,9 +256,8 @@ export default function Dashboard() {
                 setActiveTab('map');
               }}
               disabled={!hasTestResults}
-              className={`w-full flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 ${
-                activeTab === 'map' ? 'bg-indigo-50 text-indigo-600 border-r-4 border-indigo-600' : ''
-              } ${!hasTestResults ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`w-full flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 ${activeTab === 'map' ? 'bg-indigo-50 text-indigo-600 border-r-4 border-indigo-600' : ''
+                } ${!hasTestResults ? 'opacity-50 cursor-not-allowed' : ''}`}
               title={!hasTestResults ? 'Passez d\'abord le test d\'orientation' : ''}
             >
               <MapPin className="w-5 h-5 mr-3" />
