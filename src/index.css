@@ -1,52 +1,8 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  /* Enregistrement de vos 4 couleurs fixes dans Tailwind */
-  --color-primary: #681BEF;
-  --color-primary-dark: #2d0c69;
-  --color-secondary: #6F3EF4;
-  --color-brand-orange: #F8A128;
-  --color-brand-pink: #FF5EAE;
-
-  /* Définition des couleurs de fond qui changent */
-  --color-main-bg: #FFFFFF;
-  --color-main-text: #0F172A;
-}
-
-/* Gestion du Dark Mode pour l'arrière-plan */
-@layer base {
-  :root {
-    --main-bg: #FFFFFF;
-    --main-text: #0F172A;
-  }
-
-  /* Si la classe .dark est présente sur le <html> ou <body> */
-  .dark {
-    --main-bg: #0B0F1A;
-    /* Ton fond sombre */
-    --main-text: #F8FAFC;
-  }
-
-  body {
-    background-color: var(--main-bg);
-    font-family: 'Montserrat', sans-serif;
-    color: var(--main-text);
-    transition: all 0.3s ease;
-  }
-}
-
-.headline-primary {
-  @apply text-5xl font-extrabold uppercase text-primary text-center;
-}
-
-.headline-small {
-  @apply text-primary uppercase;
-}
-
-.button-primary {
-  @apply px-4 flex gap-2 items-center py-2 rounded-lg border-2 border-primary hover:border-primary-dark text-white font-bold uppercase bg-primary hover:bg-primary-dark transition-colors disabled:opacity-50 cursor-pointer;
-}
-
-.button-secondary {
-  @apply px-4 flex gap-2 items-center py-2 rounded-lg border-2 border-primary text-primary font-bold uppercase hover:bg-primary hover:text-white transition-colors disabled:opacity-50 cursor-pointer;
+/* Custom styles if needed */
+body {
+  @apply bg-gray-50 text-gray-900;
 }
