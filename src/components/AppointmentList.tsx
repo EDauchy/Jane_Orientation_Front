@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import { Calendar, Check, X, Star, Clock, RefreshCw, MessageSquare, Edit } from 'lucide-react';
-import { MdEdit } from "react-icons/md";
+import { Calendar, Check, X, Star, Clock, RefreshCw, MessageSquare } from 'lucide-react';
 import ReviewModal from './ReviewModal';
 import RescheduleModal from './RescheduleModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
@@ -96,10 +95,10 @@ export default function AppointmentList() {
         const successMessage = status === 'CONFIRMED'
           ? 'Rendez-vous confirmé !'
           : status === 'CANCELLED'
-            ? 'Rendez-vous annulé'
-            : date
-              ? 'Nouvelle date proposée !'
-              : 'Rendez-vous mis à jour';
+          ? 'Rendez-vous annulé'
+          : date
+          ? 'Nouvelle date proposée !'
+          : 'Rendez-vous mis à jour';
         setToast({ message: successMessage, type: 'success' });
         fetchAppointments(); // Refresh
         setTimeout(() => setToast(null), 3000);
@@ -124,31 +123,43 @@ export default function AppointmentList() {
 
   return (
     <>
-      <div className="space-y-4">
-        {appointments.map((apt) => (
-          <div key={apt.id} className="bg-white border border-3 border-primary rounded-full shadow-sm flex gap-4">
-            <div className='w-12 bg-gray-200 rounded-full bg-center bg-no-repeat bg-contain bg-[url(https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?20200919003010)]'></div>
-            <div className="font-extrabold text-primary pr-4 py-1 border-r-3 border-primary self-center">
-              {apt.user_b?.first_name} {apt.user_b?.last_name}
-            </div>
-            <div className="font-bold text-primary flex flex-col uppercase grow text-sm py-1">
-              <span>Le {new Date(apt.date).toLocaleDateString()}</span>
-              <span>à {new Date(apt.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-            </div>
-            <div className={`px-2 py-0.5 rounded text-xs font-bold h-fit self-center ${apt.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
-              apt.status === 'COMPLETED' ? 'bg-gray-100 text-gray-800' :
+    <div className="space-y-4">
+      {appointments.map((apt) => (
+        <div key={apt.id} className="bg-white border rounded-lg p-4 shadow-sm flex justify-between items-center">
+          <div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-gray-500" />
+              <span className="font-medium text-gray-900">
+                {new Date(apt.date).toLocaleString()}
+              </span>
+              <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                apt.status === 'CONFIRMED' ? 'bg-green-100 text-green-800' :
+                apt.status === 'COMPLETED' ? 'bg-gray-100 text-gray-800' :
                 apt.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-red-100 text-red-800'
+                'bg-red-100 text-red-800'
               }`}>
-              {apt.status}
+                {apt.status}
+              </span>
             </div>
-            {!apt.meeting_link && (
+            <div className="mt-1 text-sm text-gray-600">
+              {/* Logic to show "With User X" based on who is logged in is tricky without knowing role here.
+                  But we can show both names for now or infer.
+                  Actually, `user` from context has ID.
+               */}
+               {user?.id === apt.user_a?.id ? (
+                 <span>Avec : {apt.user_b?.first_name} {apt.user_b?.last_name} ({apt.user_b?.user_b_details?.profession})</span>
+               ) : (
+                 <span>Avec : {apt.user_a?.first_name} {apt.user_a?.last_name}</span>
+               )}
+            </div>
+            {apt.meeting_link && (
               <div className="mt-1 text-sm">
                 <a href={apt.meeting_link} target="_blank" rel="noreferrer" className="text-indigo-600 hover:underline">
                   Lien de visioconférence
                 </a>
               </div>
             )}
+          </div>
 
             {/* Rescheduling Negotiation UI */}
             {apt.status === 'RESCHEDULED' && apt.proposed_date && (
@@ -187,23 +198,23 @@ export default function AppointmentList() {
             )}
 
             {/* Standard Actions */}
-            <div>
+            <div className="flex gap-2 items-center">
               {/* Reschedule Button (Available for Pending/Confirmed) */}
               {(apt.status === 'PENDING' || apt.status === 'CONFIRMED') && (
-                <button
-                  onClick={() => {
-                    setRescheduleModal({
-                      appointmentId: apt.id,
-                      currentDate: apt.date,
-                      proAvailability: apt.user_b?.user_b_details?.availability,
-                      isUserA: user?.id === apt.user_a?.id
-                    });
-                  }}
-                  className="border-l-3 border-primary h-full px-3 cursor-pointer"
-                  title="Proposer une autre date"
-                >
-                  <MdEdit className="w-5 h-5 text-primary" />
-                </button>
+                 <button
+                   onClick={() => {
+                     setRescheduleModal({
+                       appointmentId: apt.id,
+                       currentDate: apt.date,
+                       proAvailability: apt.user_b?.user_b_details?.availability,
+                       isUserA: user?.id === apt.user_a?.id
+                     });
+                   }}
+                   className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                   title="Proposer une autre date"
+                 >
+                   <RefreshCw className="w-5 h-5" />
+                 </button>
               )}
 
               {/* User B can confirm/cancel PENDING appointments */}
@@ -228,189 +239,189 @@ export default function AppointmentList() {
 
               {/* User A can review CONFIRMED or COMPLETED appointments that have passed */}
               {(apt.status === 'CONFIRMED' || apt.status === 'COMPLETED') &&
-                user &&
-                (apt as any).user_a_id === user.id &&
-                new Date(apt.date) < new Date() && (
-                  apt.has_review ? (
-                    <div className="relative group">
-                      <div className="p-2 text-blue-600 bg-blue-50 rounded-full cursor-help">
-                        <MessageSquare className="w-5 h-5 fill-blue-600" />
-                      </div>
-                      {apt.review && (
-                        <div className="absolute right-0 top-full mt-2 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                          <div className="flex items-center gap-1 mb-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className={`w-3 h-3 ${i < apt.review!.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
-                            ))}
-                          </div>
-                          {apt.review.comment && <p className="text-xs">{apt.review.comment}</p>}
-                        </div>
-                      )}
+               user &&
+               (apt as any).user_a_id === user.id &&
+               new Date(apt.date) < new Date() && (
+                apt.has_review ? (
+                  <div className="relative group">
+                    <div className="p-2 text-blue-600 bg-blue-50 rounded-full cursor-help">
+                      <MessageSquare className="w-5 h-5 fill-blue-600" />
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => setReviewModal({
-                        appointmentId: apt.id,
-                        professionalName: `${apt.user_b?.first_name} ${apt.user_b?.last_name}`
-                      })}
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all shadow-md"
-                      title="Noter le professionnel"
-                    >
-                      <Star className="w-4 h-4 fill-white" />
-                      <span className="text-sm font-medium">Noter</span>
-                    </button>
-                  )
-                )}
+                    {apt.review && (
+                      <div className="absolute right-0 top-full mt-2 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                        <div className="flex items-center gap-1 mb-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`w-3 h-3 ${i < apt.review!.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
+                          ))}
+                        </div>
+                        {apt.review.comment && <p className="text-xs">{apt.review.comment}</p>}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setReviewModal({
+                      appointmentId: apt.id,
+                      professionalName: `${apt.user_b?.first_name} ${apt.user_b?.last_name}`
+                    })}
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all shadow-md"
+                    title="Noter le professionnel"
+                  >
+                    <Star className="w-4 h-4 fill-white" />
+                    <span className="text-sm font-medium">Noter</span>
+                  </button>
+                )
+              )}
 
               {/* User B view: Show review icon for past appointments with reviews */}
               {(apt.status === 'CONFIRMED' || apt.status === 'COMPLETED') &&
-                user &&
-                (apt as any).user_b_id === user.id &&
-                new Date(apt.date) < new Date() &&
-                apt.has_review &&
-                apt.review && (
-                  <div className="relative group">
-                    <div className="p-2 text-green-600 bg-green-50 rounded-full cursor-help">
-                      <MessageSquare className="w-5 h-5 fill-green-600" />
-                    </div>
-                    <div className="absolute right-0 top-full mt-2 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                      <div className="flex items-center gap-1 mb-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`w-3 h-3 ${i < apt.review!.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
-                        ))}
-                      </div>
-                      {apt.review.comment && <p className="text-xs">{apt.review.comment}</p>}
-                    </div>
+               user &&
+               (apt as any).user_b_id === user.id &&
+               new Date(apt.date) < new Date() &&
+               apt.has_review &&
+               apt.review && (
+                <div className="relative group">
+                  <div className="p-2 text-green-600 bg-green-50 rounded-full cursor-help">
+                    <MessageSquare className="w-5 h-5 fill-green-600" />
                   </div>
-                )}
+                  <div className="absolute right-0 top-full mt-2 p-3 bg-gray-900 text-white text-sm rounded-lg shadow-lg w-64 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                    <div className="flex items-center gap-1 mb-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`w-3 h-3 ${i < apt.review!.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
+                      ))}
+                    </div>
+                    {apt.review.comment && <p className="text-xs">{apt.review.comment}</p>}
+                  </div>
+                </div>
+              )}
 
               {/* User A or User B can CANCEL confirmed appointments (if future) */}
               {apt.status === 'CONFIRMED' &&
-                user &&
-                ((apt as any).user_a_id === user.id || (apt as any).user_b_id === user.id) &&
-                new Date(apt.date) > new Date() && (
-                  <button
-                    onClick={() => {
-                      const isUserA = (apt as any).user_a_id === user.id;
-                      const message = isUserA
-                        ? 'Êtes-vous sûr de vouloir annuler ce rendez-vous ?'
-                        : 'Êtes-vous sûr de vouloir annuler ce rendez-vous avec le client ?';
+               user &&
+               ((apt as any).user_a_id === user.id || (apt as any).user_b_id === user.id) &&
+               new Date(apt.date) > new Date() && (
+                <button
+                  onClick={() => {
+                    const isUserA = (apt as any).user_a_id === user.id;
+                    const message = isUserA
+                      ? 'Êtes-vous sûr de vouloir annuler ce rendez-vous ?'
+                      : 'Êtes-vous sûr de vouloir annuler ce rendez-vous avec le client ?';
 
-                      setConfirmDeleteModal({
-                        appointmentId: apt.id,
-                        title: message,
-                        confirmBtnText: 'Annuler le RDV'
-                      });
-                    }}
-                    className="text-white bg-primary h-full rounded-r-full px-3 cursor-pointer"
-                    title="Annuler le rendez-vous"
-                  >
-                    <X className="w-7 h-7" />
-                  </button>
-                )}
+                    setConfirmDeleteModal({
+                      appointmentId: apt.id,
+                      title: message,
+                      confirmBtnText: 'Annuler le RDV'
+                    });
+                  }}
+                  className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  title="Annuler le rendez-vous"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+               )}
 
               {/* User A can also DELETE pending appointments */}
               {apt.status === 'PENDING' &&
-                user &&
-                (apt as any).user_a_id === user.id && (
-                  <button
-                    onClick={() => {
-                      const proName = apt.user_b ? `${apt.user_b.first_name} ${apt.user_b.last_name}` : 'Professionnel';
-                      const dateStr = new Date(apt.date).toLocaleString('fr-FR', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      });
-                      setConfirmDeleteModal({
-                        appointmentId: apt.id,
-                        title: `Supprimer le rendez-vous avec ${proName} le ${dateStr} ?`,
-                        confirmBtnText: 'Supprimer'
-                      });
-                    }}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                    title="Supprimer la demande"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                )}
+               user &&
+               (apt as any).user_a_id === user.id && (
+                <button
+                  onClick={() => {
+                    const proName = apt.user_b ? `${apt.user_b.first_name} ${apt.user_b.last_name}` : 'Professionnel';
+                    const dateStr = new Date(apt.date).toLocaleString('fr-FR', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+                    setConfirmDeleteModal({
+                      appointmentId: apt.id,
+                      title: `Supprimer le rendez-vous avec ${proName} le ${dateStr} ?`,
+                      confirmBtnText: 'Supprimer'
+                    });
+                  }}
+                  className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  title="Supprimer la demande"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+               )}
             </div>
-          </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
 
-      {/* Review Modal */}
-      {reviewModal && (
-        <ReviewModal
-          appointmentId={reviewModal.appointmentId}
-          professionalName={reviewModal.professionalName}
-          onClose={() => setReviewModal(null)}
-          onSuccess={() => {
-            fetchAppointments(); // Refresh to update has_review
-          }}
-        />
-      )}
+    {/* Review Modal */}
+    {reviewModal && (
+      <ReviewModal
+        appointmentId={reviewModal.appointmentId}
+        professionalName={reviewModal.professionalName}
+        onClose={() => setReviewModal(null)}
+        onSuccess={() => {
+          fetchAppointments(); // Refresh to update has_review
+        }}
+      />
+    )}
 
-      {/* Reschedule Modal */}
-      {rescheduleModal && (
-        <RescheduleModal
-          isOpen={!!rescheduleModal}
-          onClose={() => setRescheduleModal(null)}
-          currentDate={rescheduleModal.currentDate}
-          proAvailability={rescheduleModal.proAvailability}
-          isUserA={rescheduleModal.isUserA}
-          onSubmit={(date) => {
-            // Validate date before submitting
-            const dateObj = new Date(date);
-            const hour = dateObj.getHours();
-            const minute = dateObj.getMinutes();
+    {/* Reschedule Modal */}
+    {rescheduleModal && (
+      <RescheduleModal
+        isOpen={!!rescheduleModal}
+        onClose={() => setRescheduleModal(null)}
+        currentDate={rescheduleModal.currentDate}
+        proAvailability={rescheduleModal.proAvailability}
+        isUserA={rescheduleModal.isUserA}
+        onSubmit={(date) => {
+          // Validate date before submitting
+          const dateObj = new Date(date);
+          const hour = dateObj.getHours();
+          const minute = dateObj.getMinutes();
 
-            if (hour < 7 || hour > 20 || (hour === 20 && minute > 0)) {
-              setToast({ message: 'Les rendez-vous sont disponibles uniquement entre 7h00 et 20h00', type: 'error' });
+          if (hour < 7 || hour > 20 || (hour === 20 && minute > 0)) {
+            setToast({ message: 'Les rendez-vous sont disponibles uniquement entre 7h00 et 20h00', type: 'error' });
+            setTimeout(() => setToast(null), 3000);
+            return;
+          }
+
+          if (!rescheduleModal.isUserA) {
+            const now = new Date();
+            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+            if (dateObj <= oneHourFromNow) {
+              setToast({ message: 'Vous devez proposer un créneau au moins 1 heure après l\'heure actuelle', type: 'error' });
               setTimeout(() => setToast(null), 3000);
               return;
             }
+          }
 
-            if (!rescheduleModal.isUserA) {
-              const now = new Date();
-              const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
-              if (dateObj <= oneHourFromNow) {
-                setToast({ message: 'Vous devez proposer un créneau au moins 1 heure après l\'heure actuelle', type: 'error' });
-                setTimeout(() => setToast(null), 3000);
-                return;
-              }
-            }
+          // When proposing a date, don't send status - just the date
+          // The backend will automatically set status to RESCHEDULED
+          updateStatus(rescheduleModal.appointmentId, undefined, date);
+        }}
+      />
+    )}
 
-            // When proposing a date, don't send status - just the date
-            // The backend will automatically set status to RESCHEDULED
-            updateStatus(rescheduleModal.appointmentId, undefined, date);
-          }}
-        />
-      )}
+    {/* Toast Notification */}
+    {toast && (
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast(null)}
+      />
+    )}
 
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-
-      {/* Confirm Delete Modal */}
-      {confirmDeleteModal && (
-        <ConfirmDeleteModal
-          isOpen={!!confirmDeleteModal}
-          onClose={() => setConfirmDeleteModal(null)}
-          onConfirm={() => {
-            updateStatus(confirmDeleteModal.appointmentId, 'CANCELLED');
-          }}
-          title={confirmDeleteModal.title}
-          confirmText={confirmDeleteModal.confirmBtnText || "Supprimer"}
-          cancelText="Retour"
-        />
-      )}
+    {/* Confirm Delete Modal */}
+    {confirmDeleteModal && (
+      <ConfirmDeleteModal
+        isOpen={!!confirmDeleteModal}
+        onClose={() => setConfirmDeleteModal(null)}
+        onConfirm={() => {
+          updateStatus(confirmDeleteModal.appointmentId, 'CANCELLED');
+        }}
+        title={confirmDeleteModal.title}
+        confirmText={confirmDeleteModal.confirmBtnText || "Supprimer"}
+        cancelText="Retour"
+      />
+    )}
     </>
   );
 }
