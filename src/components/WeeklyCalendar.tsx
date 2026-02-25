@@ -171,7 +171,7 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
                         return (
                           <div
                             key={apt.id}
-                            className={`text-xs p-1.5 rounded border-l-2 ${getStatusColor(apt.status)} cursor-pointer hover:shadow-md transition-shadow`}
+                            className={`text-xs p-1.5 rounded-sm border-l-2 ${getStatusColor(apt.status)} cursor-pointer hover:shadow-md transition-shadow`}
                             title={`${clientName} - ${apt.status}`}
                           >
                             <div className="font-semibold truncate">{clientName}</div>
@@ -192,23 +192,23 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
       <div className="mt-6 pt-4 border-t border-gray-200">
         <div className="flex flex-wrap gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-yellow-100 border border-yellow-400"></div>
+            <div className="w-4 h-4 rounded-sm bg-yellow-100 border border-yellow-400"></div>
             <span>En attente</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-green-100 border border-green-400"></div>
+            <div className="w-4 h-4 rounded-sm bg-green-100 border border-green-400"></div>
             <span>Confirmé</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-blue-100 border border-blue-400"></div>
+            <div className="w-4 h-4 rounded-sm bg-blue-100 border border-blue-400"></div>
             <span>Reprogrammé</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-purple-100 border border-purple-400"></div>
+            <div className="w-4 h-4 rounded-sm bg-purple-100 border border-purple-400"></div>
             <span>Terminé</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-gray-100 border border-gray-400"></div>
+            <div className="w-4 h-4 rounded-sm bg-gray-100 border border-gray-400"></div>
             <span>Annulé</span>
           </div>
         </div>

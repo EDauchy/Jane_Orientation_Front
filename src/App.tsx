@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import OrientationTest from './pages/OrientationTest';
 import Dashboard from './pages/Dashboard';
 import Map from "./components/Map.tsx";
+import Home from './pages/Home';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -20,6 +21,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function AppRoutes() {
   return (
     <Routes>
+         <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/test" element={

@@ -83,9 +83,9 @@ export default function AvailabilityEditor({ initialAvailability, onClose, onSav
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white flex justify-between items-center">
+        <div className="bg-linear-to-r from-purple-600 to-indigo-600 p-6 text-white flex justify-between items-center">
           <div className="flex items-center gap-3">
             <Clock className="w-6 h-6" />
             <h2 className="text-xl font-bold">Mes Disponibilités</h2>
@@ -107,7 +107,7 @@ export default function AvailabilityEditor({ initialAvailability, onClose, onSav
                     type="checkbox"
                     checked={isOpen}
                     onChange={() => toggleDay(key)}
-                    className="w-5 h-5 rounded text-purple-600 focus:ring-purple-500"
+                    className="w-5 h-5 rounded-sm text-purple-600 focus:ring-purple-500"
                   />
                   <span className={`font-medium ${isOpen ? 'text-purple-900' : 'text-gray-500'}`}>{label}</span>
                 </div>
@@ -117,7 +117,7 @@ export default function AvailabilityEditor({ initialAvailability, onClose, onSav
                     <select
                       value={times[0]}
                       onChange={(e) => handleTimeChange(key, 'start', e.target.value)}
-                      className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
+                      className="border border-gray-300 rounded-sm px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-hidden"
                     >
                       {Array.from({ length: 14 }, (_, i) => i + 7).map(h => (
                         <option key={h} value={`${h.toString().padStart(2, '0')}:00`}>{h}:00</option>
@@ -127,7 +127,7 @@ export default function AvailabilityEditor({ initialAvailability, onClose, onSav
                     <select
                       value={times[1]}
                       onChange={(e) => handleTimeChange(key, 'end', e.target.value)}
-                      className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
+                      className="border border-gray-300 rounded-sm px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-hidden"
                     >
                       {Array.from({ length: 14 }, (_, i) => i + 7).map(h => (
                         <option key={h} value={`${h.toString().padStart(2, '0')}:00`}>{h}:00</option>

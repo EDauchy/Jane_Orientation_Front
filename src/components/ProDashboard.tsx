@@ -167,12 +167,12 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
   return (
     <div className="space-y-6">
       {/* Profile Card */}
-      <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl shadow-xl overflow-hidden relative">
+      <div className="bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl shadow-xl overflow-hidden relative">
         <div className="bg-white/10 backdrop-blur-md p-8">
           <div className="flex items-start gap-6">
             {/* Profile Picture */}
             <div className="relative">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-white/30 to-white/10 flex items-center justify-center border-4 border-white/50 shadow-2xl">
+              <div className="w-32 h-32 rounded-full bg-linear-to-br from-white/30 to-white/10 flex items-center justify-center border-4 border-white/50 shadow-2xl">
                 <User className="w-16 h-16 text-white" />
               </div>
               <div className="absolute -bottom-2 -right-2 bg-green-400 w-8 h-8 rounded-full border-4 border-white shadow-lg"></div>
@@ -194,7 +194,7 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
                 </div>
                 <button
                   onClick={() => setShowAvailabilityEditor(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-sm transition-all text-sm font-medium border border-white/30"
+                  className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg backdrop-blur-xs transition-all text-sm font-medium border border-white/30"
                 >
                   <Clock className="w-4 h-4" />
                   Gérer mes disponibilités
@@ -239,7 +239,7 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
             onClick={() => setView('list')}
             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
               view === 'list'
-                ? 'bg-white text-gray-900 shadow-sm'
+                ? 'bg-white text-gray-900 shadow-xs'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -252,7 +252,7 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
             onClick={() => setView('calendar')}
             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
               view === 'calendar'
-                ? 'bg-white text-purple-600 shadow-sm'
+                ? 'bg-white text-purple-600 shadow-xs'
                 : 'text-gray-500 hover:text-gray-700'
             }`}
           >

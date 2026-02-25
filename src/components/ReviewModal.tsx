@@ -68,7 +68,7 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-6 text-white">
+        <div className="bg-linear-to-r from-indigo-500 to-purple-500 p-6 text-white">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Noter le professionnel</h2>
             <button
@@ -159,7 +159,7 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
             <button
               type="submit"
               disabled={submitting || rating === 0}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg"
+              className="flex-1 px-4 py-3 bg-linear-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg"
             >
               {submitting ? 'Envoi...' : 'Publier l\'avis'}
             </button>
