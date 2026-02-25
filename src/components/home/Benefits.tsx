@@ -1,3 +1,5 @@
+import React from "react";
+import StyledTitle from "./StyledTitle";
 
 export default function BenefitsSection() {
 return (

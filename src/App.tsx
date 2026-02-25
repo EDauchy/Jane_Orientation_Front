@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import OrientationTest from './pages/OrientationTest';
 import Dashboard from './pages/Dashboard';
-import Map from "./components/Map.tsx";
 import Home from './pages/Home';
 
 // Protected Route Component

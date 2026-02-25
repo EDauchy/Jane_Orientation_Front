@@ -12,7 +12,7 @@ import ArticleListSection from '../components/home/ArticleList'
 import ContactForm from '../components/home/ContactForm'
 import Modal from '../components/home/Modal'
 import { useState } from "react";
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import CountdownGuard from "../components/home/CountdownGuard";
 import { APP_CONFIG } from "../constants/config";
 
@@ -20,8 +20,8 @@ export default function Home() {
 
 
   const [open, setOpen] = useState<boolean>(false);
-    useLocation();
-    return (
+  const location = useLocation();
+  return (
     <>
       <Header />
       <Hero />

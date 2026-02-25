@@ -2,6 +2,7 @@ import React from "react";
 import { FaSquareXTwitter, FaLinkedin } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { AiFillTikTok } from "react-icons/ai";
+import type { IconType } from "react-icons";
 import type { SocialIcon, SocialLinksProps } from "../../shard/types";
 
 

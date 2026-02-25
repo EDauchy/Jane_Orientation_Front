@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { CountdownSimpleProps, TimeLeft } from '../../shard/types';
 
 
@@ -38,10 +38,8 @@ const CountdownSimple = ({
   // Si le temps est écoulé
   const isExpired = Object.keys(timeLeft).length === 0;
 
-  const textColorClass = color === 'white' ? 'text-white' : color === 'black' ? 'text-black' : '';
-
   return (
-    <div className={`flex items-center font-mono font-black tracking-tighter ${textColorClass} ${fontSize} ${containerClass}`}>
+    <div className={`flex items-center font-mono font-black tracking-tighter text-${color} ${fontSize} ${containerClass}`}>
       {isExpired ? (
         <span></span>
       ) : (

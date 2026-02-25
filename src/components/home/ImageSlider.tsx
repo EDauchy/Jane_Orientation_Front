@@ -32,6 +32,11 @@ const slides: Slide[] = [
 const ImageSlider: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+  const goToPrevious = useCallback((): void => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? slides.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  }, [currentIndex]);
 
   const goToNext = useCallback((): void => {
     const isLastSlide = currentIndex === slides.length - 1;

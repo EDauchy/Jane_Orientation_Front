@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { CountdownGuardProps, TimeLeft } from '../../shard/types';
 
 
@@ -35,11 +35,10 @@ const CountdownGuard = ({
 
   const isExpired = Object.keys(timeLeft).length === 0;
 
-  // NOTE: avoid dynamic tailwind classes like `text-${color}` because they won't be picked up by JIT.
-  // We fallback to common colors or a provided color string (when explicit classes are used).
-  const textColorClass = color === 'white' ? 'text-white' : color === 'black' ? 'text-black' : '';
-  const bgColorClass = color === 'white' ? 'bg-white/10' : color === 'black' ? 'bg-black/10' : '';
-  const borderColorClass = color === 'white' ? 'border-white/10' : color === 'black' ? 'border-black/20' : '';
+  // Construction des classes dynamiques
+  const textColorClass = `text-${color}`;
+  const bgColorClass = `bg-${color}/10`;
+  const borderColorClass = `border-${color}/20`;
 
   return (
     <div className={`relative overflow-hidden rounded-xl shadow-2xl ${containerClass}`}>

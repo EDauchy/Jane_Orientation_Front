@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TestimonialCard from "./TestimonialCard";
-import type { Testimonial } from "../../shard/types";
+import type { Testimonial } from "./TestimonialCard";
 
 const Testimonials: React.FC = () => {
   const testimonials: Testimonial[] = [
