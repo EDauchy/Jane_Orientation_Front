@@ -44,7 +44,10 @@ export default function ProfileAvatar({
                     contentType: file.type,
                 });
 
-            if (uploadError) throw uploadError;
+            if (uploadError) {
+                console.error('Upload error:', uploadError);
+                throw uploadError;
+            }
 
             const { data } = supabase.storage
                 .from('profiles_pictures')
@@ -54,6 +57,8 @@ export default function ProfileAvatar({
             if (!session?.access_token) {
                 throw new Error('Session expirée');
             }
+
+            console.log('Public URL:', data.publicUrl);
 
             const res = await fetch('/api/profile/update', {
                 method: 'PUT',

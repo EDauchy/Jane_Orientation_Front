@@ -14,7 +14,7 @@ export default function AppointmentAvatar({ src, alt, size = 'md' }: Appointment
         <div
             role="img"
             aria-label={alt ?? 'Avatar'}
-            className={`${sizeClass} aspect-square shrink-0 rounded-full bg-gray-200 bg-center bg-no-repeat bg-contain`}
+            className={`${sizeClass} aspect-square shrink-0 rounded-full bg-gray-200 bg-center bg-no-repeat bg-cover`}
             style={{ backgroundImage: `url(${imgSrc})` }}
         />
     );

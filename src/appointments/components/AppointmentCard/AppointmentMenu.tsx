@@ -53,6 +53,7 @@ export function MenuDivider() {
 
 interface AppointmentMenuProps {
     appointment: Appointment;
+    variant?: 'default' | 'minimal';
     currentUserId: string;
     showStatus?: boolean;
     onUpdateStatus: (id: string, status: string | undefined, date?: string) => void;
@@ -64,6 +65,7 @@ interface AppointmentMenuProps {
 export default function AppointmentMenu({
     appointment: apt,
     currentUserId,
+    variant = "minimal",
     showStatus = false,
     onUpdateStatus,
     onOpenReviewModal,
@@ -235,7 +237,7 @@ export default function AppointmentMenu({
         <div className="shrink-0 mr-1">
             <button
                 onClick={(e) => setMenuAnchor(e.currentTarget)}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-primary transition-colors cursor-pointer"
+                className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors cursor-pointer ${variant === 'default' ? 'bg-white/20 hover:bg-white/30 text-white' : 'hover:bg-gray-100 text-gray-400 hover:text-primary'}`}
                 aria-label="Actions"
                 aria-haspopup="true"
                 aria-expanded={menuOpen}
