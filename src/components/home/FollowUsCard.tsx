@@ -6,7 +6,7 @@ const FollowUsCard = () => {
 
 
   return (
-    <div className="relative w-1/2 max-w-sm mx-auto ">
+    <div className="relative lg:w-1/2 w-full ">
       <div className="absolute -top-4 left-4 w-8 h-8 z-10">
         <img src="./image-check.png" alt="" />
       </div>

@@ -19,12 +19,12 @@ const slides: Slide[] = [
   },
   {
     id: 2,
-    url: "https://placehold.co/800x600/f87171/ffffff?text=Construire+Votre+Chemin",
+    url: "./hero-image2.jpg",
     alt: "Image pour Construire Votre Chemin",
   },
   {
     id: 3,
-    url: "https://placehold.co/800x600/4ade80/ffffff?text=Atteindre+Vos+Objectifs",
+    url: "./hero-image3.jpg",
     alt: "Image pour Atteindre Vos Objectifs",
   },
 ];
@@ -59,7 +59,6 @@ const ImageSlider: React.FC = () => {
 
   return (
     <div className="flex-1 relative overflow-hidden rounded-[30px] mt-20 lg:mt-0">
-      {/* Coins décoratifs */}
       <div className="absolute top-0 left-0 z-10 w-[120px] h-[120px] bg-white rounded-br-[30px] hidden lg:block"></div>
       <div className="absolute bottom-0 left-0 z-10 w-[135px] h-[135px] bg-white rounded-tr-[80px] hidden lg:block"></div>
 
@@ -73,10 +72,9 @@ const ImageSlider: React.FC = () => {
         <LearnMoreButton />
       </div>
 
-      {/* Badge Utilisateurs */}
       <div className="absolute flex flex-col items-center px-5 py-2 rounded-2xl right-5 top-5 bg-white/20 backdrop-blur-md shadow-xl">
-        <span className="font-semibold text-[#681bff] text-3xl">200+</span>
-        <span className="text-lg text-[#681bff]">Utilisateurs actifs</span>
+        <span className="font-semibold text-primary text-3xl">200+</span>
+        <span className="text-lg text-primary">Utilisateurs actifs</span>
 
         <div className="mt-2 flex items-center">
           <img
@@ -94,7 +92,7 @@ const ImageSlider: React.FC = () => {
             className="w-8 h-8 rounded-full object-cover -ml-3 z-30 border-2 border-white"
             alt="user 3"
           />
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#681bff] text-white font-bold -ml-3 z-40 border-2 border-white">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold -ml-3 z-40 border-2 border-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-4 h-4"

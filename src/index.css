@@ -1,24 +1,94 @@
 @import 'tailwindcss';
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+@theme {
+  /* Enregistrement de vos 4 couleurs fixes dans Tailwind */
+  --color-primary: #681BEF;
+  --color-secondary: #6F3EF4;
+  --color-brand-orange: #F8A128;
+  --color-brand-pink: #FF5EAE;
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+  /* Définition des couleurs de fond qui changent */
+  --color-main-bg: #FFFFFF;
+  --color-main-text: #0F172A;
+}
+
+/* Gestion du Dark Mode pour l'arrière-plan */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
+  :root {
+    --main-bg: #FFFFFF;
+    --main-text: #0F172A;
+  }
+
+  /* Si la classe .dark est présente sur le <html> ou <body> */
+  .dark {
+    --main-bg: #0B0F1A;
+    /* Ton fond sombre */
+    --main-text: #F8FAFC;
+  }
+
+  body {
+    background-color: var(--main-bg);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--main-text);
+    transition: all 0.3s ease;
   }
 }
 
 /* Custom styles if needed */
 body {
   @apply bg-gray-50 text-gray-900;
+}
+
+
+@layer base {
+  :root {
+    --orange-color: #ff9500;
+    --purple-color: #681BEF;
+    --font-family: 'Arial Black', sans-serif;
+  }
+}
+
+/* Composants réutilisables */
+@layer components {
+  .headline {
+    font-family: var(--font-family);
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .word-orange-outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--orange-color);
+  }
+
+  .word-wavy {
+    color: var(--purple-color);
+    text-decoration: underline wavy 3px;
+    text-decoration-color: var(--purple-color);
+    text-underline-offset: 2px;
+  }
+
+  .word-purple {
+    color: var(--purple-color);
+  }
+
+  .word-outline-box {
+    padding: 2px 5px;
+    border: 4px dashed var(--orange-color);
+    border-radius: 8px;
+    display: inline-block;
+  }
+}
+
+/* Animations & utilitaires */
+@layer utilities {
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .rotate-text {
+    transform-origin: center;
+    transition: transform 0.1s linear;
+  }
 }

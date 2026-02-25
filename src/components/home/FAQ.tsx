@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-// Note: ChevronDown n'est pas utilisé dans votre code actuel mais importé, 
-// je l'ai laissé au cas où vous souhaiteriez remplacer le SVG manuel.
-import { ChevronDown } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -51,7 +48,7 @@ export default function FAQ({ isVisible }: FAQProps) {
   };
 
 return (
-    <section id="faq" className="animate-section py-24 px-6 bg-white">
+    <section id="faq" className="animate-section py-24 px-6 ">
       <div className="container mx-auto max-w-4xl">
      
 
@@ -67,14 +64,14 @@ return (
               style={{ transitionDelay: `${index * 50}ms` }}
             >
               <div className="relative ">
-                <div className="absolute top-0 right-10 rounded-tr-2xl bg-[#6f3ef4] left-0 bottom-0"></div>
-                <div className="absolute top-[40px] right-0 rounded-tr-2xl bg-[#6f3ef4] left-0 bottom-0"></div>
+                <div className="absolute top-0 right-10 rounded-tr-2xl bg-primary left-0 bottom-0"></div>
+                <div className="absolute top-[40px] right-0 rounded-tr-2xl bg-primary left-0 bottom-0"></div>
                 <div
                   className="absolute right-[15px] top-[15px] w-[50px] h-[50px] 
-                    bg-[radial-gradient(circle_at_top_right,transparent_25px,#6f3ef4_25px)]"
+                    bg-[radial-gradient(circle_at_top_right,transparent_25px,#681bef_25px)]"
                 ></div>
 
-                <div className="absolute top-0  right-0 rounded-full p-[5px] bg-[#6f3ef4]">
+                <div className="absolute top-0  right-0 rounded-full p-[5px] bg-primary">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className={`w-5 h-5 text-white transition-transform duration-300 ${
@@ -107,7 +104,7 @@ return (
                   openIndex === index ? "max-h-48" : "max-h-0"
                 }`}
               >
-                <div className="bg-[#6f3ef4] px-8 pb-6 text-white text-sm leading-relaxed">
+                <div className="bg-primary px-8 pb-6 text-white text-sm leading-relaxed">
                   <div className="h-[2px] w-full bg-white mb-3"></div>
                   {faq.answer}
                 </div>

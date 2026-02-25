@@ -30,7 +30,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
       onClick={onClose} // Close when clicking the backdrop
     >
       <div 
-        className="bg-white rounded-xl max-w-3xl w-full relative shadow-2xl overflow-hidden"
+        className=" rounded-xl max-w-4xl w-full relative overflow-hidden"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
         onKeyDown={handleKeyDown}
       >
@@ -38,7 +38,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
         <div className="absolute top-4 right-4 z-10">
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-full bg-[#681bff] text-white hover:bg-[#5214cc] flex items-center justify-center transition-colors shadow-lg"
+            className="w-10 h-10 rounded-full bg-primary text-white hover:bg-primary flex items-center justify-center transition-colors shadow-lg"
             aria-label="Fermer"
           >
             <svg

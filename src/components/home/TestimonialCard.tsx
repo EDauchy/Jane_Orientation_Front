@@ -19,7 +19,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (
     <div className="relative h-[285px] min-w-[330px] transition-all duration-500">
       <div
-        className="h-[190px] bg-[#681bff] px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300"
+        className="h-[190px] bg-primary px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300"
       >
         <p className="text-white text-xl font-bold text-center leading-relaxed mb-2">
           {testimonial.title}
@@ -36,8 +36,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         ></div>
 
         <div className="flex gap-[15px] w-full h-[100px] pt-[15px]">
-          <div className="h-[85px] w-[85px] bg-[#681bff] rounded-[25px]"></div>
-          <div className="flex-1 bg-[#681bff] rounded-[25px]">
+          <div className="h-[85px] w-[85px] bg-primary rounded-[25px]"></div>
+          <div className="flex-1 bg-primary rounded-[25px]">
             <div className="w-full h-full flex flex-col py-2 px-4">
               <p className="text-base font-bold text-white">
                 {testimonial.name}
@@ -49,8 +49,8 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         </div>
 
         <div className="flex flex-col gap-[15px]">
-          <div className="flex-1 w-[100px] bg-[#681bff] rounded-b-[25px]"></div>
-          <div className="flex h-9 items-center bg-[#681bff] justify-center gap-1 p-2 rounded-[15px]">
+          <div className="flex-1 w-[100px] bg-primary rounded-b-[25px]"></div>
+          <div className="flex h-9 items-center bg-primary justify-center gap-1 p-2 rounded-[15px]">
             {[1, 2, 3, 4, 5].map((i) => (
               <svg
                 key={i}

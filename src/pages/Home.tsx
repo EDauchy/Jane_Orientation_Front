@@ -12,11 +12,15 @@ import ArticleListSection from '../components/home/ArticleList'
 import ContactForm from '../components/home/ContactForm'
 import Modal from '../components/home/Modal'
 import { useState } from "react";
+import { Link, useLocation } from 'react-router-dom';
+import CountdownGuard from "../components/home/CountdownGuard";
+import { APP_CONFIG } from "../constants/config";
 
 export default function Home() {
-  
 
-const [open, setOpen] = useState<boolean>(true);
+
+  const [open, setOpen] = useState<boolean>(false);
+  const location = useLocation();
   return (
     <>
       <Header />
@@ -32,10 +36,14 @@ const [open, setOpen] = useState<boolean>(true);
         <Testimonials />
       </CustomSection>
 
-      <CallToAction />
+      <CountdownGuard targetDate={APP_CONFIG.TARGET_DATE}
+        containerClass=""
+        color="text-black">
+            <CallToAction />
+      </CountdownGuard>
 
       <CustomSection title={"L’avenir appartient à ceux qui choisissent en connaissance"}>
-      <ArticleListSection/>
+        <ArticleListSection />
       </CustomSection>
 
 
@@ -45,13 +53,15 @@ const [open, setOpen] = useState<boolean>(true);
 
 
 
-{/* <ContactForm/> */}
+      {/* <ContactForm/> */}
 
 
       <Footer />
-       <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={open} onClose={() => setOpen(false)}>
         <ContactForm />
       </Modal>
+  
+
 
     </>
   );
