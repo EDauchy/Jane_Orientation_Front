@@ -1,9 +1,12 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 @theme {
   /* Enregistrement de vos 4 couleurs fixes dans Tailwind */
   --color-primary: #681BEF;
   --color-secondary: #6F3EF4;
+  --color-light: #7C3AED;
+  --color-pink: #EC4899;
   --color-brand-orange: #F8A128;
   --color-brand-pink: #FF5EAE;
 
@@ -90,5 +93,80 @@ body {
   .rotate-text {
     transform-origin: center;
     transition: transform 0.1s linear;
+  }
+}
+
+  /* Modal with cutouts for floating buttons - desktop only */
+.modal-cutout {
+  --cutout-top: 90px;
+  --cutout-bottom-w: 480px;
+  --cutout-bottom-h: 80px;
+  --radius: 25px;
+}
+
+@media (min-width: 640px) {
+  .modal-cutout {
+    clip-path: polygon(
+    /* Top-left corner */
+    0% var(--radius),
+    2px 15px, 5px 10px, 10px 5px, 15px 2px,
+    var(--radius) 0%,
+    /* Top edge to cutout */
+    calc(100% - var(--cutout-top) - var(--radius)) 0%,
+    /* Top-right cutout inner curve */
+    calc(100% - var(--cutout-top) - 15px) 2px,
+    calc(100% - var(--cutout-top) - 10px) 5px,
+    calc(100% - var(--cutout-top) - 5px) 10px,
+    calc(100% - var(--cutout-top) - 2px) 15px,
+    calc(100% - var(--cutout-top)) var(--radius),
+    /* Top-right cutout left edge */
+    calc(100% - var(--cutout-top)) calc(var(--cutout-top) - var(--radius)),
+    /* Top-right cutout bottom curve */
+    calc(100% - var(--cutout-top) + 2px) calc(var(--cutout-top) - 15px),
+    calc(100% - var(--cutout-top) + 5px) calc(var(--cutout-top) - 10px),
+    calc(100% - var(--cutout-top) + 10px) calc(var(--cutout-top) - 5px),
+    calc(100% - var(--cutout-top) + 15px) calc(var(--cutout-top) - 2px),
+    calc(100% - var(--cutout-top) + var(--radius)) var(--cutout-top),
+    /* Top-right cutout bottom edge */
+    calc(100% - var(--radius)) var(--cutout-top),
+    /* Right edge curve after top cutout */
+    calc(100% - 15px) calc(var(--cutout-top) + 2px),
+    calc(100% - 10px) calc(var(--cutout-top) + 5px),
+    calc(100% - 5px) calc(var(--cutout-top) + 10px),
+    calc(100% - 2px) calc(var(--cutout-top) + 15px),
+    100% calc(var(--cutout-top) + var(--radius)),
+    /* Right edge down to bottom cutout */
+    100% calc(100% - var(--cutout-bottom-h) - var(--radius)),
+    /* Bottom-right cutout top curve */
+    calc(100% - 2px) calc(100% - var(--cutout-bottom-h) - 15px),
+    calc(100% - 5px) calc(100% - var(--cutout-bottom-h) - 10px),
+    calc(100% - 10px) calc(100% - var(--cutout-bottom-h) - 5px),
+    calc(100% - 15px) calc(100% - var(--cutout-bottom-h) - 2px),
+    calc(100% - var(--radius)) calc(100% - var(--cutout-bottom-h)),
+    /* Bottom cutout top edge */
+    calc(100% - var(--cutout-bottom-w) + var(--radius)) calc(100% - var(--cutout-bottom-h)),
+    /* Bottom cutout left curve */
+    calc(100% - var(--cutout-bottom-w) + 15px) calc(100% - var(--cutout-bottom-h) + 2px),
+    calc(100% - var(--cutout-bottom-w) + 10px) calc(100% - var(--cutout-bottom-h) + 5px),
+    calc(100% - var(--cutout-bottom-w) + 5px) calc(100% - var(--cutout-bottom-h) + 10px),
+    calc(100% - var(--cutout-bottom-w) + 2px) calc(100% - var(--cutout-bottom-h) + 15px),
+    calc(100% - var(--cutout-bottom-w)) calc(100% - var(--cutout-bottom-h) + var(--radius)),
+    /* Bottom cutout left edge down */
+    calc(100% - var(--cutout-bottom-w)) calc(100% - var(--radius)),
+    /* Bottom cutout bottom-left inner curve (going down-right) */
+    calc(100% - var(--cutout-bottom-w) - 2px) calc(100% - 15px),
+    calc(100% - var(--cutout-bottom-w) - 5px) calc(100% - 10px),
+    calc(100% - var(--cutout-bottom-w) - 10px) calc(100% - 5px),
+    calc(100% - var(--cutout-bottom-w) - 15px) calc(100% - 2px),
+    calc(100% - var(--cutout-bottom-w) - var(--radius)) 100%,
+    /* Bottom edge */
+    var(--radius) 100%,
+    /* Bottom-left corner */
+    15px calc(100% - 2px),
+    10px calc(100% - 5px),
+    5px calc(100% - 10px),
+    2px calc(100% - 15px),
+    0% calc(100% - var(--radius))
+  );
   }
 }

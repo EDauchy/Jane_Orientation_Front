@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from 'react-router-dom'
 import CountdownSimple from "./CountdownSimple";
 import { APP_CONFIG } from "../../constants/config";
+import LoginModal from "../LoginModal";
 import UserDropdown from "./UserDropdown";
+import { useAuth } from "../../context/AuthContext";
 
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
   const links = [
     { label: 'ACCUEIL', to: '/' },
     { label: 'BLOG', to: '/blog' },
@@ -121,12 +124,14 @@ export default function Header() {
             className="relative w-[100px] h-[100px] flex items-center justify-center bg-primary rounded-3xl p-5 lg:mr-0 mr-5 hover:opacity-90 transition-all"
           >
             <img src="/user-icon.png" alt="User" />
-            <UserDropdown
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-            />
-
+            {user && (
+              <UserDropdown isOpen={isOpen} setIsOpen={setIsOpen} />
+            )}
           </button>
+
+          {!user && (
+            <LoginModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          )}
 
         </div>
 
