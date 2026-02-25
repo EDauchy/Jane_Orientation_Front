@@ -54,25 +54,6 @@ function MapLogic() {
     const [errorMsg, setErrorMsg] = useState("");
     const [formationType, setFormationType] = useState("");
 
-    // Transports (UI multiple)
-    const [isTransportOpen, setIsTransportOpen] = useState(false);
-    const [selectedTransports, setSelectedTransports] = useState<string[]>([]);
-
-    const transportOptions = [
-        { value: "bus", label: "Bus" },
-        { value: "metro", label: "Métro" },
-        { value: "tramway", label: "Tramway" },
-        { value: "gare", label: "Gare" },
-    ];
-
-    const toggleTransport = (val: string) => {
-        setSelectedTransports((prev) =>
-            prev.includes(val)
-                ? prev.filter((item) => item !== val)
-                : [...prev, val]
-        );
-    };
-
     /* =======================
        Géocodage ville
     ======================= */
@@ -219,39 +200,57 @@ function MapLogic() {
                     ←
                 </button>
 
-                <div className="flex gap-2 flex-1">
+                <div className="flex gap-2 flex-1 justify-end">
+
+                    {/* Transport */}
                     <div className="relative">
-                        <select className="appearance-none bg-violet-600 text-white px-6 py-2 pr-10 rounded-full shadow text-sm outline-none cursor-pointer">
+                        <select className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer flex items-center">
                             <option value="">Transport</option>
                             <option value="bus">Bus</option>
                             <option value="metro">Métro</option>
                             <option value="tramway">Tramway</option>
                             <option value="gare">Gare</option>
                         </select>
-                        <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 flex items-center text-white">
-                            <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd" />
-                            </svg>
-                        </div>
+
+                        <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
                     </div>
+
+                    {/* Formation */}
                     <div className="relative">
                         <select
                             value={formationType}
                             onChange={(e) => setFormationType(e.target.value)}
-                            className="appearance-none bg-violet-600 text-white px-6 py-2 pr-10 rounded-full shadow text-sm outline-none cursor-pointer"
+                            className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer"
                         >
                             <option value="">Toutes les formations</option>
                             <option value="alternance">Formation en alternance</option>
                         </select>
-                        <div className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 flex items-center text-white">
-                            <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                                <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd" />
-                            </svg>
-                        </div>
+
+                        <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
                     </div>
 
-                    {/* Recherche ville avec bouton géolocalisation */}
-                    <div className="bg-violet-600 text-white px-4 py-2 rounded-full shadow text-sm flex items-center gap-2">
+                    {/* Recherche ville + géoloc */}
+                    <div className="bg-violet-600 text-white px-4 h-10 rounded-lg shadow text-sm flex items-center gap-2">
                         <button
                             onClick={locateUser}
                             className="w-6 h-6 flex items-center justify-center bg-white text-violet-600 rounded shadow hover:bg-gray-100 transition-colors"
@@ -277,11 +276,12 @@ function MapLogic() {
                             placeholder="Ville"
                             className="bg-transparent outline-none placeholder-white w-28"
                         />
+
                         {loadingGeo && <span className="animate-spin">⏳</span>}
                     </div>
                 </div>
 
-                <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center">
+                <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center invisible">
                     ✕
                 </button>
             </div>
