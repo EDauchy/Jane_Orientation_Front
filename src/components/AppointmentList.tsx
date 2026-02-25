@@ -125,7 +125,7 @@ export default function AppointmentList() {
     <>
     <div className="space-y-4">
       {appointments.map((apt) => (
-        <div key={apt.id} className="bg-white border rounded-lg p-4 shadow-sm flex justify-between items-center">
+        <div key={apt.id} className="bg-white border rounded-lg p-4 shadow-xs flex justify-between items-center">
           <div>
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-gray-500" />
@@ -264,7 +264,7 @@ export default function AppointmentList() {
                       appointmentId: apt.id,
                       professionalName: `${apt.user_b?.first_name} ${apt.user_b?.last_name}`
                     })}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all shadow-md"
+                    className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-yellow-400 to-orange-400 text-white rounded-lg hover:from-yellow-500 hover:to-orange-500 transition-all shadow-md"
                     title="Noter le professionnel"
                   >
                     <Star className="w-4 h-4 fill-white" />

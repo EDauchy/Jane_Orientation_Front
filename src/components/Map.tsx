@@ -156,19 +156,19 @@ function EstablishmentModal({ establishment, onClose, onAddToFavorites }: Establ
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
             {establishment.tags.financed && (
-              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Financé</span>
+              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-sm">Financé</span>
             )}
             {establishment.tags.alternance && (
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Alternance</span>
+              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-sm">Alternance</span>
             )}
             {establishment.tags.university && (
-              <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Université</span>
+              <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-sm">Université</span>
             )}
             {establishment.tags.private && (
-              <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">Privé</span>
+              <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-sm">Privé</span>
             )}
             {establishment.tags.adultTraining && (
-              <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">Formation adulte</span>
+              <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-sm">Formation adulte</span>
             )}
           </div>
 
@@ -176,14 +176,14 @@ function EstablishmentModal({ establishment, onClose, onAddToFavorites }: Establ
           <div className="flex gap-2 pt-4 border-t">
             <button
               onClick={() => onAddToFavorites(establishment)}
-              className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+              className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-sm hover:bg-indigo-700"
             >
               <Star size={16} />
               Ajouter aux favoris
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50"
             >
               Fermer
             </button>
@@ -362,12 +362,12 @@ export default function Map({
                     <h3 className="font-bold text-sm mb-1">{marker.name}</h3>
                     <p className="text-xs text-gray-500 mb-2">{marker.address}</p>
                     <div className="flex flex-wrap gap-1 mb-2">
-                      {marker.tags?.financed && <span className="text-[10px] bg-green-100 text-green-800 px-1 rounded">Financé</span>}
-                      {marker.tags?.alternance && <span className="text-[10px] bg-blue-100 text-blue-800 px-1 rounded">Alternance</span>}
+                      {marker.tags?.financed && <span className="text-[10px] bg-green-100 text-green-800 px-1 rounded-sm">Financé</span>}
+                      {marker.tags?.alternance && <span className="text-[10px] bg-blue-100 text-blue-800 px-1 rounded-sm">Alternance</span>}
                     </div>
                     <button
                       onClick={() => setSelectedEstablishment(marker)}
-                      className="text-xs bg-indigo-600 text-white px-2 py-1 rounded hover:bg-indigo-700 w-full"
+                      className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-sm hover:bg-indigo-700 w-full"
                     >
                       Voir les détails
                     </button>
