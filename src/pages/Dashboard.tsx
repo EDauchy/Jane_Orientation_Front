@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import Map from '../components/Map';
-import AppointmentList from '../components/AppointmentList';
 import FindPro from '../components/FindPro';
 import ProfileEdit from '../components/ProfileEdit';
 import SecuritySettings from '../components/SecuritySettings';
@@ -12,6 +11,7 @@ import FavoritesList from '../components/FavoritesList';
 import Toast from '../components/Toast';
 import { User, MapPin, Briefcase, Calendar, Settings, LogOut, Search, Navigation } from 'lucide-react';
 import ProsCarousel from '../components/ProsCarousel';
+import Appointments from '../appointments/components/index';
 
 export default function Dashboard() {
   const { signOut } = useAuth();
@@ -122,7 +122,7 @@ export default function Dashboard() {
             <h2 className="headline-primary">Dashboard</h2>
             <div className='flex flex-col gap-5 w-full max-w-2xl h-[500px]'>
               <h3 className='text-2xl font-bold uppercase text-primary'>Mes RDV</h3>
-              <AppointmentList />
+              <Appointments variant="list" />
             </div>
             <div className='w-full bg-secondary h-1 opacity-[0.4] rounded-full'></div>
             <div className='flex flex-col gap-5 w-full max-w-2xl h-full max-h-[600px]'>

@@ -18,9 +18,7 @@ export default function SelectInput({
             </label>
             <select
                 {...selectProps}
-                className={`w-full px-3 py-2 border-2 border-gray-300 rounded-xl
-          focus:border-primary focus:outline-none transition-colors
-          ${className ?? ''}`}
+                className={`input-base`}
             >
                 {children}
             </select>

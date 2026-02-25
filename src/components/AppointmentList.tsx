@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Calendar, Check, X, Star, Clock, RefreshCw, MessageSquare, Edit } from 'lucide-react';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+
 import { MdEdit } from "react-icons/md";
 import ReviewModal from './ReviewModal';
 import RescheduleModal from './RescheduleModal';
@@ -23,6 +26,8 @@ interface Appointment {
 
 export default function AppointmentList() {
   const { user } = useAuth();
+  const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
+const [popoverAppointmentId, setPopoverAppointmentId] = useState<string | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewModal, setReviewModal] = useState<{ appointmentId: string; professionalName: string } | null>(null);
@@ -66,6 +71,19 @@ export default function AppointmentList() {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>, appointmentId: string) => {
+  setPopoverAnchor(event.currentTarget);
+  setPopoverAppointmentId(appointmentId);
+};
+
+const handlePopoverClose = () => {
+  setPopoverAnchor(null);
+  setPopoverAppointmentId(null);
+};
+
+const isPopoverOpen = Boolean(popoverAnchor);
+
 
   const updateStatus = async (id: string, status: string, date?: string) => {
     try {
@@ -150,41 +168,77 @@ export default function AppointmentList() {
               </div>
             )}
 
-            {/* Rescheduling Negotiation UI */}
-            {apt.status === 'RESCHEDULED' && apt.proposed_date && (
-              <div className="flex flex-col gap-2 items-end">
-                <div className="text-sm text-orange-600 font-medium flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  Proposition : {new Date(apt.proposed_date).toLocaleString()}
-                </div>
+{/* Rescheduling Negotiation UI */}
+{apt.status === 'RESCHEDULED' && apt.proposed_date && (
+  <div className="flex gap-2">
+    {/* Clock icon with hover popover (replaces visible date text) */}
+    <button
+      onMouseEnter={(e) => handlePopoverOpen(e, apt.id)}
+      onMouseLeave={handlePopoverClose}
+      className="text-orange-600 bg-orange-50 p-2 rounded-full hover:bg-orange-100 cursor-pointer transition-colors flex items-center justify-center self-center"
+    >
+      <Clock className="w-4 h-4" />
+    </button>
 
-                {user && apt.proposed_by !== user.id ? (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => updateStatus(apt.id, 'CONFIRMED')}
-                      className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm hover:bg-green-200 transition-colors"
-                    >
-                      Accepter
-                    </button>
-                    <button
-                      onClick={() => {
-                        setRescheduleModal({
-                          appointmentId: apt.id,
-                          currentDate: apt.proposed_date!,
-                          proAvailability: apt.user_b?.user_b_details?.availability,
-                          isUserA: user?.id === apt.user_a?.id
-                        });
-                      }}
-                      className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm hover:bg-orange-200 transition-colors"
-                    >
-                      Contre-proposer
-                    </button>
-                  </div>
-                ) : (
-                  <span className="text-xs text-gray-500 italic">En attente de réponse...</span>
-                )}
-              </div>
-            )}
+    <Popover
+      open={isPopoverOpen && popoverAppointmentId === apt.id}
+      anchorEl={popoverAnchor}
+      onClose={handlePopoverClose}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      disableRestoreFocus
+      sx={{ pointerEvents: 'none' }}
+    >
+      <Typography sx={{ p: 2 }}>
+        <div className="flex flex-col text-sm">
+          <span className="font-semibold text-orange-600">
+            Proposition :
+          </span>
+          <span>
+            {new Date(apt.proposed_date).toLocaleString('fr-FR')}
+          </span>
+          <span className="text-xs text-gray-500 italic mt-1">
+            En attente de réponse...
+          </span>
+        </div>
+      </Typography>
+    </Popover>
+
+    {/* KEEPING your action buttons exactly as before */}
+    {user && apt.proposed_by !== user.id ? (
+      <div>
+        <button
+          onClick={() => {
+            setRescheduleModal({
+              appointmentId: apt.id,
+              currentDate: apt.proposed_date!,
+              proAvailability: apt.user_b?.user_b_details?.availability,
+              isUserA: user?.id === apt.user_a?.id
+            });
+          }}
+          className="border-l-3 border-primary h-full px-3 cursor-pointer"
+          title="Proposer une autre date"
+        >
+          <MdEdit className="w-5 h-5 text-primary" />
+        </button>
+        <button
+          onClick={() => updateStatus(apt.id, 'CONFIRMED')}
+          className="border-l-3 border-primary h-full px-3 cursor-pointer"
+        >
+          <Check className="w-5 h-5 text-primary" />
+        </button>
+      </div>
+    ) : (
+      null
+    )}
+  </div>
+)}
 
             {/* Standard Actions */}
             <div>
@@ -211,14 +265,14 @@ export default function AppointmentList() {
                 <>
                   <button
                     onClick={() => updateStatus(apt.id, 'CONFIRMED')}
-                    className="p-2 text-green-600 hover:bg-green-50 rounded-full transition-colors"
+                    className="border-l-3 border-primary h-full px-3 cursor-pointer"
                     title="Confirmer"
                   >
-                    <Check className="w-5 h-5" />
+                    <Check className="w-5 h-5 text-primary" />
                   </button>
                   <button
                     onClick={() => updateStatus(apt.id, 'CANCELLED')}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                    className="text-white bg-primary h-full rounded-r-full px-3 cursor-pointer"
                     title="Refuser"
                   >
                     <X className="w-5 h-5" />
@@ -305,7 +359,7 @@ export default function AppointmentList() {
                     className="text-white bg-primary h-full rounded-r-full px-3 cursor-pointer"
                     title="Annuler le rendez-vous"
                   >
-                    <X className="w-7 h-7" />
+                    <X className="w-5 h-5" />
                   </button>
                 )}
 
@@ -329,7 +383,7 @@ export default function AppointmentList() {
                         confirmBtnText: 'Supprimer'
                       });
                     }}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                    className="text-white bg-primary h-full rounded-r-full px-3 cursor-pointer"
                     title="Supprimer la demande"
                   >
                     <X className="w-5 h-5" />
