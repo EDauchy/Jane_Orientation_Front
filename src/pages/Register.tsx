@@ -1,34 +1,41 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import AvailabilityEditor from '../components/AvailabilityEditor';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AvailabilityEditor from "../components/AvailabilityEditor";
+import JaneButton from "../components/JaneButton";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    firstName: '',
-    lastName: '',
-    role: 'user_reconversion', // Default
-    birthDate: '',
-    gender: 'PREFER_NOT_SAY',
-    cityPreference: '',
-    profession: '',
+    email: "",
+    password: "",
+    confirmPassword: "",
+    firstName: "",
+    lastName: "",
+    role: "user_reconversion", // Default
+    birthDate: "",
+    gender: "PREFER_NOT_SAY",
+    cityPreference: "",
+    profession: "",
     experienceVerified: false,
-    bio: '',
-    yearsExperience: '',
+    bio: "",
+    yearsExperience: "",
   });
-  const [availability, setAvailability] = useState<Record<string, string[]>>({});
+  const [availability, setAvailability] = useState<Record<string, string[]>>(
+    {}
+  );
   const [showAvailabilityEditor, setShowAvailabilityEditor] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value, type } = e.target as HTMLInputElement;
     const checked = (e.target as HTMLInputElement).checked;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -42,9 +49,9 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
@@ -53,42 +60,61 @@ export default function Register() {
           role: formData.role,
           birthDate: formData.birthDate || undefined,
           gender: formData.gender,
-          cityPreference: formData.role === 'user_reconversion' ? formData.cityPreference : undefined,
-          profession: formData.role === 'user_pro' ? formData.profession : undefined,
-          experienceVerified: formData.role === 'user_pro' ? formData.experienceVerified : undefined,
-          availability: formData.role === 'user_pro' && Object.keys(availability).length > 0 ? availability : undefined,
-          bio: formData.role === 'user_pro' ? formData.bio : undefined,
-          yearsExperience: formData.role === 'user_pro' && formData.yearsExperience ? parseInt(formData.yearsExperience, 10) : undefined,
+          cityPreference:
+            formData.role === "user_reconversion"
+              ? formData.cityPreference
+              : undefined,
+          profession:
+            formData.role === "user_pro" ? formData.profession : undefined,
+          experienceVerified:
+            formData.role === "user_pro"
+              ? formData.experienceVerified
+              : undefined,
+          availability:
+            formData.role === "user_pro" && Object.keys(availability).length > 0
+              ? availability
+              : undefined,
+          bio: formData.role === "user_pro" ? formData.bio : undefined,
+          yearsExperience:
+            formData.role === "user_pro" && formData.yearsExperience
+              ? parseInt(formData.yearsExperience, 10)
+              : undefined,
         }),
       });
 
       const data = await res.json();
-      console.log('Registration response:', data);
 
       if (!res.ok) {
         // Handle validation errors (array) or single error message
         if (Array.isArray(data.error)) {
-          const errorMessages = data.error.map((e: any) => {
-            const field = e.path?.join('.') || 'champ';
-            return `${field}: ${e.message}`;
-          }).join(', ');
+          const errorMessages = data.error
+            .map((e: { path?: string[]; message: string }) => {
+              const field = e.path?.join(".") || "champ";
+              return `${field}: ${e.message}`;
+            })
+            .join(", ");
           throw new Error(`Erreur de validation: ${errorMessages}`);
         }
 
         // Check if it's a duplicate email error and enhance the message
-        const errorMsg = data.error || 'Échec de l\'inscription. Veuillez réessayer.';
-        if (errorMsg.toLowerCase().includes('existe déjà') ||
-            errorMsg.toLowerCase().includes('already') ||
-            errorMsg.toLowerCase().includes('déjà')) {
-          throw new Error(errorMsg + ' Si vous avez déjà un compte, veuillez vous connecter.');
+        const errorMsg =
+          data.error || "Échec de l'inscription. Veuillez réessayer.";
+        if (
+          errorMsg.toLowerCase().includes("existe déjà") ||
+          errorMsg.toLowerCase().includes("already") ||
+          errorMsg.toLowerCase().includes("déjà")
+        ) {
+          throw new Error(
+            errorMsg + " Si vous avez déjà un compte, veuillez vous connecter."
+          );
         }
 
         throw new Error(errorMsg);
       }
 
-      navigate('/login');
-    } catch (err: any) {
-      setError(err.message);
+      navigate("/login");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Une erreur est survenue");
     }
   };
 
@@ -97,15 +123,18 @@ export default function Register() {
       return "Non configurées (7j/7 7h-20h par défaut)";
     }
     const dayLabels: Record<string, string> = {
-      monday: 'Lun',
-      tuesday: 'Mar',
-      wednesday: 'Mer',
-      thursday: 'Jeu',
-      friday: 'Ven',
-      saturday: 'Sam',
-      sunday: 'Dim'
+      monday: "Lun",
+      tuesday: "Mar",
+      wednesday: "Mer",
+      thursday: "Jeu",
+      friday: "Ven",
+      saturday: "Sam",
+      sunday: "Dim",
     };
-    const days = Object.keys(availability).map(day => dayLabels[day]).filter(Boolean).join(', ');
+    const days = Object.keys(availability)
+      .map((day) => dayLabels[day])
+      .filter(Boolean)
+      .join(", ");
     return `Configurées: ${days}`;
   };
 
@@ -120,12 +149,15 @@ export default function Register() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {/* Role Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Je suis...</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Je suis...
+            </label>
             <select
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-hidden focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
               <option value="user_reconversion">En reconversion</option>
               <option value="user_pro">Professionnel</option>
             </select>
@@ -183,7 +215,9 @@ export default function Register() {
           {/* Birth Date & Gender */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Date de naissance</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Date de naissance
+              </label>
               <input
                 name="birthDate"
                 type="date"
@@ -194,7 +228,9 @@ export default function Register() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Genre</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Genre
+              </label>
               <select
                 name="gender"
                 value={formData.gender}
@@ -209,9 +245,11 @@ export default function Register() {
           </div>
 
           {/* User A Specific */}
-          {formData.role === 'user_reconversion' && (
+          {formData.role === "user_reconversion" && (
             <div>
-              <label className="block text-sm font-medium text-gray-700">Ville préférée</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Ville préférée
+              </label>
               <input
                 name="cityPreference"
                 type="text"
@@ -223,10 +261,12 @@ export default function Register() {
           )}
 
           {/* User B Specific */}
-          {formData.role === 'user_pro' && (
+          {formData.role === "user_pro" && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Profession</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Profession
+                </label>
                 <input
                   name="profession"
                   type="text"
@@ -239,13 +279,19 @@ export default function Register() {
 
               {/* Availability Section */}
               <div className="border border-purple-200 rounded-lg p-4 bg-purple-50">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Mes disponibilités</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Mes disponibilités
+                </label>
                 <p className="text-xs text-gray-600 mb-3">
-                  📅 Si vous ne configurez pas vos disponibilités, vous serez considéré comme disponible 7j/7 de 7h à 20h.
-                  Vous pourrez toujours proposer une autre date ou annuler un rendez-vous qui ne vous convient pas.
+                  📅 Si vous ne configurez pas vos disponibilités, vous serez
+                  considéré comme disponible 7j/7 de 7h à 20h. Vous pourrez
+                  toujours proposer une autre date ou annuler un rendez-vous qui
+                  ne vous convient pas.
                 </p>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">{getAvailabilitySummary()}</span>
+                  <span className="text-sm text-gray-600">
+                    {getAvailabilitySummary()}
+                  </span>
                   <button
                     type="button"
                     onClick={() => setShowAvailabilityEditor(true)}
@@ -257,7 +303,9 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Biographie</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Biographie
+                </label>
                 <textarea
                   name="bio"
                   rows={4}
@@ -269,7 +317,9 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Années d'expérience</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Années d'expérience
+                </label>
                 <input
                   name="yearsExperience"
                   type="number"
@@ -291,27 +341,29 @@ export default function Register() {
                   checked={formData.experienceVerified}
                   onChange={handleChange}
                 />
-                <label htmlFor="experienceVerified" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="experienceVerified"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Je certifie que j'exerce ce métier au moins depuis 3 ans
                 </label>
               </div>
             </div>
           )}
 
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
+          {error && (
+            <div className="text-red-500 text-sm text-center">{error}</div>
+          )}
 
           <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
+            <JaneButton type="submit" size="sm" className="w-full">
               S'inscrire
-            </button>
+            </JaneButton>
           </div>
-          <div className="text-sm text-center">
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <div className="pt-2 text-center">
+            <JaneButton to="/login" size="xl">
               Déjà un compte ? Se connecter
-            </Link>
+            </JaneButton>
           </div>
         </form>
 
