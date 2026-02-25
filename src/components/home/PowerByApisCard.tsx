@@ -6,7 +6,7 @@ const PowerByApisCard = () => {
 
     return (
         <div 
-            className="w-1/2 bg-[#37cd8e] shadow-[0px_2px_8px_rgba(99,99,99,0.2)] rounded-2xl pt-6 pb-4 px-6 flex flex-col justify-between"  
+            className="lg:w-1/2 w-full bg-[#37cd8e] shadow-[0px_2px_8px_rgba(99,99,99,0.2)] rounded-2xl pt-6 pb-4 px-6 flex flex-col  lg:gap-0 gap-8 justify-between"  
         >
             
             {/* --- Section Supérieure (Texte) --- */}

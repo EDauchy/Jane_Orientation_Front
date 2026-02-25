@@ -2,16 +2,33 @@ import { Info, Sparkles } from "lucide-react";
 import ImageSlider from "./ImageSlider";
 import FollowUsCard from "./FollowUsCard";
 import PowerByApisCard from "./PowerByApisCard";
+import { useEffect, useState } from "react";
+import { APP_CONFIG } from "../../constants/config";
 
 export default function Hero() {
-  return (
-    <section className="w-full px-11 py-5 flex flex-col-reverse lg:flex-row">
-      <div className="w-full lg:w-1/2 pt-10 lg:pt-[90px] pr-4">
-   
+  const [isLocked, setIsLocked] = useState(true);
+  useEffect(() => {
+    const checkStatus = () => {
+      const now = new Date().getTime();
+      const target = new Date(APP_CONFIG.TARGET_DATE).getTime();
 
-        <div className="headline text-[2.5vw]">
+      setIsLocked(now < target);
+    };
+
+    checkStatus();
+    const timer = setInterval(checkStatus, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="w-full px-11 py-5 flex flex-col-reverse overflow-x-hidden lg:flex-row">
+      <div className="w-full lg:w-1/2 pt-10 lg:pt-[90px] lg:pr-4 pr-0 ">
+
+
+        <div className="headline lg:text-[2.5vw] md:text-[4vw] text-[4vw]">
           <div>
-            <div className="relative top-1 inline-block h-[35px] w-[23px] border-4 rounded-full text-[#681bff] mr-2">
+            <div className="relative top-1 inline-block h-[35px] w-[23px]  border-4 border-primary rounded-full  text-primary mr-2 ">
               <svg
                 width="17"
                 height=""
@@ -27,7 +44,7 @@ export default function Hero() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <div className="absolute left-full top-1/2 w-5 border-t-4 border-[#681bff] border-dashed"></div>
+              <div className="absolute left-full top-1/2 w-5 border-t-4 border-primary border-dashed"></div>
             </div>
             <span className="word-wavy">DESSINEZ VOTRE</span>
             <span className="word-orange-outline"> PARCOURS </span>
@@ -58,14 +75,24 @@ export default function Hero() {
                 className="
               absolute left-full top-1/2 z-5 w-[320px] 
               h-[4px] 
-              bg-linear-to-r from-[#f8a128] to-[#681bff]
+              bg-linear-to-r from-[#f8a128] to-primary
               mask-[linear-gradient(to_right,black_60%,transparent_40%)]
               mask-size-[13px_100%]
               mask-repeat-x
             "
               ></div>{" "}
-              <div className="absolute -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-[#681bff] border-dashed"></div>
-              <div className="absolute -right-[320px] top-[calc(100%+80px)] z-5 h-0 w-[300px] border-t-4 border-[#681bff] border-dashed rotate-180"></div>
+              <div className="absolute -right-16 top-1 w-10 h-10 z-10 flex items-center justify-center">
+
+                <div className="absolute inset-[2px] bg-[#f8a128]/40 rounded-full"></div>
+
+                <div className="absolute inset-[9px] bg-[#f8a128]/60 rounded-full flex items-center justify-center">
+
+
+                  <div className="w-2 h-2 bg-[#f8a128] rounded-full shadow-[0_0_8px_rgba(248,161,40,0.9)]"></div>
+
+                </div>
+              </div>    <div className="absolute -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-primary border-dashed"></div>
+              <div className="absolute -right-[320px] top-[calc(100%+80px)] z-5 h-0 w-[300px] border-t-4 border-primary border-dashed rotate-180"></div>
             </span>
           </div>
         </div>
@@ -73,23 +100,23 @@ export default function Hero() {
         <div className="flex items-center h-[160px] w-[90%] ">
           <div className="relative shadow-md p-6 z-10 bg-white rounded-2xl border border-gray-100 ">
             <div className="flex items-start gap-1">
-              <Info className="w-5 h-5 text-[#681bff] shrink-0 mt-1" />
+              <Info className="w-5 h-5 text-primary shrink-0 mt-1" />
 
-              <p className="text-sm md:text-sm lg:text-base text-[#681bff] font-semibold leading-relaxed">
+              <p className="text-sm md:text-sm lg:text-base text-primary font-semibold leading-relaxed">
                 Grâce à
-                <span className="font-bold text-[#681bff]">
+                <span className="font-bold text-primary">
                   {" "}
                   l'intelligence artificielle
                 </span>
-                ,<span className="font-bold text-[#681bff]"> Jane </span>
+                ,<span className="font-bold text-primary"> Jane </span>
                 vous
-                <span className="font-bold text-[#681bff]"> guide </span>
+                <span className="font-bold text-primary"> guide </span>
                 pour
-                <span className="font-bold text-[#681bff]"> explorer</span>,
-                <span className="font-bold text-[#681bff]"> choisir </span> et
-                <span className="font-bold text-[#681bff]"> réussir </span>
+                <span className="font-bold text-primary"> explorer</span>,
+                <span className="font-bold text-primary"> choisir </span> et
+                <span className="font-bold text-primary"> réussir </span>
                 un parcours sur mesure
-                <span className="font-bold text-[#681bff]">
+                <span className="font-bold text-primary">
                   {" "}
                   qui vous ressemble.{" "}
                 </span>
@@ -117,7 +144,12 @@ export default function Hero() {
 
         <div className="flex justify-center lg:justify-start">
           <button
-            className="flex items-center gap-2 text-white text-base md:text-sm px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
+            className={`flex items-center gap-2 text-white text-base md:text-sm px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
+                    ${isLocked
+                ? 'opacity-50 cursor-not-allowed grayscale'
+                : 'opacity-100 cursor-pointer hover:scale-105 active:scale-95 shadow-lg'
+              }
+      `}
             style={{
               background:
                 "linear-gradient(90deg, #C74CFC, #7167FF, #A176FB, #FF75FA, #DC3EF4)",
@@ -128,7 +160,7 @@ export default function Hero() {
           </button>
         </div>
 
-        <div className="flex gap-5 mt-12">
+        <div className="flex lg:flex-row flex-col gap-5 mt-12">
           <FollowUsCard />
           <PowerByApisCard />
         </div>
@@ -150,7 +182,7 @@ export default function Hero() {
               />
               <div>
                 <div className="absolute flex gap-2 bottom-4 left-4 text-black text-[11px] font-bold">
-                  <span className="bg-white px-4 py-1 rounded-full text-[#681bff]">
+                  <span className="bg-white px-4 py-1 rounded-full text-primary">
                     MARC
                   </span>
                   <span className=" px-4 py-1 rounded-full bg-[#FF5EAE] text-white">
@@ -168,7 +200,7 @@ export default function Hero() {
               />
               <div>
                 <div className="absolute flex gap-2 bottom-4 left-4 text-black text-[11px] font-bold">
-                  <span className="bg-white px-4 py-1 rounded-full text-[#681bff]">
+                  <span className="bg-white px-4 py-1 rounded-full text-primary">
                     Léa
                   </span>
                   <span className=" px-4 py-1 rounded-full bg-[#FF5EAE] text-white">
@@ -179,13 +211,12 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative flex-1 h-10">
+          <div className="relative flex-1 h-10 ">
             <img
               src="./hero-arrow.png"
               className="absolute -top-10 bottom-0 h-[calc(100%+40px)] -right-10 rotate-170"
               alt=""
             />
-            
           </div>
 
           <div className="">
@@ -215,6 +246,8 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+
     </section>
   );
 }

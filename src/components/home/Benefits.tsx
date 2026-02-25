@@ -9,7 +9,7 @@ return (
         <div className="flex gap-5 flex-1">
           {/* CARD GAUCHE */}
           <div className="relative z-10 w-full lg:w-1/2 flex items-end overflow-hidden">
-            <div className="bg-[#FFF93F33] text-[#681BEF] backdrop-blur-md rounded-3xl px-6 py-12 flex flex-col justify-between">
+            <div className="bg-[#FFF93F33] text-primary backdrop-blur-md rounded-3xl px-6 py-12 flex flex-col justify-between">
               <h3 className="md:text-2xl sm:text-xl font-light mb-3">
                 PERSONNALISATION AVANCÉE
               </h3>

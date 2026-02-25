@@ -42,7 +42,7 @@ const ArticleCard: React.FC<ArticleProps> = ({
             <div className="absolute right-0 top-0 w-[129px] h-[25px] bg-[radial-gradient(circle_at_bottom_left,transparent_25px,#ffffff_25px)]"></div>
             <div className="absolute right-0 top-0 h-[129px] w-[25px] bg-[radial-gradient(circle_at_bottom_left,transparent_25px,#ffffff_25px)]"></div>
 
-            <div className="absolute top-0 right-0 w-22 h-22 p-3 rounded-[25px] bg-[#681BEF] backdrop-blur-xs shadow-lg">
+            <div className="absolute top-0 right-0 w-22 h-22 p-3 rounded-[25px] bg-primary backdrop-blur-xs shadow-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-full h-full rotate-45"
@@ -68,7 +68,7 @@ const ArticleCard: React.FC<ArticleProps> = ({
               {tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 text-xs font-semibold rounded-full bg-white text-purple-700 uppercase"
+                  className="px-2 py-1 text-xs font-semibold rounded-full bg-white text-primary uppercase"
                 >
                   {tag}
                 </span>

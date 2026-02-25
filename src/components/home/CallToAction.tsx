@@ -26,7 +26,7 @@ const CallToAction = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         <StyledTitle text="Prêt à découvrir votre avenir ?" />
 
-        <p className="text-[#681bff] font-medium text-lg my-10 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-primary font-medium text-lg my-10 leading-relaxed max-w-2xl mx-auto">
           Faites le premier pas dès aujourd'hui.
           <br className="hidden md:block" />
           Lancez votre test d'orientation et laissez Jane vous guider vers votre

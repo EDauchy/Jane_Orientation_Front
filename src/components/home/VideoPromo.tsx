@@ -1,35 +1,46 @@
 import React from "react";
+import CountdownGuard from "./CountdownGuard";
+import { APP_CONFIG } from "../../constants/config";
 
 const VideoPromo = () => {
   return (
     <div className="flex flex-col-reverse lg:flex-row items-center justify-center p-10 bg-white gap-10">
-      <div className="relative w-full lg:w-1/2 aspect-video overflow-hidden rounded-xl shadow-2xl">
-        <div
-          className="w-full h-full bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://placehold.co/800x450/302046/ffffff/png?text=Vignette+Vidéo')",
-            backgroundColor: "#302046",
-          }}
-        >
-          <div className="absolute inset-0 bg-purple-900 opacity-20"></div>
 
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              className="w-16 h-16 md:w-20 md:h-20 bg-white bg-opacity-80 rounded-full flex items-center justify-center shadow-xl"
-              aria-label="Lire la vidéo"
-            >
-              <svg
-                className="w-8 h-8 md:w-10 md:h-10 text-purple-600 ml-1"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </button>
-          </div>
+      <CountdownGuard targetDate={APP_CONFIG.TARGET_DATE}
+        containerClass="w-full lg:w-1/2 aspect-video">
+        <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-[#302046]">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/ID_DE_LA_VIDEO?rel=0&showinfo=0"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
         </div>
-      </div>
+      </CountdownGuard>
+
+
+      {/* <div className="relative w-full lg:w-1/2 aspect-video overflow-hidden rounded-xl shadow-2xl bg-[#302046]">
+  <iframe
+    className="w-full h-full"
+    src="https://www.youtube.com/embed/ID_DE_LA_VIDEO?rel=0&showinfo=0"
+    title="YouTube video player"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowFullScreen
+  ></iframe>
+</div> */}
+      {/* <div className="relative w-full lg:w-1/2 aspect-video overflow-hidden rounded-xl shadow-2xl bg-[#302046]">
+  <video 
+    controls 
+    className="w-full h-full object-cover"
+    poster="https://placehold.co/800x450/302046/ffffff/png?text=Chargement..."
+  >
+    <source src="URL_DE_TON_FICHIER.mp4" type="video/mp4" />
+    Votre navigateur ne supporte pas la lecture de vidéos.
+  </video>
+</div> */}
 
       <div
         className="
@@ -41,7 +52,7 @@ const VideoPromo = () => {
         {/* SI UNE */}
         <div className="flex items-center justify-center rounded-full 
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            bg-[#681BEF] px-4 sm:px-5 md:px-6">
+            bg-primary px-4 sm:px-5 md:px-6">
           <span>SI UNE</span>
         </div>
 
@@ -49,7 +60,7 @@ const VideoPromo = () => {
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
             w-8 sm:w-9 md:w-10 lg:w-10 xl:w-12 2xl:w-14
-            border-[3px] border-[#681BEF]">
+            border-[3px] border-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 sm:h-5 md:h-5 lg:h-5 xl:h-6 2xl:h-7"
@@ -67,7 +78,7 @@ const VideoPromo = () => {
         {/* IMAGE VAUT */}
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            bg-[#681BEF] px-4 sm:px-5 md:px-6">
+            bg-primary px-4 sm:px-5 md:px-6">
           <span>IMAGE VAUT</span>
         </div>
 
@@ -81,14 +92,14 @@ const VideoPromo = () => {
         {/* MILLE MOTS */}
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            border-[3px] border-[#681BEF] text-[#FF5EAE] px-4 sm:px-5 md:px-6">
+            border-[3px] border-primary text-[#FF5EAE] px-4 sm:px-5 md:px-6">
           <span>MILLE MOTS</span>
         </div>
 
         {/* FLECHE LONGUE */}
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            px-4 sm:px-5 md:px-6 bg-[#681BEF]">
+            px-4 sm:px-5 md:px-6 bg-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 sm:h-5 md:h-5 lg:h-5 xl:h-6 2xl:h-7 w-full"
@@ -133,7 +144,7 @@ const VideoPromo = () => {
         {/* EN DIT */}
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            bg-[#681BEF] px-4 sm:px-5 md:px-6">
+            bg-primary px-4 sm:px-5 md:px-6">
           <span>EN DIT</span>
         </div>
 
@@ -166,7 +177,7 @@ const VideoPromo = () => {
         {/* CENT FOIS */}
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
-            border-[3px] border-[#F8A128] text-[#681BEF] px-4 sm:px-5 md:px-6">
+            border-[3px] border-[#F8A128] text-primary px-4 sm:px-5 md:px-6">
           <span>CENT FOIS</span>
         </div>
 
@@ -200,14 +211,14 @@ const VideoPromo = () => {
         <div className="flex items-center justify-center rounded-full
             h-8 sm:h-9 md:h-10 lg:h-10 xl:h-12 2xl:h-14
             w-24 sm:w-28 md:w-32 lg:w-36 xl:w-40 2xl:w-48
-            bg-[#681BEF]">
+            bg-primary">
         </div>
 
         {/* CERCLE */}
         <div className="flex items-center justify-center rounded-full
             w-7 sm:w-8 md:w-9 lg:w-10 xl:w-12 2xl:w-14
             h-7 sm:h-8 md:h-9 lg:h-10 xl:h-12 2xl:h-14
-            border-[3px] border-[#681BEF]">
+            border-[3px] border-primary">
         </div>
       </div>
     </div>
