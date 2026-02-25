@@ -1,6 +1,5 @@
 'use client'
 
-import ContactForm from "../components/home/ContactForm";
 import Header from "../components/home/Header";
 import Footer from "../components/home/Footer";
 import FAQ from "../components/home/FAQ";

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TestimonialCard from "./TestimonialCard";
-import type { Testimonial } from "./TestimonialCard";
+import type {Testimonial} from "../../shard/types.ts";
 
 const Testimonials: React.FC = () => {
   const testimonials: Testimonial[] = [

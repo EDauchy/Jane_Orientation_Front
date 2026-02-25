@@ -1,6 +1,4 @@
-import React from 'react';
-
-// Les chemins d'accès aux images sont des exemples. 
+// Les chemins d'accès aux images sont des exemples.
 // Remplacez-les par les chemins réels dans votre projet.
 const PowerByApisCard = () => {
 

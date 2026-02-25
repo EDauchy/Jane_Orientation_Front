@@ -1,6 +1,3 @@
-import React from "react";
-import StyledTitle from "./StyledTitle";
-
 export default function BenefitsSection() {
 return (
     <section className="w-full py-8">

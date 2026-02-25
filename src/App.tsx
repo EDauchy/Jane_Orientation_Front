@@ -7,7 +7,6 @@ import OrientationTest from './pages/OrientationTest';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import DashboardHome from './pages/dashboard/DashboardHome';
-import DashboardSettings from './pages/dashboard/DashboardAccountSettings';
 import Contact from './pages/Contact';
 import FAQPage from './pages/FAQPage';
 import MyDashboard from './pages/dashboard/Dashboard';
