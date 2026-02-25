@@ -372,6 +372,7 @@ export default function Map() {
         <MapContainer
             center={[48.8566, 2.3522]}
             zoom={6}
+            zoomControl={false}   // 👈 désactive les boutons + / -
             style={{ height: "100vh", width: "100%" }}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
