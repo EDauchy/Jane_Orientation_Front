@@ -42,7 +42,7 @@ const schoolIcon = L.divIcon({
 });
 
 /* =======================
-   Logic Map (INCHANGÉE)
+   Logic Map
 ======================= */
 function MapLogic() {
     const map = useMap();
@@ -124,14 +124,45 @@ function MapLogic() {
             return;
         }
 
+        setLoadingGeo(true); // Indiquer le chargement
+
         navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                map.flyTo(
-                    [pos.coords.latitude, pos.coords.longitude],
-                    14
-                );
+            async (pos) => {
+                const { latitude, longitude } = pos.coords;
+
+                // 1. Centrer la carte
+                map.flyTo([latitude, longitude], 13);
+
+                try {
+                    // 2. Reverse Geocoding pour trouver la ville
+                    const res = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                    );
+                    const data = await res.json();
+
+                    // Nominatim retourne l'adresse dans plusieurs champs possibles
+                    const city =
+                        data.address.city ||
+                        data.address.town ||
+                        data.address.village ||
+                        data.address.municipality;
+
+                    if (city) {
+                        setSearchCity(city); // Remplir le champ
+                        fetchSchools(city); // Lancer la recherche
+                    } else {
+                        setErrorMsg("Ville non trouvée pour cette position");
+                    }
+                } catch (err) {
+                    setErrorMsg("Erreur lors de la récupération de la ville");
+                } finally {
+                    setLoadingGeo(false);
+                }
             },
-            () => setErrorMsg("Impossible de récupérer votre position")
+            () => {
+                setErrorMsg("Impossible de récupérer votre position");
+                setLoadingGeo(false);
+            }
         );
     };
 
@@ -170,9 +201,23 @@ function MapLogic() {
                         Formation en alternance ▼
                     </div>
 
-                    {/* Recherche ville (fonctionnelle) */}
+                    {/* Recherche ville avec bouton géolocalisation */}
                     <div className="bg-violet-600 text-white px-4 py-2 rounded-full shadow text-sm flex items-center gap-2">
-                        📍
+                        <button
+                            onClick={locateUser}
+                            className="w-6 h-6 flex items-center justify-center hover:bg-violet-700 rounded-full transition-colors"
+                            title="Géolocaliser"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                        </button>
+
                         <input
                             type="text"
                             value={searchCity}
@@ -183,9 +228,7 @@ function MapLogic() {
                             placeholder="Ville"
                             className="bg-transparent outline-none placeholder-white w-28"
                         />
-                        {loadingGeo && (
-                            <span className="animate-spin">⏳</span>
-                        )}
+                        {loadingGeo && <span className="animate-spin">⏳</span>}
                     </div>
                 </div>
 
