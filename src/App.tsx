@@ -33,6 +33,9 @@ function AppRoutes() {
           <Dashboard />
         </ProtectedRoute>
       } />
+        <Route path="/map" element={
+            <Map />
+        }/>
       <Route path="/" element={<Navigate to="/dashboard" />} />
     </Routes>
   );

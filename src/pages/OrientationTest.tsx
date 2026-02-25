@@ -17,7 +17,7 @@ const QUESTIONS = [
 ];
 
 export default function OrientationTest() {
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
   const navigate = useNavigate();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
