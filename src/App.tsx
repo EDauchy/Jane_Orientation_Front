@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import OrientationTest from './pages/OrientationTest';
 import Dashboard from './pages/Dashboard';
+import Map from "./components/Map.tsx";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -31,6 +32,9 @@ function AppRoutes() {
           <Dashboard />
         </ProtectedRoute>
       } />
+        <Route path="/map" element={
+            <Map />
+        }/>
       <Route path="/" element={<Navigate to="/dashboard" />} />
     </Routes>
   );

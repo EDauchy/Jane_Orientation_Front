@@ -66,7 +66,7 @@ export default function AppointmentList() {
     fetchAppointments();
   }, []);
 
-  const updateStatus = async (id: string, status: string, date?: string) => {
+  const updateStatus = async (id: string, status?: string, date?: string) => {
     try {
       console.log(`updateStatus called - ID: ${id}, Status: ${status}, Date: ${date}`);
 

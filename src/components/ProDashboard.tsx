@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { User, Star, Calendar, Award, MessageSquare, Check, X, List, Clock, Edit2 } from 'lucide-react';
+import { User, Star, Calendar, Award, List, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import WeeklyCalendar from './WeeklyCalendar';
 import AvailabilityEditor from './AvailabilityEditor';
@@ -155,10 +155,10 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
   };
 
   const handleAvailabilitySave = (newAvailability: any) => {
-    setCurrentProfile(prev => ({
+    setCurrentProfile((prev: any) => ({
       ...prev,
       details: {
-        ...prev.details,
+        ...prev?.details,
         availability: newAvailability
       }
     }));
