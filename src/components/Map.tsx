@@ -47,6 +47,11 @@ const schoolIcon = L.divIcon({
 function MapLogic() {
     const map = useMap();
 
+    // Force disable doubleClickZoom
+    useEffect(() => {
+        map.doubleClickZoom.disable();
+    }, [map]);
+
     const [searchCity, setSearchCity] = useState("");
     const [schools, setSchools] = useState<Formation[]>([]);
     const [loadingGeo, setLoadingGeo] = useState(false);
@@ -372,7 +377,8 @@ export default function Map() {
         <MapContainer
             center={[48.8566, 2.3522]}
             zoom={6}
-            zoomControl={false}   // 👈 désactive les boutons + / -
+            zoomControl={false}
+            doubleClickZoom={false} // Empêche le zoom au double-clic
             style={{ height: "100vh", width: "100%" }}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
