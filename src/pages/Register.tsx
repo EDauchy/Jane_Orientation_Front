@@ -23,8 +23,8 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     const checked = (e.target as HTMLInputElement).checked;
     setFormData(prev => ({
       ...prev,

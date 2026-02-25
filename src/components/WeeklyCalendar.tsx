@@ -20,7 +20,7 @@ interface WeeklyCalendarProps {
   userId: string;
 }
 
-export default function WeeklyCalendar({ appointments, userId }: WeeklyCalendarProps) {
+export default function WeeklyCalendar({ appointments, userId: _userId }: WeeklyCalendarProps) {
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
     const day = today.getDay();

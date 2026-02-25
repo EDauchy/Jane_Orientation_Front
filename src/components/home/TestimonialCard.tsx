@@ -1,19 +1,7 @@
 import React from "react";
+import type { TestimonialCardProps } from "../../shard/types";
 
 // Définition de l'interface pour un témoignage
-export interface Testimonial {
-  name: string;
-  role: string;
-  avatar: string;
-  rating: number;
-  text: string;
-  title: string;
-  color: string;
-}
-
-interface TestimonialCardProps {
-  testimonial: Testimonial;
-}
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (

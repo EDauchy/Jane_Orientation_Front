@@ -1,12 +1,6 @@
 import React from "react";
+import type { ArticleProps } from "../../shard/types";
 
-export interface ArticleProps {
-  imageUrl: string;
-  title: string;
-  date: string;
-  tags?: string[]; 
-  gradientColorClass?: string;
-}
 
 const ArticleCard: React.FC<ArticleProps> = ({
   imageUrl,

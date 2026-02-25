@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import ArticleCard from "./ArticleCard";
-import type { ArticleProps } from "./ArticleCard";
+import type { ArticleProps } from "../../shard/types";
 
 const isSmallScreen = (): boolean => {
   return typeof window !== "undefined" && window.innerWidth < 640;

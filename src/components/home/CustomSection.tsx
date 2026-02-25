@@ -1,11 +1,7 @@
 import React from "react";
 import StyledTitle from "./StyledTitle";
+import type { CustomSectionProps } from "../../shard/types";
 
-
-interface CustomSectionProps {
-  title: string;
-  children: React.ReactNode;
-}
 
 const CustomSection: React.FC<CustomSectionProps> = ({ title, children }) => {
   return (

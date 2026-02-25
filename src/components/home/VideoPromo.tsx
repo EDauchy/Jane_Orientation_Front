@@ -21,27 +21,7 @@ const VideoPromo = () => {
       </CountdownGuard>
 
 
-      {/* <div className="relative w-full lg:w-1/2 aspect-video overflow-hidden rounded-xl shadow-2xl bg-[#302046]">
-  <iframe
-    className="w-full h-full"
-    src="https://www.youtube.com/embed/ID_DE_LA_VIDEO?rel=0&showinfo=0"
-    title="YouTube video player"
-    frameBorder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowFullScreen
-  ></iframe>
-</div> */}
-      {/* <div className="relative w-full lg:w-1/2 aspect-video overflow-hidden rounded-xl shadow-2xl bg-[#302046]">
-  <video 
-    controls 
-    className="w-full h-full object-cover"
-    poster="https://placehold.co/800x450/302046/ffffff/png?text=Chargement..."
-  >
-    <source src="URL_DE_TON_FICHIER.mp4" type="video/mp4" />
-    Votre navigateur ne supporte pas la lecture de vidéos.
-  </video>
-</div> */}
-
+    
       <div
         className="
           flex w-full lg:w-1/2 flex-wrap gap-y-6 gap-x-4
