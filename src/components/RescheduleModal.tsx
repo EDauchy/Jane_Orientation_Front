@@ -110,13 +110,8 @@ export default function RescheduleModal({ isOpen, onClose, onSubmit, currentDate
     return hours;
   };
 
-  // Determine minimum selectable date for User B when no slots today
-  const todayStr = new Date().toISOString().split('T')[0];
-  const tomorrowStr = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  // Available hours for the selected date
   const availableHours = getAvailableHours();
-  const minDate = (!isUserA && date && new Date(date).toDateString() === new Date().toDateString() && availableHours.length === 0)
-    ? tomorrowStr
-    : todayStr;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
