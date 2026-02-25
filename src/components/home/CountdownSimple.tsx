@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import type { CountdownSimpleProps, TimeLeft } from '../../shard/types';
 
-interface TimeLeft {
-  j?: number;
-  h?: number;
-  m?: number;
-  s?: number;
-}
-
-interface CountdownSimpleProps {
-  targetDate: string;
-  color?: string;          // ex: "white", "amber-500"
-  fontSize?: string;       // ex: "text-4xl", "text-lg"
-  containerClass?: string; // ex: "bg-black p-4 rounded-xl"
-}
 
 const CountdownSimple = ({ 
   targetDate, 

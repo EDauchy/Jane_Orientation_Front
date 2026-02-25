@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import type { UserDropdownProps } from '../../shard/types';
 
-interface UserDropdownProps {
-    isOpen: boolean;
-    setIsOpen: (open: boolean) => void;
-}
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, setIsOpen }) => {
     const { user, signOut

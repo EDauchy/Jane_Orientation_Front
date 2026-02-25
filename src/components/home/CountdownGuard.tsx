@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import type { CountdownGuardProps, TimeLeft } from '../../shard/types';
 
-interface TimeLeft {
-  j?: number;
-  h?: number;
-  m?: number;
-  s?: number;
-}
-
-interface CountdownGuardProps {
-  targetDate: string;
-  children: React.ReactNode;
-  containerClass?: string;
-  color?: string; 
-}
 
 const CountdownGuard = ({ 
   targetDate, 
