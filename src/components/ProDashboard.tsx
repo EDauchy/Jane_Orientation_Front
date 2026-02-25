@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { User, Star, Calendar, Award, List, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import AvailabilityEditor from './AvailabilityEditor';
+import AvailabilityEditor from '../appointments/components/AvailabilityEditor';
 import AppointmentsContainer from '../appointments/components/index';
 
 interface ProDashboardProps {
@@ -208,8 +208,8 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
                     <Star
                       key={i}
                       className={`w-5 h-5 ${i < Math.round(stats.averageRating)
-                          ? 'fill-yellow-300 text-yellow-300'
-                          : 'text-white/30'
+                        ? 'fill-yellow-300 text-yellow-300'
+                        : 'text-white/30'
                         }`}
                     />
                   ))}
@@ -237,8 +237,8 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
           <button
             onClick={() => setView('list')}
             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${view === 'list'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
               }`}
           >
             <div className="flex items-center gap-2">
@@ -249,8 +249,8 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
           <button
             onClick={() => setView('calendar')}
             className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${view === 'calendar'
-                ? 'bg-white text-purple-600 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-white text-purple-600 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
               }`}
           >
             <div className="flex items-center gap-2">

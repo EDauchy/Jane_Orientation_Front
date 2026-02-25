@@ -5,7 +5,7 @@ import { updateAppointmentStatus } from '../services/updateAppointmentStatus';
 import AppointmentList from './AppointmentList';
 import AppointmentsCalendar from './AppointmentCalendar';
 import ReviewModal from '../../components/ReviewModal';
-import RescheduleModal from '../../components/RescheduleModal';
+import RescheduleModal from './RescheduleModal';
 import ConfirmDeleteModal from '../../components/ConfirmDeleteModal';
 import Toast from '../../components/Toast';
 import { useAuth } from '../../context/AuthContext';

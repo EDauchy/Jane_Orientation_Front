@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import AvailabilityEditor from '../components/AvailabilityEditor';
+import AvailabilityEditor from '../appointments/components/AvailabilityEditor';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -78,8 +78,8 @@ export default function Register() {
         // Check if it's a duplicate email error and enhance the message
         const errorMsg = data.error || 'Échec de l\'inscription. Veuillez réessayer.';
         if (errorMsg.toLowerCase().includes('existe déjà') ||
-            errorMsg.toLowerCase().includes('already') ||
-            errorMsg.toLowerCase().includes('déjà')) {
+          errorMsg.toLowerCase().includes('already') ||
+          errorMsg.toLowerCase().includes('déjà')) {
           throw new Error(errorMsg + ' Si vous avez déjà un compte, veuillez vous connecter.');
         }
 

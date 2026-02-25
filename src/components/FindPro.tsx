@@ -3,7 +3,7 @@ import { User } from 'lucide-react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { supabase } from '../lib/supabase';
-import AvailableDatePicker from './AvailableDatePicker';
+import AvailableDatePicker from '../appointments/components/AvailableDatePicker';
 import Toast from './Toast';
 import SelectInput from './SelectInput';
 

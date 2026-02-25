@@ -48,7 +48,7 @@
 }
 
 .input-base {
-  @apply px-3 py-2 text-sm bg-white outline-2 outline-slate-200 focus:outline-primary rounded-lg hover:bg-gray-50 transition-colors text-left flex items-center justify-between;
+  @apply px-3 py-2 text-sm bg-white outline-2 outline-slate-200 focus:outline-primary rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-left flex items-center justify-between;
 }
 
 .button-secondary {

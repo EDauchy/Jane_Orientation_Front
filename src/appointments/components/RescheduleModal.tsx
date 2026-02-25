@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { X, Clock, CalendarClock } from 'lucide-react';
+import { X, CalendarClock } from 'lucide-react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import AvailableDatePicker from './AvailableDatePicker';
-import SelectInput from './SelectInput';
+import SelectInput from '../../components/SelectInput';
 
 interface RescheduleModalProps {
   isOpen: boolean;
@@ -103,10 +103,7 @@ export default function RescheduleModal({
   };
 
   const todayStr = new Date().toISOString().split('T')[0];
-  const tomorrowStr = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
   const availableHours = getAvailableHours();
-  const minDate = (!isUserA && date && new Date(date).toDateString() === new Date().toDateString() && availableHours.length === 0)
-    ? tomorrowStr : todayStr;
 
   // ─── Submit ───────────────────────────────────────────────────────────────
 
