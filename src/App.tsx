@@ -13,7 +13,7 @@ import MyDashboard from './pages/dashboard/Dashboard';
 import DashboardSecuritySettings from './pages/dashboard/DashboardSecuritySettings';
 import DashboardAccountSettings from './pages/dashboard/DashboardAccountSettings';
 import DashboardMaps from './pages/dashboard/DashboardMaps';
-
+import About from './pages/About';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -30,13 +30,14 @@ function AppRoutes() {
 
   return (
     <>
-      {/* Routes de base : 
-          Si background existe, on force ces routes à afficher la page précédente 
+      {/* Routes de base :
+          Si background existe, on force ces routes à afficher la page précédente
       */}
       <Routes location={background || location}>
         <Route path="/" element={<Home />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/faq' element={<FAQPage />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/test" element={
@@ -45,7 +46,6 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
 
-
         <Route path="/dashboard/*" element={
           <ProtectedRoute>
             <Dashboard />
@@ -53,8 +53,8 @@ function AppRoutes() {
         } />
       </Routes>
 
-      {/* Route Modale : 
-          Elle ne s'affiche qu'en superposition si background est défini 
+      {/* Route Modale :
+          Elle ne s'affiche qu'en superposition si background est défini
       */}
       {background && (
         <Routes>
@@ -70,7 +70,6 @@ function AppRoutes() {
             <Route path="security" element={<DashboardSecuritySettings />} />
             <Route path="maps" element={<DashboardMaps />} />
             <Route path="account" element={<DashboardAccountSettings />} />
-
           </Route>
         </Routes>
       )}
