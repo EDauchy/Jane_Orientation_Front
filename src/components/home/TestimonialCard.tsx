@@ -1,5 +1,6 @@
 import React from "react";
 
+<<<<<<< Updated upstream
 // Définition de l'interface pour un témoignage
 export interface Testimonial {
   name: string;
@@ -14,6 +15,9 @@ export interface Testimonial {
 interface TestimonialCardProps {
   testimonial: Testimonial;
 }
+=======
+// Définition de l'interface pour un témoignagenpm
+>>>>>>> Stashed changes
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (

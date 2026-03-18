@@ -53,11 +53,15 @@ export default function Sidebar() {
 
   const userRole = user?.role;
 
+<<<<<<< Updated upstream
 const visibleLinks = navLinks.filter((link) => {
   if (!link.allowedRoles) return true;
   
   return link.allowedRoles.includes(userRole ?? "");
 });
+=======
+  
+>>>>>>> Stashed changes
   return (
 
     <>
