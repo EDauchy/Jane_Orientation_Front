@@ -15,6 +15,9 @@ import DashboardAccountSettings from './pages/dashboard/DashboardAccountSettings
 import DashboardMaps from './pages/dashboard/DashboardMaps';
 import About from './pages/About';
 
+import Blog from './pages/Blog';
+import BlogArticle from './pages/BlogArticle';
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   if (loading) return <div>Loading...</div>;
@@ -38,6 +41,8 @@ function AppRoutes() {
         <Route path='/contact' element={<Contact />} />
         <Route path='/faq' element={<FAQPage />} />
         <Route path="/about" element={<About />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogArticle />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/test" element={
