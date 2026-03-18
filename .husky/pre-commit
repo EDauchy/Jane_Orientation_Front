@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running checks..."
+
+npm run type-check || exit 1
+npm run lint || exit 1
+npx prettier --check . || exit 1
+npm run build || exit 1
