@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import type { UserDropdownProps } from '../../shard/types';
 
-interface UserDropdownProps {
-    isOpen: boolean;
-    setIsOpen: (open: boolean) => void;
-}
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, setIsOpen }) => {
     const { user, signOut
@@ -27,7 +24,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, setIsOpen }) => {
                     </button>
 
                     <Link
-                        to="/mydashboard"
+                        to="/dashboard"
                         onClick={() => setIsOpen(false)}
                         className="w-full block text-left px-4 py-3 hover:bg-gray-100 text-gray-700 transition-colors border-t border-gray-50 font-medium"
                         state={{ backgroundLocation: location }}

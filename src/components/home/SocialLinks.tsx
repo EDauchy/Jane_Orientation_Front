@@ -2,19 +2,8 @@ import React from "react";
 import { FaSquareXTwitter, FaLinkedin } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
 import { AiFillTikTok } from "react-icons/ai";
-import type { IconType } from "react-icons";
+import type { SocialIcon, SocialLinksProps } from "../../shard/types";
 
-// Définition de la structure d'un objet icône sociale
-interface SocialIcon {
-  key: string;
-  url: string;
-  Icon: IconType;
-}
-
-// Définition des props du composant
-interface SocialLinksProps {
-  color?: string;
-}
 
 const socialIcons: SocialIcon[] = [
   { key: "x", url: "https://twitter.com", Icon: FaSquareXTwitter },

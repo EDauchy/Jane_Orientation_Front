@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function LearnMoreButton() {
   const slowDuration = 35; // durée en secondes pour un tour complet
@@ -9,7 +9,7 @@ export default function LearnMoreButton() {
   const requestRef = useRef<number | null>(null);
 
   // Animation manuelle pour rotation fluide
-  const animate = (time: number) => {
+  const animate = () => {
     // On approxime 60fps pour le calcul
     rotateRef.current += (1 / rotationSpeed) * 360 / 60;
 

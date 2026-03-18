@@ -1,6 +1,3 @@
-import React from "react";
-import StyledTitle from "./StyledTitle";
-
 export default function BenefitsSection() {
 return (
     <section className="w-full py-8">
@@ -22,7 +19,7 @@ return (
             <img
               src="./benefits-ampoule.png"
               className="absolute w-20 -bottom-5 right-5 opacity-[0.15] z-10"
-              alt=""
+              alt="bulb"
             />
           </div>
 
@@ -39,7 +36,7 @@ return (
           <div className="absolute w-[400px] h-[500px] -left-[200px] top-0 overflow-hidden">
           <img
             src="/Benefits-infini-icon.png"
-            alt=""
+            alt="infini icon"
             className="absolute top-1 h-[300px] left-10 object-cover rounded-3xl rotate-100"
           />
         </div>
@@ -47,7 +44,7 @@ return (
               <div className="h-full overflow-hidden rounded-3xl">
                 <img
                   src="Benefits-girl.png"
-                  alt=""
+                  alt="Benefits girl"
                   className="absolute inset-0 w-full h-[120%] -top-[15%] object-cover overflow-visible z-10"
                 />
               </div>
@@ -80,7 +77,7 @@ return (
               <img
                 src="./benefits-cercle.png"
                 className="absolute w-[240px] top-28 -right-[120px] opacity-[0.2] z-20"
-                alt=""
+                alt="cercle"
               />
             </div>
           </div>
@@ -90,7 +87,7 @@ return (
             <img
               src="./benefits-cercle.png"
               className="absolute w-[200px] top-10 -right-[100px] opacity-[0.2]"
-              alt=""
+              alt="cercle"
             />
 
             <div>
@@ -106,7 +103,7 @@ return (
             <img
               src="./jane-orientation-logo-white.png"
               className="w-10 mt-4"
-              alt=""
+              alt="logo jane orientation"
             />
           </div>
         </div>

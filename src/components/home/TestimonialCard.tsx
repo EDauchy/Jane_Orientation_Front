@@ -1,23 +1,7 @@
 import React from "react";
+import type { TestimonialCardProps } from "../../shard/types";
 
-<<<<<<< Updated upstream
-// Définition de l'interface pour un témoignage
-export interface Testimonial {
-  name: string;
-  role: string;
-  avatar: string;
-  rating: number;
-  text: string;
-  title: string;
-  color: string;
-}
 
-interface TestimonialCardProps {
-  testimonial: Testimonial;
-}
-=======
-// Définition de l'interface pour un témoignagenpm
->>>>>>> Stashed changes
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (

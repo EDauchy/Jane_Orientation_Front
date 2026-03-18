@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavDashboard from './NavDashboard';
+
 import { useAuth } from '../../context/AuthContext';
+
 
 interface NavItem {
   to: string;
@@ -53,15 +55,13 @@ export default function Sidebar() {
 
   const userRole = user?.role;
 
-<<<<<<< Updated upstream
 const visibleLinks = navLinks.filter((link) => {
   if (!link.allowedRoles) return true;
   
   return link.allowedRoles.includes(userRole ?? "");
 });
-=======
-  
->>>>>>> Stashed changes
+
+
   return (
 
     <>
