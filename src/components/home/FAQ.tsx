@@ -47,20 +47,19 @@ export default function FAQ({ isVisible }: FAQProps) {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-return (
+  return (
     <section id="faq" className="animate-section py-24 px-6 ">
       <div className="container mx-auto max-w-4xl">
-     
+
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`rounded-2xl overflow-hidden transition-all duration-300 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
-              }`}
+              className={`rounded-2xl overflow-hidden transition-all duration-300 ${isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+                }`}
               style={{ transitionDelay: `${index * 50}ms` }}
             >
               <div className="relative ">
@@ -71,12 +70,11 @@ return (
                     bg-[radial-gradient(circle_at_top_right,transparent_25px,#681bef_25px)]"
                 ></div>
 
-                <div className="absolute top-0  right-0 rounded-full p-[5px] bg-primary">
+                <div className="absolute top-0 right-0 rounded-full p-[5px] bg-primary">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`w-5 h-5 text-white transition-transform duration-300 ${
-                      openIndex === index ? "rotate-225" : ""
-                    }`}
+                    className={`w-5 h-5 text-white transition-transform duration-300 ${openIndex === index ? "" : "rotate-225"
+                      }`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -100,9 +98,8 @@ return (
               </div>
 
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openIndex === index ? "max-h-48" : "max-h-0"
-                }`}
+                className={`overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-48" : "max-h-0"
+                  }`}
               >
                 <div className="bg-primary px-8 pb-6 text-white text-sm leading-relaxed">
                   <div className="h-[2px] w-full bg-white mb-3"></div>

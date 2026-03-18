@@ -1,7 +1,7 @@
 import React from "react";
 import type { TestimonialCardProps } from "../../shard/types";
 
-// Définition de l'interface pour un témoignage
+
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (

@@ -1,6 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import NavDashboard from './NavDashboard';
 
+import { useAuth } from '../../context/AuthContext';
+
+
 interface NavItem {
   to: string;
   iconSrc: string;
@@ -40,6 +43,7 @@ const navLinks: NavItem[] = [
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth(); 
   
   const previousPage = location.state?.backgroundLocation?.pathname || "/";
 
@@ -47,14 +51,16 @@ export default function Sidebar() {
      navigate(previousPage, { replace: true });
   };
   const background = location.state?.backgroundLocation;
+  console.log(user)
 
-  const userRole = "user"; //<----- recuprer le role et remplace "user"
+  const userRole = user?.role;
 
-  const visibleLinks = navLinks.filter((link) => {
-    if (!link.allowedRoles) return true;
-    
-    return link.allowedRoles.includes(userRole);
-  });
+const visibleLinks = navLinks.filter((link) => {
+  if (!link.allowedRoles) return true;
+  
+  return link.allowedRoles.includes(userRole ?? "");
+});
+
 
   return (
 

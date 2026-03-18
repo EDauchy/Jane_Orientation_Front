@@ -28,7 +28,7 @@ export default function Hero() {
 
         <div className="headline lg:text-[2.5vw] md:text-[4vw] text-[4vw]">
           <div>
-            <div className="relative top-1 inline-block h-[35px] w-[23px]  border-4 border-primary rounded-full  text-primary mr-2 ">
+            <div className="relative hidden md:inline-block top-1  h-[35px] w-[23px]  border-4 border-primary rounded-full  text-primary mr-2 ">
               <svg
                 width="17"
                 height=""
@@ -44,7 +44,7 @@ export default function Hero() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <div className="absolute left-full top-1/2 w-5 border-t-4 border-primary border-dashed"></div>
+              <div className="absolute hidden md:block left-full top-1/2 w-5 border-t-4 border-primary border-dashed"></div>
             </div>
             <span className="word-wavy">DESSINEZ VOTRE</span>
             <span className="word-orange-outline"> PARCOURS </span>
@@ -72,7 +72,7 @@ export default function Hero() {
             <span className="relative word-outline-box word-wavy">
               FOIS
               <div
-                className="
+                className="hidden md:block
               absolute left-full top-1/2 z-5 w-[320px] 
               h-[4px] 
               bg-linear-to-r from-[#f8a128] to-primary
@@ -81,7 +81,7 @@ export default function Hero() {
               mask-repeat-x
             "
               ></div>{" "}
-              <div className="absolute -right-16 top-1 w-10 h-10 z-10 flex items-center justify-center">
+              <div className="absolute md:block hidden -right-16 top-1 w-10 h-10 z-10 flex items-center justify-center">
 
                 <div className="absolute inset-[2px] bg-[#f8a128]/40 rounded-full"></div>
 
@@ -91,13 +91,13 @@ export default function Hero() {
                   <div className="w-2 h-2 bg-[#f8a128] rounded-full shadow-[0_0_8px_rgba(248,161,40,0.9)]"></div>
 
                 </div>
-              </div>    <div className="absolute -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-primary border-dashed"></div>
-              <div className="absolute -right-[320px] top-[calc(100%+80px)] z-5 h-0 w-[300px] border-t-4 border-primary border-dashed rotate-180"></div>
+              </div>    <div className="absolute md:block hidden -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-primary border-dashed"></div>
+              <div className="absolute hidden md:block -right-[320px] top-[calc(100%+80px)] z-5 h-0 w-[300px] border-t-4 border-primary border-dashed rotate-180"></div>
             </span>
           </div>
         </div>
 
-        <div className="flex items-center h-[160px] w-[90%] ">
+        <div className="flex items-center  md:h-[160px] h-[220px] md:w-[90%] w-[100%] ">
           <div className="relative shadow-md p-6 z-10 bg-white rounded-2xl border border-gray-100 ">
             <div className="flex items-start gap-1">
               <Info className="w-5 h-5 text-primary shrink-0 mt-1" />
@@ -135,7 +135,7 @@ export default function Hero() {
               height="30"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
-              className="absolute top-[calc(50%-16px)] -right-4 z-50"
+              className="absolute hidden md:block top-[calc(50%-16px)] -right-4 z-50"
             >
               <polygon points="10,4 18,12 10,20" fill="#681bff" />
             </svg>
