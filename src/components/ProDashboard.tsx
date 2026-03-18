@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { User, Star, Calendar, Award, List, Clock } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import WeeklyCalendar from './WeeklyCalendar';
-import AvailabilityEditor from './AvailabilityEditor';
+import AvailabilityEditor from '../appointments/components/AvailabilityEditor';
+import AppointmentsContainer from '../appointments/components/index';
 
 interface ProDashboardProps {
   profile: any;
@@ -207,11 +207,10 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${
-                        i < Math.round(stats.averageRating)
-                          ? 'fill-yellow-300 text-yellow-300'
-                          : 'text-white/30'
-                      }`}
+                      className={`w-5 h-5 ${i < Math.round(stats.averageRating)
+                        ? 'fill-yellow-300 text-yellow-300'
+                        : 'text-white/30'
+                        }`}
                     />
                   ))}
                 </div>
@@ -237,11 +236,10 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
         <div className="bg-gray-100 p-1 rounded-xl inline-flex">
           <button
             onClick={() => setView('list')}
-            className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-              view === 'list'
-                ? 'bg-white text-gray-900 shadow-xs'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${view === 'list'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             <div className="flex items-center gap-2">
               <List className="w-4 h-4" />
@@ -250,11 +248,10 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
           </button>
           <button
             onClick={() => setView('calendar')}
-            className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${
-              view === 'calendar'
-                ? 'bg-white text-purple-600 shadow-xs'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className={`px-6 py-2 rounded-lg text-sm font-medium transition-all ${view === 'calendar'
+              ? 'bg-white text-purple-600 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
@@ -265,96 +262,95 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
       </div>
 
       {view === 'calendar' ? (
-        <WeeklyCalendar appointments={appointments} userId={profile.id} />
+        <AppointmentsContainer variant='calendar' />
       ) : (
         <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Total Coachings */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500 hover:shadow-xl transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
-                Coachings réalisés
-              </p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
-                {loading ? '...' : stats.totalCoachings}
-              </p>
-            </div>
-            <div className="bg-indigo-100 p-4 rounded-full">
-              <Award className="w-8 h-8 text-indigo-600" />
-            </div>
-          </div>
-        </div>
-
-        {/* Declined Appointments */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500 hover:shadow-xl transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
-                RDV déclinés
-              </p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
-                {loading ? '...' : stats.declinedAppointments}
-              </p>
-            </div>
-            <div className="bg-red-100 p-4 rounded-full">
-              <Calendar className="w-8 h-8 text-red-600" />
-            </div>
-          </div>
-        </div>
-
-        {/* Average Rating */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500 hover:shadow-xl transition-shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
-                Note moyenne
-              </p>
-              <p className="text-4xl font-bold text-gray-900 mt-2">
-                {loading ? '...' : stats.averageRating.toFixed(1)}
-                <span className="text-xl text-gray-400">/5</span>
-              </p>
-            </div>
-            <div className="bg-yellow-100 p-4 rounded-full">
-              <Star className="w-8 h-8 text-yellow-600 fill-yellow-600" />
-            </div>
-          </div>
-          <div className="mt-4 text-gray-500 text-sm">
-            Basé sur {loading ? '...' : stats.totalReviews} avis
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Activity */}
-      {!loading && recentActivity.length > 0 && (
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Activité récente</h2>
-          <div className="space-y-3">
-            {recentActivity.map((activity, index) => {
-              const colors = getActivityColor(activity.status);
-              return (
-                <div key={index} className={`flex items-center gap-4 p-4 ${colors.bg} rounded-lg border ${colors.border}`}>
-                  <div className={`w-2 h-2 ${colors.dot} rounded-full`}></div>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900">{activity.description}</p>
-                    <p className="text-sm text-gray-600">{getRelativeTime(activity.date)}</p>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Total Coachings */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500 hover:shadow-xl transition-shadow">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                    Coachings réalisés
+                  </p>
+                  <p className="text-4xl font-bold text-gray-900 mt-2">
+                    {loading ? '...' : stats.totalCoachings}
+                  </p>
                 </div>
-              );
-            })}
+                <div className="bg-indigo-100 p-4 rounded-full">
+                  <Award className="w-8 h-8 text-indigo-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* Declined Appointments */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500 hover:shadow-xl transition-shadow">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                    RDV déclinés
+                  </p>
+                  <p className="text-4xl font-bold text-gray-900 mt-2">
+                    {loading ? '...' : stats.declinedAppointments}
+                  </p>
+                </div>
+                <div className="bg-red-100 p-4 rounded-full">
+                  <Calendar className="w-8 h-8 text-red-600" />
+                </div>
+              </div>
+            </div>
+
+            {/* Average Rating */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-yellow-500 hover:shadow-xl transition-shadow">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-500 text-sm font-medium uppercase tracking-wide">
+                    Note moyenne
+                  </p>
+                  <p className="text-4xl font-bold text-gray-900 mt-2">
+                    {loading ? '...' : stats.averageRating.toFixed(1)}
+                    <span className="text-xl text-gray-400">/5</span>
+                  </p>
+                </div>
+                <div className="bg-yellow-100 p-4 rounded-full">
+                  <Star className="w-8 h-8 text-yellow-600 fill-yellow-600" />
+                </div>
+              </div>
+              <div className="mt-4 text-gray-500 text-sm">
+                Basé sur {loading ? '...' : stats.totalReviews} avis
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+
+          {/* Recent Activity */}
+          {!loading && recentActivity.length > 0 && (
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Activité récente</h2>
+              <div className="space-y-3">
+                {recentActivity.map((activity, index) => {
+                  const colors = getActivityColor(activity.status);
+                  return (
+                    <div key={index} className={`flex items-center gap-4 p-4 ${colors.bg} rounded-lg border ${colors.border}`}>
+                      <div className={`w-2 h-2 ${colors.dot} rounded-full`}></div>
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">{activity.description}</p>
+                        <p className="text-sm text-gray-600">{getRelativeTime(activity.date)}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </>
       )}
 
-      {showAvailabilityEditor && (
-        <AvailabilityEditor
-          initialAvailability={currentProfile.details?.availability}
-          onClose={() => setShowAvailabilityEditor(false)}
-          onSave={handleAvailabilitySave}
-        />
-      )}
+      <AvailabilityEditor
+        open={showAvailabilityEditor}
+        initialAvailability={currentProfile.details?.availability}
+        onClose={() => setShowAvailabilityEditor(false)}
+        onSave={handleAvailabilitySave}
+      />
     </div>
   );
 }
