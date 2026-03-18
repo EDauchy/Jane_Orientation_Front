@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;600;700&display=swap');
 
 @theme {
   /* Enregistrement de vos 4 couleurs fixes dans Tailwind */
@@ -13,6 +13,10 @@
   /* Définition des couleurs de fond qui changent */
   --color-main-bg: #FFFFFF;
   --color-main-text: #0F172A;
+
+  /* Fonts */
+  --font-roboto: 'Roboto', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
 }
 
 /* Gestion du Dark Mode pour l'arrière-plan */
