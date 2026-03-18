@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AvailabilityEditor from "../components/AvailabilityEditor";
+import AvailabilityEditor from "../appointments/components/AvailabilityEditor";
 import JaneButton from "../components/JaneButton";
 
 export default function Register() {
@@ -367,15 +367,14 @@ export default function Register() {
           </div>
         </form>
 
-        {/* Availability Editor Modal */}
-        {showAvailabilityEditor && (
-          <AvailabilityEditor
-            initialAvailability={availability}
-            onClose={() => setShowAvailabilityEditor(false)}
-            onSave={(newAvailability) => setAvailability(newAvailability)}
-            isRegistration={true}
-          />
-        )}
+
+        <AvailabilityEditor
+          initialAvailability={availability}
+          open={showAvailabilityEditor}
+          onClose={() => setShowAvailabilityEditor(false)}
+          onSave={(newAvailability) => setAvailability(newAvailability)}
+          isRegistration={true}
+        />
       </div>
     </div>
   );

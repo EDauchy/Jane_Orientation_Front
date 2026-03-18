@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Professional } from './FindPro';
 import { supabase } from '../lib/supabase';
 import ProCard from './ProCard';
@@ -10,10 +10,6 @@ interface ProsCarouselProps {
 function ProsCarousel({ jobs }: ProsCarouselProps) {
     const [pros, setPros] = useState<Professional[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedDate, setSelectedDate] = useState('');
-    const [selectedPro, setSelectedPro] = useState<string | null>(null);
-    const [userAppointments, setUserAppointments] = useState<any[]>([]);
-    const [loadingAppointments, setLoadingAppointments] = useState(true);
 
     useEffect(() => {
         const fetchPros = async () => {
@@ -54,18 +50,11 @@ function ProsCarousel({ jobs }: ProsCarouselProps) {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session?.access_token) return;
 
-                const res = await fetch('/api/appointments', {
+                await fetch('/api/appointments', {
                     headers: { Authorization: `Bearer ${session.access_token}` },
                 });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    setUserAppointments(data.appointments || []);
-                }
             } catch (error) {
                 console.error('Error fetching appointments', error);
-            } finally {
-                setLoadingAppointments(false);
             }
         };
 
@@ -74,11 +63,6 @@ function ProsCarousel({ jobs }: ProsCarouselProps) {
 
         fetchUserAppointments();
     }, [jobs]);
-
-    const handleSelectDate = (proId: string, date: string) => {
-        setSelectedPro(proId);
-        setSelectedDate(date);
-    };
 
     return (
         <div>
@@ -92,9 +76,6 @@ function ProsCarousel({ jobs }: ProsCarouselProps) {
                         <ProCard
                             key={pro.id}
                             pro={pro}
-                            selectedDate={selectedDate}
-                            selectedProId={selectedPro}
-                            onSelectDate={handleSelectDate}
                         />
                     ))}
                 </div>
