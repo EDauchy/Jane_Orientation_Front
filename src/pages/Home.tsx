@@ -37,7 +37,7 @@ export default function Home() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.ROMEO_API_KEY}`, // ⚠️ à sécuriser en prod
+            Authorization: `Bearer ${import.meta.env.VITE_ROMEO_API_KEY}`, // ⚠️ à sécuriser en prod
           },
           body: JSON.stringify({
             appellations: [
