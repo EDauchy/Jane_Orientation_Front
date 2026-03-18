@@ -109,11 +109,8 @@ export default function Header() {
               CONTACT
             </NavLink>
 
-            <img
-              src={isContactPage ? './contact-selected.svg' : './contact-unselected.svg'}
-              alt="icon"
-              className="absolute w-[130px] top-0 -left-4"
-            />
+            <img src='./contact-selected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
+              <img src='./contact-unselected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
           </div>
 
           <button
@@ -208,11 +205,8 @@ export default function Header() {
                     CONTACT
                   </NavLink>
 
-                  <img
-                    src={isContactPage ? './contact-selected.svg' : './contact-unselected.svg'}
-                    alt="icon"
-                    className="absolute w-[100px] z-50 top-10 -left-2"
-                  />
+                  <img src='./contact-selected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
+                  <img src='./contact-unselected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
                 </div>
                 <div className="">
                   <div className="relative flex flex-col w-[220px] h-[150px] rounded-tr-[30px] bg-amber-200 overflow-hidden">

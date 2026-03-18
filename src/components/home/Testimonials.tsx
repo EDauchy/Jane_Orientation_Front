@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TestimonialCard from "./TestimonialCard";
-import type { Testimonial } from "./TestimonialCard";
+import type { Testimonial } from "../../shard/types";
 
 const Testimonials: React.FC = () => {
   const testimonials: Testimonial[] = [
@@ -75,7 +75,7 @@ const Testimonials: React.FC = () => {
 
   return (
     <div className="py-10 relative group">
-      <div className="overflow-hidden py-10 p-8">
+      <div className="overflow-hidden py-10 sm:p-8">
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{
