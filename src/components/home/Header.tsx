@@ -38,7 +38,7 @@ export default function Header() {
 
   const isContactPage = location.pathname === '/contact';
 
- 
+
 
   return (
     <header className="absolute top-0 w-full z-50 transition">
@@ -68,9 +68,6 @@ export default function Header() {
               </NavLink>
             ))}
           </div>
-
-
-
 
           <div className="ml-auto pr-7 hidden md:block">
             <button
@@ -127,12 +124,22 @@ export default function Header() {
 
         </div>
 
-        <div className="flex md:hidden ml-auto pr-5">
+        <div className="flex flex-row-reverse md:hidden ml-auto pr-5">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-white" />
+              <X className="w-7 h-7 text-white" />
             ) : (
-              <Menu className="w-6 h-6 text-primary" />
+              <Menu className="w-8 h-8 text-primary" />
+            )}
+          </button>
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative w-[40px] h-[40px] flex items-center justify-center bg-primary rounded-xl p-2  mr-3 hover:opacity-90 transition-all"
+          >
+            <img src="/user-icon.png" alt="User" />
+            {user && (
+              <UserDropdown isOpen={isOpen} setIsOpen={setIsOpen} />
             )}
           </button>
         </div>
