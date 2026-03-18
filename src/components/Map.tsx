@@ -41,10 +41,16 @@ const schoolIcon = L.divIcon({
     iconAnchor: [16, 32],
 });
 
+
 /* =======================
    Logic Map
 ======================= */
-function MapLogic() {
+interface MapLogicProps {
+    city?: string;
+    suggestedJobs?: string[];
+}
+
+function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
     const map = useMap();
 
     // Force disable doubleClickZoom
@@ -52,7 +58,7 @@ function MapLogic() {
         map.doubleClickZoom.disable();
     }, [map]);
 
-    const [searchCity, setSearchCity] = useState("");
+    const [searchCity, setSearchCity] = useState(city || "");
     const [schools, setSchools] = useState<Formation[]>([]);
     const [loadingGeo, setLoadingGeo] = useState(false);
     const [loadingSchools, setLoadingSchools] = useState(false);
@@ -103,6 +109,13 @@ function MapLogic() {
             setLoadingSchools(false);
         }
     };
+
+    useEffect(() => {
+        if (city) {
+            setSearchCity(city);
+            fetchSchools(city);
+        }
+    }, [city]);
 
     useEffect(() => {
         if (searchCity) {
@@ -372,7 +385,12 @@ function MapLogic() {
 /* =======================
    Map Container
 ======================= */
-export default function Map() {
+export interface MapProps {
+    city?: string;
+    suggestedJobs?: string[];
+}
+
+const Map = ({ city, suggestedJobs }: MapProps) => {
     return (
         <MapContainer
             center={[48.8566, 2.3522]}
@@ -382,7 +400,9 @@ export default function Map() {
             style={{ height: "100vh", width: "100%" }}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <MapLogic />
+            <MapLogic city={city} suggestedJobs={suggestedJobs} />
         </MapContainer>
     );
-}
+};
+
+export default Map;

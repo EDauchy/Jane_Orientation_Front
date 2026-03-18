@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import Map from '../components/Map';
+import SchoolMap from '../components/Map';
 import FindPro from '../components/FindPro';
 import ProfileEdit from '../components/ProfileEdit';
 import SecuritySettings from '../components/SecuritySettings';
@@ -199,7 +199,7 @@ export default function Dashboard() {
               </div>
             </div>
             {hasTestResults ? (
-              <Map city={cityFilter} suggestedJobs={profile.details?.test_results || []} />
+              <SchoolMap city={cityFilter} suggestedJobs={profile.details?.test_results || []} />
             ) : (
               <div className="bg-white shadow-sm rounded-lg p-8 text-center">
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Carte verrouillée 🔒</h3>
