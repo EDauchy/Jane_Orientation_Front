@@ -32,7 +32,6 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
   const [recentActivity, setRecentActivity] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'list' | 'calendar'>('list');
-  const [appointments, setAppointments] = useState<any[]>([]);
   const [showAvailabilityEditor, setShowAvailabilityEditor] = useState(false);
   const [currentProfile, setCurrentProfile] = useState(profile);
 
@@ -47,10 +46,6 @@ export default function ProDashboard({ profile }: ProDashboardProps) {
           .from('appointments')
           .select('*, user_a:profiles!user_a_id(first_name, last_name)')
           .eq('user_b_id', profile.id);
-
-        if (appointmentsData) {
-          setAppointments(appointmentsData);
-        }
 
         // Fetch all reviews for this professional
         const { data: reviews } = await supabase
