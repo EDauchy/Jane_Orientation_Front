@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://jane-orientation-api.onrender.com/api/$1"
+    }
+  ]
+}
+
