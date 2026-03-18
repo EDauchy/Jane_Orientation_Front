@@ -55,8 +55,6 @@ export default function Home() {
         }
       );
 
-      if (!res.ok) throw new Error("Erreur API");
-
       const data = await res.json();
       setJobPredictions(data?.resultats || []);
     } catch (err) {
