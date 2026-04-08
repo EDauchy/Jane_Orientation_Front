@@ -1,399 +1,389 @@
-import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { X, Phone, Mail, Globe, Clock, MapPin, Star } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import Toast from './Toast';
+"use client";
 
-// Fix Leaflet icon issue in React
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import {useEffect, useMemo, useState} from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import type { Formation, MapLogicProps } from "../shard/types.ts";
 
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
+/* =======================
+   Icône établissement (style image)
+======================= */
+const schoolIcon = L.divIcon({
+    className: "",
+    html: `
+      <div style="
+        background:#6D28D9;
+        color:white;
+        width:32px;
+        height:32px;
+        border-radius:9999px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 4px 10px rgba(0,0,0,0.25);
+        font-size:16px;
+      ">
+        🎓
+      </div>
+    `,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
 });
 
-L.Marker.prototype.options.icon = DefaultIcon;
+function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
+    const map = useMap();
 
-interface MapProps {
-  city?: string;
-  showTraining?: boolean;
-  showHousing?: boolean;
-  showUniversities?: boolean;
-  showAlternance?: boolean;
-  suggestedJobs?: string[]; // Métiers suggérés par l'IA pour filtrer les établissements
-}
+    // Force disable doubleClickZoom
+    useEffect(() => {
+        map.doubleClickZoom.disable();
+    }, [map]);
 
-interface MarkerData {
-  id: string;
-  name: string;
-  address: string;
-  position: { lat: number; lon: number };
-  type: 'TRAINING' | 'HOUSING' | 'UNIVERSITY' | 'ALTERNANCE';
-  contact?: {
-    email?: string;
-    phone?: string;
-    website?: string;
-  };
-  openingHours?: string;
-  description?: string;
-  tags: {
-    alternance: boolean;
-    financed: boolean;
-    university: boolean;
-    private: boolean;
-    adultTraining: boolean;
-  };
-  source: string;
-}
+    const [searchCity, setSearchCity] = useState(city || "");
+    const [schools, setSchools] = useState<Formation[]>([]);
+    const [loadingGeo, setLoadingGeo] = useState(false);
+    const [loadingSchools, setLoadingSchools] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [formationType, setFormationType] = useState("");
 
-interface EstablishmentModalProps {
-  establishment: MarkerData | null;
-  onClose: () => void;
-  onAddToFavorites: (item: MarkerData) => void;
-}
+    /* =======================
+       Géocodage ville
+    ======================= */
+    const geocodeCity = async (city: string) => {
+        setLoadingGeo(true);
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+                    city
+                )}&limit=1`
+            );
+            const data = await res.json();
 
-function EstablishmentModal({ establishment, onClose, onAddToFavorites }: EstablishmentModalProps) {
-  if (!establishment) return null;
-
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'TRAINING': return 'Formation';
-      case 'HOUSING': return 'Logement';
-      case 'UNIVERSITY': return 'Université';
-      case 'ALTERNANCE': return 'Alternance';
-      default: return 'Établissement';
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-start">
-          <div>
-            <h2 className="text-xl font-bold">{establishment.name}</h2>
-            <p className="text-sm text-gray-500">{getTypeLabel(establishment.type)}</p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="p-6 space-y-4">
-          {/* Adresse */}
-          <div className="flex items-start gap-3">
-            <MapPin className="text-gray-400 mt-1" size={20} />
-            <div>
-              <p className="font-semibold">Adresse</p>
-              <p className="text-gray-600">{establishment.address || 'Non renseignée'}</p>
-            </div>
-          </div>
-
-          {/* Horaires */}
-          {establishment.openingHours && (
-            <div className="flex items-start gap-3">
-              <Clock className="text-gray-400 mt-1" size={20} />
-              <div>
-                <p className="font-semibold">Horaires</p>
-                <p className="text-gray-600">{establishment.openingHours}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Contact */}
-          {(establishment.contact?.phone || establishment.contact?.email || establishment.contact?.website) && (
-            <div>
-              <p className="font-semibold mb-2">Contact</p>
-              <div className="space-y-2">
-                {establishment.contact.phone && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Phone size={16} />
-                    <a href={`tel:${establishment.contact.phone}`} className="hover:text-indigo-600">
-                      {establishment.contact.phone}
-                    </a>
-                  </div>
-                )}
-                {establishment.contact.email && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Mail size={16} />
-                    <a href={`mailto:${establishment.contact.email}`} className="hover:text-indigo-600">
-                      {establishment.contact.email}
-                    </a>
-                  </div>
-                )}
-                {establishment.contact.website && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <Globe size={16} />
-                    <a
-                      href={establishment.contact.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-indigo-600"
-                    >
-                      {establishment.contact.website}
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Description */}
-          {establishment.description && (
-            <div>
-              <p className="font-semibold mb-2">Description</p>
-              <p className="text-gray-600">{establishment.description}</p>
-            </div>
-          )}
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {establishment.tags.financed && (
-              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-sm">Financé</span>
-            )}
-            {establishment.tags.alternance && (
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-sm">Alternance</span>
-            )}
-            {establishment.tags.university && (
-              <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-sm">Université</span>
-            )}
-            {establishment.tags.private && (
-              <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-sm">Privé</span>
-            )}
-            {establishment.tags.adultTraining && (
-              <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-sm">Formation adulte</span>
-            )}
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-2 pt-4 border-t">
-            <button
-              onClick={() => onAddToFavorites(establishment)}
-              className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-sm hover:bg-indigo-700"
-            >
-              <Star size={16} />
-              Ajouter aux favoris
-            </button>
-            <button
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50"
-            >
-              Fermer
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Component to center map on markers
-function MapUpdater({ center }: { center: [number, number] }) {
-  const map = useMap();
-  useEffect(() => {
-    map.setView(center, 13);
-  }, [center, map]);
-  return null;
-}
-
-export default function Map({
-  city = 'Paris',
-  showTraining = true,
-  showHousing = true,
-  showUniversities = true,
-  showAlternance = true,
-  suggestedJobs = []
-}: MapProps) {
-  const [markers, setMarkers] = useState<MarkerData[]>([]);
-  const [center, setCenter] = useState<[number, number]>([48.8566, 2.3522]); // Default Paris
-  const [selectedEstablishment, setSelectedEstablishment] = useState<MarkerData | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const params = new URLSearchParams({
-          city,
-          limit: '100',
-          training: showTraining.toString(),
-          housing: showHousing.toString(),
-          universities: showUniversities.toString(),
-          alternance: showAlternance.toString(),
-        });
-
-        // Add suggested jobs for filtering
-        if (suggestedJobs && suggestedJobs.length > 0) {
-          suggestedJobs.forEach(job => {
-            params.append('jobs', job);
-          });
+            if (data.length > 0) {
+                return [parseFloat(data[0].lat), parseFloat(data[0].lon)] as [
+                    number,
+                    number
+                ];
+            }
+        } catch {
+            setErrorMsg("Erreur lors du géocodage");
+        } finally {
+            setLoadingGeo(false);
         }
-
-        const res = await fetch(`/api/map/establishments?${params.toString()}`);
-        if (res.ok) {
-          const data = await res.json();
-          console.log('📊 Establishments fetched:', data.length);
-          console.log('📍 Sample establishment:', data[0]);
-
-          const validMarkers = data
-            .filter((item: any) => {
-              const hasPosition = item.position?.lat && item.position?.lon;
-              if (!hasPosition) {
-                console.warn('⚠️ Item without position:', item.name);
-              }
-              return hasPosition;
-            })
-            .map((item: any) => ({
-              ...item,
-              type: item.tags?.university
-                ? 'UNIVERSITY'
-                : item.tags?.alternance
-                ? 'ALTERNANCE'
-                : item.source === 'crous'
-                ? 'HOUSING'
-                : 'TRAINING',
-            }));
-
-          console.log('✅ Valid markers:', validMarkers.length);
-          setMarkers(validMarkers);
-
-          // Update center if we have markers
-          if (validMarkers.length > 0) {
-            const firstMarker = validMarkers[0];
-            console.log('🎯 Setting center to:', firstMarker.position);
-            setCenter([firstMarker.position.lat, firstMarker.position.lon]);
-          } else {
-            console.warn('⚠️ No valid markers found');
-          }
-        } else {
-          console.error('❌ API error:', res.status, res.statusText);
-        }
-      } catch (e) {
-        console.error('❌ Error fetching establishments', e);
-      }
+        return null;
     };
 
-    fetchData();
-  }, [city, showTraining, showHousing, showUniversities, showAlternance]);
-
-  const addToFavorites = async (item: MarkerData) => {
-    try {
-      // Get session token from Supabase
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.access_token) {
-        setToast({ message: 'Vous devez être connecté pour ajouter aux favoris', type: 'error' });
-        return;
-      }
-
-      const res = await fetch('/api/favorites', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({
-          item_type: item.type.toLowerCase(),
-          item_id: item.id,
-          item_data: item,
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.message === 'Already in favorites') {
-          setToast({ message: 'Déjà dans vos favoris', type: 'info' });
-        } else {
-          setToast({ message: 'Ajouté aux favoris !', type: 'success' });
-        }
-        setSelectedEstablishment(null);
-      } else {
-        const error = await res.json();
-        console.error('Error adding to favorites:', error);
-        setToast({ message: 'Erreur lors de l\'ajout aux favoris', type: 'error' });
-      }
-    } catch (e) {
-      console.error(e);
-      setToast({ message: 'Erreur lors de l\'ajout aux favoris', type: 'error' });
-    }
-  };
-
-  const getMarkerColor = (type: string) => {
-    switch (type) {
-      case 'HOUSING': return '#10b981'; // green
-      case 'TRAINING': return '#3b82f6'; // blue
-      case 'UNIVERSITY': return '#8b5cf6'; // purple
-      case 'ALTERNANCE': return '#f59e0b'; // orange
-      default: return '#6b7280'; // gray
-    }
-  };
-
-  return (
-    <>
-      <div className="h-[600px] w-full rounded-lg overflow-hidden border border-gray-300 relative z-0">
-        <MapContainer center={center} zoom={13} style={{ height: '100%', width: '100%' }}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MapUpdater center={center} />
-          {markers.map((marker, idx) => {
-            const color = getMarkerColor(marker.type);
-            const customIcon = L.divIcon({
-              className: 'custom-marker',
-              html: `<div style="background-color: ${color}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10],
-            });
-
-            return (
-              <Marker
-                key={`${marker.type}-${marker.id}-${idx}`}
-                position={[marker.position.lat, marker.position.lon]}
-                icon={customIcon}
-              >
-                <Popup>
-                  <div className="p-2">
-                    <h3 className="font-bold text-sm mb-1">{marker.name}</h3>
-                    <p className="text-xs text-gray-500 mb-2">{marker.address}</p>
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {marker.tags?.financed && <span className="text-[10px] bg-green-100 text-green-800 px-1 rounded-sm">Financé</span>}
-                      {marker.tags?.alternance && <span className="text-[10px] bg-blue-100 text-blue-800 px-1 rounded-sm">Alternance</span>}
-                    </div>
-                    <button
-                      onClick={() => setSelectedEstablishment(marker)}
-                      className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-sm hover:bg-indigo-700 w-full"
-                    >
-                      Voir les détails
-                    </button>
-                  </div>
-                </Popup>
-              </Marker>
+    /* =======================
+       Fetch écoles
+    ======================= */
+    const fetchSchools = async (city: string) => {
+        setLoadingSchools(true);
+        try {
+            const res = await fetch(
+                `/api/map/school?city=${encodeURIComponent(city)}&type=${formationType}`
             );
-          })}
-        </MapContainer>
-      </div>
+            const data: Formation[] = await res.json();
+            setSchools(data);
+        } catch {
+            setErrorMsg("Impossible de récupérer les écoles");
+        } finally {
+            setLoadingSchools(false);
+        }
+    };
 
-      {selectedEstablishment && (
-        <EstablishmentModal
-          establishment={selectedEstablishment}
-          onClose={() => setSelectedEstablishment(null)}
-          onAddToFavorites={addToFavorites}
-        />
-      )}
+    useEffect(() => {
+        if (city) {
+            setSearchCity(city);
+            fetchSchools(city);
+        }
+    }, [city]);
 
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-    </>
-  );
+    useEffect(() => {
+        if (searchCity) {
+            fetchSchools(searchCity);
+        }
+    }, [formationType]);
+
+    /* =======================
+       Recherche ville
+    ======================= */
+    const searchCityHandler = async () => {
+        if (!searchCity.trim()) return;
+
+        const coords = await geocodeCity(searchCity);
+        if (!coords) {
+            setErrorMsg("Ville introuvable");
+            return;
+        }
+
+        map.flyTo(coords, 13);
+        setErrorMsg("");
+        fetchSchools(searchCity);
+    };
+
+    /* =======================
+       Géolocalisation
+    ======================= */
+    const locateUser = () => {
+        if (!navigator.geolocation) {
+            setErrorMsg("Géolocalisation non supportée");
+            return;
+        }
+
+        setLoadingGeo(true); // Indiquer le chargement
+
+        navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+                const { latitude, longitude } = pos.coords;
+
+                // 1. Centrer la carte
+                map.flyTo([latitude, longitude], 13);
+
+                try {
+                    // 2. Reverse Geocoding pour trouver la ville
+                    const res = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                    );
+                    const data = await res.json();
+
+                    // Nominatim retourne l'adresse dans plusieurs champs possibles
+                    const city =
+                        data.address.city ||
+                        data.address.town ||
+                        data.address.village ||
+                        data.address.municipality;
+
+                    if (city) {
+                        setSearchCity(city); // Remplir le champ
+                        fetchSchools(city); // Lancer la recherche
+                    } else {
+                        setErrorMsg("Ville non trouvée pour cette position");
+                    }
+                } catch (err) {
+                    setErrorMsg("Erreur lors de la récupération de la ville");
+                } finally {
+                    setLoadingGeo(false);
+                }
+            },
+            () => {
+                setErrorMsg("Impossible de récupérer votre position");
+                setLoadingGeo(false);
+            }
+        );
+    };
+
+    /* =======================
+       Regroupement par coordonnées
+    ======================= */
+    const groupedByCoords = useMemo(() => {
+        const groups: Record<string, Formation[]> = {};
+
+        schools.forEach((s) => {
+            if (!s.etab_gps) return;
+            const key = `${s.etab_gps.lat}-${s.etab_gps.lon}`;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(s);
+        });
+
+        return Object.values(groups);
+    }, [schools]);
+
+    /* =======================
+       UI (STYLE MODIFIÉ)
+    ======================= */
+    return (
+        <>
+            {/* Barre haute */}
+            <div className="absolute top-4 left-4 right-4 z-[1000] flex items-center gap-2">
+                <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center">
+                    ←
+                </button>
+
+                <div className="flex gap-2 flex-1 justify-end">
+
+                    {/* Transport */}
+                    <div className="relative">
+                        <select className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer flex items-center">
+                            <option value="">Transport</option>
+                            <option value="bus">Bus</option>
+                            <option value="metro">Métro</option>
+                            <option value="tramway">Tramway</option>
+                            <option value="gare">Gare</option>
+                        </select>
+
+                        <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                    </div>
+
+                    {/* Formation */}
+                    <div className="relative">
+                        <select
+                            value={formationType}
+                            onChange={(e) => setFormationType(e.target.value)}
+                            className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer"
+                        >
+                            <option value="">Toutes les formations</option>
+                            <option value="alternance">Formation en alternance</option>
+                        </select>
+
+                        <svg
+                            className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                        >
+                            <path
+                                fillRule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                    </div>
+
+                    {/* Recherche ville + géoloc */}
+                    <div className="bg-violet-600 text-white px-4 h-10 rounded-lg shadow text-sm flex items-center gap-2">
+                        <button
+                            onClick={locateUser}
+                            className="w-6 h-6 flex items-center justify-center bg-white text-violet-600 rounded shadow hover:bg-gray-100 transition-colors"
+                            title="Géolocaliser"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                            </svg>
+                        </button>
+
+                        <input
+                            type="text"
+                            value={searchCity}
+                            onChange={(e) => setSearchCity(e.target.value)}
+                            onKeyDown={(e) =>
+                                e.key === "Enter" && searchCityHandler()
+                            }
+                            placeholder="Ville"
+                            className="bg-transparent outline-none placeholder-white w-28"
+                        />
+
+                        {loadingGeo && <span className="animate-spin">⏳</span>}
+                    </div>
+                </div>
+
+                <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center invisible">
+                    ✕
+                </button>
+            </div>
+
+            {/* Markers */}
+            {!loadingSchools &&
+                groupedByCoords.map((group) => {
+                    const first = group[0];
+                    return (
+                        <Marker
+                            key={`${first.etab_gps!.lat}-${first.etab_gps!.lon}`}
+                            position={[
+                                first.etab_gps!.lat,
+                                first.etab_gps!.lon,
+                            ]}
+                            icon={schoolIcon}
+                        >
+                            <Popup className="rounded-xl">
+                                <div className="w-64">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <strong className="text-sm">
+                                            {first.etab_nom}
+                                        </strong>
+                                        <button className="bg-violet-600 text-white rounded-full w-6 h-6 text-xs">
+                                            +
+                                        </button>
+                                    </div>
+
+                                    {group.map((f) => (
+                                        <div
+                                            key={f.rnd}
+                                            className="text-xs text-gray-600 mb-2"
+                                        >
+                                            {f.nm.join(", ")}
+                                            <br />
+                                            <a
+                                                href={f.fiche}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-violet-600 font-medium"
+                                            >
+                                                Voir la formation
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Popup>
+                        </Marker>
+                    );
+                })}
+
+            {/* Zoom */}
+            <div className="absolute bottom-6 left-4 z-[1000] flex flex-col gap-2">
+                <button
+                    onClick={() => map.zoomIn()}
+                    className="bg-violet-600 text-white rounded-full w-10 h-10 shadow text-lg"
+                >
+                    +
+                </button>
+                <button
+                    onClick={() => map.zoomOut()}
+                    className="bg-violet-600 text-white rounded-full w-10 h-10 shadow text-lg"
+                >
+                    −
+                </button>
+            </div>
+
+            {/* Compteur */}
+            <div className="absolute bottom-6 right-4 bg-white rounded-full shadow px-4 py-2 text-xs z-[1000]">
+                🎓 {groupedByCoords.length} établissements · {schools.length} formations
+            </div>
+
+            {/* Erreurs */}
+            {errorMsg && (
+                <div className="absolute bottom-16 right-4 bg-white text-red-500 shadow rounded px-3 py-2 text-sm z-[1000]">
+                    {errorMsg}
+                </div>
+            )}
+        </>
+    );
 }
+
+/* =======================
+   Map Container
+======================= */
+export interface MapProps {
+    city?: string;
+    suggestedJobs?: string[];
+}
+
+const Map = ({ city, suggestedJobs }: MapProps) => {
+    return (
+        <MapContainer
+            center={[48.8566, 2.3522]}
+            zoom={6}
+            zoomControl={false}
+            doubleClickZoom={false} // Empêche le zoom au double-clic
+            style={{ height: "100vh", width: "100%" }}
+        >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <MapLogic city={city} suggestedJobs={suggestedJobs} />
+        </MapContainer>
+    );
+};
+
+export default Map;
