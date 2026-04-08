@@ -69,3 +69,16 @@ export interface UserDropdownProps {
     isOpen: boolean;
     setIsOpen: (open: boolean) => void;
 }
+
+export interface Formation {
+  rnd: string;
+  etab_nom: string;
+  etab_gps: { lat: number; lon: number } | null;
+  nm: string[];
+  fiche: string;
+}
+
+export interface MapLogicProps {
+  city?: string;
+  suggestedJobs?: string[];
+}

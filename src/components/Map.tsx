@@ -4,17 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import {useEffect, useMemo, useState} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-
-/* =======================
-   Types
-======================= */
-interface Formation {
-    rnd: string;
-    etab_nom: string;
-    etab_gps: { lat: number; lon: number } | null;
-    nm: string[];
-    fiche: string;
-}
+import type { Formation, MapLogicProps } from "../shard/types.ts";
 
 /* =======================
    Icône établissement (style image)
@@ -40,15 +30,6 @@ const schoolIcon = L.divIcon({
     iconSize: [32, 32],
     iconAnchor: [16, 32],
 });
-
-
-/* =======================
-   Logic Map
-======================= */
-interface MapLogicProps {
-    city?: string;
-    suggestedJobs?: string[];
-}
 
 function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
     const map = useMap();
