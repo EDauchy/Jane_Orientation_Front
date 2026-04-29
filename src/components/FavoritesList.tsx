@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { MapPin, Mail, Trash2, ChevronLeft, ChevronRight, Plus, ArrowUpRight } from 'lucide-react';
+import { MapPin, Mail, ChevronLeft, ChevronRight, Plus, ArrowUpRight } from 'lucide-react';
 
 interface Favorite {
   id: string;

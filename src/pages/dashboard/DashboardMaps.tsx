@@ -1,12 +1,10 @@
-import { Navigation, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from '../../lib/supabase';
 import Map from "../../components/Map";
-import StyledTitle from "../../components/home/StyledTitle";
 
 export default function DashboardMaps() {
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  //const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [cityFilter, setCityFilter] = useState('Paris');
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -54,8 +52,8 @@ export default function DashboardMaps() {
   if (!profile) return <div className="p-8">Error loading profile.</div>;
 
   // Maintenant on peut lire profile sans risque
-  const isUserA = profile.role === 'user_reconversion';
-  const hasTestResults = isUserA && profile.details?.test_results && profile.details.test_results.length > 0;
+ // const isUserA = profile.role === 'user_reconversion';
+ // const hasTestResults = isUserA && profile.details?.test_results && profile.details.test_results.length > 0;
   // ----------------------
 
   return (
