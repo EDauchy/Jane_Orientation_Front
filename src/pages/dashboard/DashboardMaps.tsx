@@ -46,15 +46,10 @@ export default function DashboardMaps() {
     fetchProfile();
   }, [navigate]);
 
-  // --- CORRECTION ICI ---
-  // On ne calcule ces variables que si le chargement est fini et que le profile existe
   if (loading) return <div className="p-8 flex justify-center">Loading...</div>;
   if (!profile) return <div className="p-8">Error loading profile.</div>;
 
-  // Maintenant on peut lire profile sans risque
- // const isUserA = profile.role === 'user_reconversion';
- // const hasTestResults = isUserA && profile.details?.test_results && profile.details.test_results.length > 0;
-  // ----------------------
+
 
   return (
     <div className="h-full w-full">
