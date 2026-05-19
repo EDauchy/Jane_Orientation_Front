@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const BudgetSchema = z
   .object({
@@ -9,8 +9,9 @@ export const BudgetSchema = z
     presentation: z.number().int().min(0).max(100),
   })
   .refine(
-    (v) => v.ideation + v.planning + v.execution + v.polish + v.presentation === 100,
-    { message: 'Les 5 phases doivent totaliser 100 jetons.' },
+    (v) =>
+      v.ideation + v.planning + v.execution + v.polish + v.presentation === 100,
+    { message: "Les 5 phases doivent totaliser 100 jetons." },
   );
 
 export type BudgetInput = z.infer<typeof BudgetSchema>;

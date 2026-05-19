@@ -1,6 +1,10 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const SOCIAL_SCENE_IDS = ['late-colleague', 'silent-meeting', 'praise-then-task'] as const;
+export const SOCIAL_SCENE_IDS = [
+  "late-colleague",
+  "silent-meeting",
+  "praise-then-task",
+] as const;
 
 export type SocialSceneId = (typeof SOCIAL_SCENE_IDS)[number];
 
@@ -32,21 +36,21 @@ export type SocialScene = {
 };
 
 export const SCENES: Record<SocialSceneId, SocialScene> = {
-  'late-colleague': {
-    id: 'late-colleague',
-    title: 'Un collègue arrive en retard — sans un mot',
+  "late-colleague": {
+    id: "late-colleague",
+    title: "Un collègue arrive en retard — sans un mot",
     description:
-      'Tu es en réunion d\'équipe. Un collègue habituellement ponctuel entre avec 20 minutes de retard, s\'assied sans s\'excuser, ne dit rien, regarde son écran.',
+      "Tu es en réunion d'équipe. Un collègue habituellement ponctuel entre avec 20 minutes de retard, s'assied sans s'excuser, ne dit rien, regarde son écran.",
   },
-  'silent-meeting': {
-    id: 'silent-meeting',
-    title: 'Ton idée — un silence gênant',
+  "silent-meeting": {
+    id: "silent-meeting",
+    title: "Ton idée — un silence gênant",
     description:
-      'Tu proposes une idée en réunion. Personne ne réagit, personne ne te regarde, la discussion reprend sur un autre sujet sans transition.',
+      "Tu proposes une idée en réunion. Personne ne réagit, personne ne te regarde, la discussion reprend sur un autre sujet sans transition.",
   },
-  'praise-then-task': {
-    id: 'praise-then-task',
-    title: 'Un compliment suivi d\'une demande',
+  "praise-then-task": {
+    id: "praise-then-task",
+    title: "Un compliment suivi d'une demande",
     description:
       'Ton manager t\'écrit : "Franchement, tu gères super bien ton dossier. Est-ce que tu peux prendre aussi celui de Léo pendant son absence ?"',
   },

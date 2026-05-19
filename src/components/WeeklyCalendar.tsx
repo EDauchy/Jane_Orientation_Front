@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 
 interface Appointment {
   id: string;
@@ -20,7 +20,10 @@ interface WeeklyCalendarProps {
   userId: string;
 }
 
-export default function WeeklyCalendar({ appointments, userId: _userId }: WeeklyCalendarProps) {
+export default function WeeklyCalendar({
+  appointments,
+  userId: _userId,
+}: WeeklyCalendarProps) {
   const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
     const day = today.getDay();
@@ -49,15 +52,17 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
   };
 
   // Navigate to previous/next week
-  const navigateWeek = (direction: 'prev' | 'next') => {
+  const navigateWeek = (direction: "prev" | "next") => {
     const newDate = new Date(currentWeekStart);
-    newDate.setDate(currentWeekStart.getDate() + (direction === 'next' ? 7 : -7));
+    newDate.setDate(
+      currentWeekStart.getDate() + (direction === "next" ? 7 : -7),
+    );
     setCurrentWeekStart(newDate);
   };
 
   // Get appointments for a specific day and hour
   const getAppointmentsForSlot = (day: Date, hour: number) => {
-    return appointments.filter(apt => {
+    return appointments.filter((apt) => {
       const aptDate = new Date(apt.date);
       return (
         aptDate.getDate() === day.getDate() &&
@@ -71,12 +76,18 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDING': return 'bg-yellow-100 border-yellow-400 text-yellow-800';
-      case 'CONFIRMED': return 'bg-green-100 border-green-400 text-green-800';
-      case 'RESCHEDULED': return 'bg-blue-100 border-blue-400 text-blue-800';
-      case 'CANCELLED': return 'bg-gray-100 border-gray-400 text-gray-600';
-      case 'COMPLETED': return 'bg-purple-100 border-purple-400 text-purple-800';
-      default: return 'bg-gray-100 border-gray-400 text-gray-800';
+      case "PENDING":
+        return "bg-yellow-100 border-yellow-400 text-yellow-800";
+      case "CONFIRMED":
+        return "bg-green-100 border-green-400 text-green-800";
+      case "RESCHEDULED":
+        return "bg-blue-100 border-blue-400 text-blue-800";
+      case "CANCELLED":
+        return "bg-gray-100 border-gray-400 text-gray-600";
+      case "COMPLETED":
+        return "bg-purple-100 border-purple-400 text-purple-800";
+      default:
+        return "bg-gray-100 border-gray-400 text-gray-800";
     }
   };
 
@@ -98,7 +109,7 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => navigateWeek('prev')}
+            onClick={() => navigateWeek("prev")}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             title="Semaine précédente"
           >
@@ -106,11 +117,20 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
           </button>
 
           <span className="text-lg font-semibold text-gray-700 min-w-[200px] text-center">
-            {weekDays[0].toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} - {weekDays[6].toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+            {weekDays[0].toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "short",
+            })}{" "}
+            -{" "}
+            {weekDays[6].toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })}
           </span>
 
           <button
-            onClick={() => navigateWeek('next')}
+            onClick={() => navigateWeek("next")}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
             title="Semaine suivante"
           >
@@ -131,13 +151,17 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
                 <div
                   key={idx}
                   className={`p-2 text-center rounded-lg ${
-                    isToday ? 'bg-purple-100 text-purple-800' : 'bg-gray-50 text-gray-700'
+                    isToday
+                      ? "bg-purple-100 text-purple-800"
+                      : "bg-gray-50 text-gray-700"
                   }`}
                 >
                   <div className="text-xs font-medium">
-                    {day.toLocaleDateString('fr-FR', { weekday: 'short' })}
+                    {day.toLocaleDateString("fr-FR", { weekday: "short" })}
                   </div>
-                  <div className={`text-lg font-bold ${isToday ? 'text-purple-600' : ''}`}>
+                  <div
+                    className={`text-lg font-bold ${isToday ? "text-purple-600" : ""}`}
+                  >
                     {day.getDate()}
                   </div>
                 </div>
@@ -147,7 +171,7 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
 
           {/* Time Slots */}
           <div className="space-y-1">
-            {hourSlots.map(hour => (
+            {hourSlots.map((hour) => (
               <div key={hour} className="grid grid-cols-8 gap-1">
                 {/* Hour Label */}
                 <div className="p-2 text-sm font-medium text-gray-600 flex items-center">
@@ -163,10 +187,10 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
                       key={dayIdx}
                       className="min-h-[60px] border border-gray-200 rounded-lg p-1 bg-gray-50 hover:bg-gray-100 transition-colors"
                     >
-                      {slotAppointments.map(apt => {
+                      {slotAppointments.map((apt) => {
                         const clientName = apt.user_a
                           ? `${apt.user_a.first_name} ${apt.user_a.last_name}`
-                          : 'Client';
+                          : "Client";
 
                         return (
                           <div
@@ -174,8 +198,12 @@ export default function WeeklyCalendar({ appointments, userId: _userId }: Weekly
                             className={`text-xs p-1.5 rounded-sm border-l-2 ${getStatusColor(apt.status)} cursor-pointer hover:shadow-md transition-shadow`}
                             title={`${clientName} - ${apt.status}`}
                           >
-                            <div className="font-semibold truncate">{clientName}</div>
-                            <div className="text-[10px] opacity-75">{apt.status}</div>
+                            <div className="font-semibold truncate">
+                              {clientName}
+                            </div>
+                            <div className="text-[10px] opacity-75">
+                              {apt.status}
+                            </div>
                           </div>
                         );
                       })}

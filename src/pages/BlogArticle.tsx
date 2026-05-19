@@ -101,14 +101,16 @@ export default function BlogArticle() {
 
       <main className="pt-28 pb-16 px-4 md:px-10 lg:px-16">
         <div className="relative rounded-4xl overflow-visible">
-
           {/* ── Purple back bar — full width top of card ── */}
           <div className="absolute -top-14 right-0 h-16 overflow-hidden rounded-2xl px-6 bg-primary w-[80%] flex justify-center items-center">
             <img src="/arrow.svg" alt="Purple decorative bar" />
             {/* Inverse rounded corner bottom-right */}
             <div
               className="absolute -bottom-5 right-0 w-5 h-5"
-              style={{ background: "radial-gradient(circle at top right, transparent 20px, #681BEF 20.5px)" }}
+              style={{
+                background:
+                  "radial-gradient(circle at top right, transparent 20px, #681BEF 20.5px)",
+              }}
             />
           </div>
 
@@ -116,7 +118,8 @@ export default function BlogArticle() {
           <div
             className="absolute -top-17 left-10 z-10 w-48 h-52"
             style={{
-              filter: "drop-shadow(-8px 0 0 white) drop-shadow(8px 0 0 white) drop-shadow(0 -8px 0 white) drop-shadow(0 8px 0 white)",
+              filter:
+                "drop-shadow(-8px 0 0 white) drop-shadow(8px 0 0 white) drop-shadow(0 -8px 0 white) drop-shadow(0 8px 0 white)",
             }}
           >
             <img
@@ -126,7 +129,6 @@ export default function BlogArticle() {
               style={{ transform: "scale(0.92)" }}
             />
           </div>
-
 
           {/* ── BODY ── */}
           <div className="flex rounded-4xl">
@@ -162,7 +164,6 @@ export default function BlogArticle() {
             {/* Article content — scrollable */}
             <div
               className="flex-1 overflow-y-auto max-h-145 pb-8 rounded-tr-none mt-7 pt-8 py-5 scroll-smooth bg-white shadow-lg rounded-xl px-4"
-
               style={{
                 scrollbarWidth: "none",
                 msOverflowStyle: "none",

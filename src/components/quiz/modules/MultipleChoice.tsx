@@ -1,61 +1,65 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowDown, ArrowUp, Check } from 'lucide-react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
-import type { MultipleChoiceAnswer } from '../../../lib/quiz/types';
-import { QCM_OPTIONS, type QcmQuestionId } from '../../../lib/quiz/validators/multiple-choice';
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowDown, ArrowUp, Check } from "lucide-react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
+import type { MultipleChoiceAnswer } from "../../../lib/quiz/types";
+import {
+  QCM_OPTIONS,
+  type QcmQuestionId,
+} from "../../../lib/quiz/validators/multiple-choice";
 
 type QuestionMeta = {
   kicker: string;
   title: React.ReactNode;
   subtitle: string;
-  color: 'purple' | 'orange' | 'pink' | 'yellow' | 'green';
+  color: "purple" | "orange" | "pink" | "yellow" | "green";
 };
 
 const QUESTION_META: Record<QcmQuestionId, QuestionMeta> = {
-  'qcm-decision': {
-    kicker: 'QCM',
+  "qcm-decision": {
+    kicker: "QCM",
     title: (
       <>
-        Quand tu décides, tu <Highlight color="yellow">t'appuies</Highlight> sur…
+        Quand tu décides, tu <Highlight color="yellow">t'appuies</Highlight>{" "}
+        sur…
       </>
     ),
-    subtitle: 'Une seule réponse. La plus honnête, pas la plus flatteuse.',
-    color: 'orange',
+    subtitle: "Une seule réponse. La plus honnête, pas la plus flatteuse.",
+    color: "orange",
   },
-  'qcm-rhythm': {
-    kicker: 'RANKING',
+  "qcm-rhythm": {
+    kicker: "RANKING",
     title: (
       <>
         <Highlight color="pink">Classe</Highlight> ces rythmes de travail
       </>
     ),
-    subtitle: 'Du plus désirable (en haut) au moins désirable (en bas).',
-    color: 'pink',
+    subtitle: "Du plus désirable (en haut) au moins désirable (en bas).",
+    color: "pink",
   },
-  'qcm-group-role': {
-    kicker: 'QCM',
+  "qcm-group-role": {
+    kicker: "QCM",
     title: <>Ton rôle en groupe</>,
-    subtitle: 'Celui que tu prends spontanément, sans qu\'on te le demande.',
-    color: 'orange',
+    subtitle: "Celui que tu prends spontanément, sans qu'on te le demande.",
+    color: "orange",
   },
-  'qcm-stress': {
-    kicker: 'QCM',
+  "qcm-stress": {
+    kicker: "QCM",
     title: <>Plusieurs imprévus en même temps</>,
-    subtitle: 'Ta première réaction honnête, pas la « bonne » réponse.',
-    color: 'orange',
+    subtitle: "Ta première réaction honnête, pas la « bonne » réponse.",
+    color: "orange",
   },
-  'qcm-satisfaction': {
-    kicker: 'QCM',
+  "qcm-satisfaction": {
+    kicker: "QCM",
     title: (
       <>
         La <Highlight color="yellow">satisfaction</Highlight> la plus profonde
       </>
     ),
-    subtitle: 'Celle qui te reste dans le corps une fois le projet fini.',
-    color: 'purple',
+    subtitle: "Celle qui te reste dans le corps une fois le projet fini.",
+    color: "purple",
   },
 };
 
@@ -79,7 +83,7 @@ export function MultipleChoice({ config, moduleNumber, onReady }: ModuleProps) {
     [existingList, questionId],
   );
 
-  if (spec.kind === 'single') {
+  if (spec.kind === "single") {
     return (
       <SingleChoice
         questionId={questionId}
@@ -87,7 +91,9 @@ export function MultipleChoice({ config, moduleNumber, onReady }: ModuleProps) {
         moduleNumber={moduleNumber}
         options={spec.options}
         initial={
-          existing && existing.kind === 'single' && typeof existing.value === 'string'
+          existing &&
+          existing.kind === "single" &&
+          typeof existing.value === "string"
             ? existing.value
             : null
         }
@@ -104,7 +110,7 @@ export function MultipleChoice({ config, moduleNumber, onReady }: ModuleProps) {
       moduleNumber={moduleNumber}
       options={spec.options}
       initial={
-        existing && existing.kind === 'ranking' && Array.isArray(existing.value)
+        existing && existing.kind === "ranking" && Array.isArray(existing.value)
           ? existing.value
           : null
       }
@@ -138,7 +144,7 @@ function SingleChoice({
     const valid = selected != null;
     onReady(valid);
     if (valid) {
-      upsert({ questionId, kind: 'single', value: selected });
+      upsert({ questionId, kind: "single", value: selected });
     }
   }, [selected, onReady, upsert, questionId]);
 
@@ -163,11 +169,13 @@ function SingleChoice({
               onClick={() => setSelected(opt.value)}
               className={`text-left rounded-2xl px-4 py-4 transition-all border-2 flex items-center justify-between gap-3 ${
                 active
-                  ? 'bg-ink text-white border-ink shadow-md'
-                  : 'bg-white border-ink/10 hover:border-ink/30'
+                  ? "bg-ink text-white border-ink shadow-md"
+                  : "bg-white border-ink/10 hover:border-ink/30"
               }`}
             >
-              <span className="text-[15px] font-medium leading-snug">{opt.label}</span>
+              <span className="text-[15px] font-medium leading-snug">
+                {opt.label}
+              </span>
               {active ? <Check size={18} className="shrink-0" /> : null}
             </motion.button>
           );
@@ -212,7 +220,7 @@ function Ranking({
     const valid = touched && order.length === options.length;
     onReady(valid);
     if (valid) {
-      upsert({ questionId, kind: 'ranking', value: order });
+      upsert({ questionId, kind: "ranking", value: order });
     }
   }, [order, touched, onReady, upsert, questionId, options.length]);
 
@@ -240,7 +248,9 @@ function Ranking({
       <Card variant="soft" padding="md" className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="label">Ordre actuel</span>
-          <span className="text-[11px] text-muted">Flèches pour réorganiser</span>
+          <span className="text-[11px] text-muted">
+            Flèches pour réorganiser
+          </span>
         </div>
         <ol className="flex flex-col gap-2">
           <AnimatePresence initial={false}>

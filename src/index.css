@@ -1,23 +1,23 @@
-@import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @theme {
   /* Enregistrement de vos 4 couleurs fixes dans Tailwind */
-  --color-primary: #681BEF;
-  --color-secondary: #6F3EF4;
-  --color-light: #7C3AED;
-  --color-pink: #EC4899;
-  --color-brand-orange: #F8A128;
-  --color-brand-pink: #FF5EAE;
+  --color-primary: #681bef;
+  --color-secondary: #6f3ef4;
+  --color-light: #7c3aed;
+  --color-pink: #ec4899;
+  --color-brand-orange: #f8a128;
+  --color-brand-pink: #ff5eae;
 
   /* Définition des couleurs de fond qui changent */
-  --color-main-bg: #FFFFFF;
-  --color-main-text: #0F172A;
+  --color-main-bg: #ffffff;
+  --color-main-text: #0f172a;
 
   /* Fonts */
-  --font-roboto: 'Roboto', sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 
 /* Quiz palette — exposes CSS vars from :root as Tailwind utility classes */
@@ -51,20 +51,20 @@
 /* Gestion du Dark Mode pour l'arrière-plan */
 @layer base {
   :root {
-    --main-bg: #FFFFFF;
-    --main-text: #0F172A;
+    --main-bg: #ffffff;
+    --main-text: #0f172a;
   }
 
   /* Si la classe .dark est présente sur le <html> ou <body> */
   .dark {
-    --main-bg: #0B0F1A;
+    --main-bg: #0b0f1a;
     /* Ton fond sombre */
-    --main-text: #F8FAFC;
+    --main-text: #f8fafc;
   }
 
   body {
     background-color: var(--main-bg);
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     color: var(--main-text);
     transition: all 0.3s ease;
   }
@@ -75,12 +75,11 @@ body {
   @apply bg-gray-50 text-gray-900;
 }
 
-
 @layer base {
   :root {
     --orange-color: #ff9500;
-    --purple-color: #681BEF;
-    --font-family: 'Arial Black', sans-serif;
+    --purple-color: #681bef;
+    --font-family: "Arial Black", sans-serif;
   }
 }
 
@@ -119,8 +118,12 @@ body {
 /* Animations & utilitaires */
 @layer utilities {
   @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .rotate-text {
@@ -129,7 +132,7 @@ body {
   }
 }
 
-  /* Modal with cutouts for floating buttons - desktop only */
+/* Modal with cutouts for floating buttons - desktop only */
 .modal-cutout {
   --cutout-top: 90px;
   --cutout-bottom-w: 480px;
@@ -140,67 +143,71 @@ body {
 @media (min-width: 640px) {
   .modal-cutout {
     clip-path: polygon(
-    /* Top-left corner */
-    0% var(--radius),
-    2px 15px, 5px 10px, 10px 5px, 15px 2px,
-    var(--radius) 0%,
-    /* Top edge to cutout */
-    calc(100% - var(--cutout-top) - var(--radius)) 0%,
-    /* Top-right cutout inner curve */
-    calc(100% - var(--cutout-top) - 15px) 2px,
-    calc(100% - var(--cutout-top) - 10px) 5px,
-    calc(100% - var(--cutout-top) - 5px) 10px,
-    calc(100% - var(--cutout-top) - 2px) 15px,
-    calc(100% - var(--cutout-top)) var(--radius),
-    /* Top-right cutout left edge */
-    calc(100% - var(--cutout-top)) calc(var(--cutout-top) - var(--radius)),
-    /* Top-right cutout bottom curve */
-    calc(100% - var(--cutout-top) + 2px) calc(var(--cutout-top) - 15px),
-    calc(100% - var(--cutout-top) + 5px) calc(var(--cutout-top) - 10px),
-    calc(100% - var(--cutout-top) + 10px) calc(var(--cutout-top) - 5px),
-    calc(100% - var(--cutout-top) + 15px) calc(var(--cutout-top) - 2px),
-    calc(100% - var(--cutout-top) + var(--radius)) var(--cutout-top),
-    /* Top-right cutout bottom edge */
-    calc(100% - var(--radius)) var(--cutout-top),
-    /* Right edge curve after top cutout */
-    calc(100% - 15px) calc(var(--cutout-top) + 2px),
-    calc(100% - 10px) calc(var(--cutout-top) + 5px),
-    calc(100% - 5px) calc(var(--cutout-top) + 10px),
-    calc(100% - 2px) calc(var(--cutout-top) + 15px),
-    100% calc(var(--cutout-top) + var(--radius)),
-    /* Right edge down to bottom cutout */
-    100% calc(100% - var(--cutout-bottom-h) - var(--radius)),
-    /* Bottom-right cutout top curve */
-    calc(100% - 2px) calc(100% - var(--cutout-bottom-h) - 15px),
-    calc(100% - 5px) calc(100% - var(--cutout-bottom-h) - 10px),
-    calc(100% - 10px) calc(100% - var(--cutout-bottom-h) - 5px),
-    calc(100% - 15px) calc(100% - var(--cutout-bottom-h) - 2px),
-    calc(100% - var(--radius)) calc(100% - var(--cutout-bottom-h)),
-    /* Bottom cutout top edge */
-    calc(100% - var(--cutout-bottom-w) + var(--radius)) calc(100% - var(--cutout-bottom-h)),
-    /* Bottom cutout left curve */
-    calc(100% - var(--cutout-bottom-w) + 15px) calc(100% - var(--cutout-bottom-h) + 2px),
-    calc(100% - var(--cutout-bottom-w) + 10px) calc(100% - var(--cutout-bottom-h) + 5px),
-    calc(100% - var(--cutout-bottom-w) + 5px) calc(100% - var(--cutout-bottom-h) + 10px),
-    calc(100% - var(--cutout-bottom-w) + 2px) calc(100% - var(--cutout-bottom-h) + 15px),
-    calc(100% - var(--cutout-bottom-w)) calc(100% - var(--cutout-bottom-h) + var(--radius)),
-    /* Bottom cutout left edge down */
-    calc(100% - var(--cutout-bottom-w)) calc(100% - var(--radius)),
-    /* Bottom cutout bottom-left inner curve (going down-right) */
-    calc(100% - var(--cutout-bottom-w) - 2px) calc(100% - 15px),
-    calc(100% - var(--cutout-bottom-w) - 5px) calc(100% - 10px),
-    calc(100% - var(--cutout-bottom-w) - 10px) calc(100% - 5px),
-    calc(100% - var(--cutout-bottom-w) - 15px) calc(100% - 2px),
-    calc(100% - var(--cutout-bottom-w) - var(--radius)) 100%,
-    /* Bottom edge */
-    var(--radius) 100%,
-    /* Bottom-left corner */
-    15px calc(100% - 2px),
-    10px calc(100% - 5px),
-    5px calc(100% - 10px),
-    2px calc(100% - 15px),
-    0% calc(100% - var(--radius))
-  );
+      /* Top-left corner */ 0% var(--radius),
+      2px 15px,
+      5px 10px,
+      10px 5px,
+      15px 2px,
+      var(--radius) 0%,
+      /* Top edge to cutout */ calc(100% - var(--cutout-top) - var(--radius)) 0%,
+      /* Top-right cutout inner curve */ calc(100% - var(--cutout-top) - 15px)
+        2px,
+      calc(100% - var(--cutout-top) - 10px) 5px,
+      calc(100% - var(--cutout-top) - 5px) 10px,
+      calc(100% - var(--cutout-top) - 2px) 15px,
+      calc(100% - var(--cutout-top)) var(--radius),
+      /* Top-right cutout left edge */ calc(100% - var(--cutout-top))
+        calc(var(--cutout-top) - var(--radius)),
+      /* Top-right cutout bottom curve */ calc(100% - var(--cutout-top) + 2px)
+        calc(var(--cutout-top) - 15px),
+      calc(100% - var(--cutout-top) + 5px) calc(var(--cutout-top) - 10px),
+      calc(100% - var(--cutout-top) + 10px) calc(var(--cutout-top) - 5px),
+      calc(100% - var(--cutout-top) + 15px) calc(var(--cutout-top) - 2px),
+      calc(100% - var(--cutout-top) + var(--radius)) var(--cutout-top),
+      /* Top-right cutout bottom edge */ calc(100% - var(--radius))
+        var(--cutout-top),
+      /* Right edge curve after top cutout */ calc(100% - 15px)
+        calc(var(--cutout-top) + 2px),
+      calc(100% - 10px) calc(var(--cutout-top) + 5px),
+      calc(100% - 5px) calc(var(--cutout-top) + 10px),
+      calc(100% - 2px) calc(var(--cutout-top) + 15px),
+      100% calc(var(--cutout-top) + var(--radius)),
+      /* Right edge down to bottom cutout */ 100%
+        calc(100% - var(--cutout-bottom-h) - var(--radius)),
+      /* Bottom-right cutout top curve */ calc(100% - 2px)
+        calc(100% - var(--cutout-bottom-h) - 15px),
+      calc(100% - 5px) calc(100% - var(--cutout-bottom-h) - 10px),
+      calc(100% - 10px) calc(100% - var(--cutout-bottom-h) - 5px),
+      calc(100% - 15px) calc(100% - var(--cutout-bottom-h) - 2px),
+      calc(100% - var(--radius)) calc(100% - var(--cutout-bottom-h)),
+      /* Bottom cutout top edge */
+        calc(100% - var(--cutout-bottom-w) + var(--radius))
+        calc(100% - var(--cutout-bottom-h)),
+      /* Bottom cutout left curve */ calc(100% - var(--cutout-bottom-w) + 15px)
+        calc(100% - var(--cutout-bottom-h) + 2px),
+      calc(100% - var(--cutout-bottom-w) + 10px)
+        calc(100% - var(--cutout-bottom-h) + 5px),
+      calc(100% - var(--cutout-bottom-w) + 5px)
+        calc(100% - var(--cutout-bottom-h) + 10px),
+      calc(100% - var(--cutout-bottom-w) + 2px)
+        calc(100% - var(--cutout-bottom-h) + 15px),
+      calc(100% - var(--cutout-bottom-w))
+        calc(100% - var(--cutout-bottom-h) + var(--radius)),
+      /* Bottom cutout left edge down */ calc(100% - var(--cutout-bottom-w))
+        calc(100% - var(--radius)),
+      /* Bottom cutout bottom-left inner curve (going down-right) */
+        calc(100% - var(--cutout-bottom-w) - 2px) calc(100% - 15px),
+      calc(100% - var(--cutout-bottom-w) - 5px) calc(100% - 10px),
+      calc(100% - var(--cutout-bottom-w) - 10px) calc(100% - 5px),
+      calc(100% - var(--cutout-bottom-w) - 15px) calc(100% - 2px),
+      calc(100% - var(--cutout-bottom-w) - var(--radius)) 100%,
+      /* Bottom edge */ var(--radius) 100%,
+      /* Bottom-left corner */ 15px calc(100% - 2px),
+      10px calc(100% - 5px),
+      5px calc(100% - 10px),
+      2px calc(100% - 15px),
+      0% calc(100% - var(--radius))
+    );
   }
 }
 
@@ -209,22 +216,22 @@ body {
 }
 
 .glass-scroll *::-webkit-scrollbar-track {
-  background: #681BEF1A;
+  background: #681bef1a;
 }
 
 .glass-scroll *::-webkit-scrollbar-thumb {
-  background: #681BEF;
+  background: #681bef;
   border-radius: 4px;
 }
 
 .glass-scroll *::-webkit-scrollbar-thumb:hover {
-  background: #681BEFcc;
+  background: #681befcc;
 }
 
 /* Firefox */
 .glass-scroll * {
   scrollbar-width: thin;
-  scrollbar-color: #681BEF #681BEF1A;
+  scrollbar-color: #681bef #681bef1a;
 }
 
 :root {
@@ -261,8 +268,8 @@ body {
 
   body {
     @apply bg-bg text-ink antialiased;
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "cv11", "ss01", "ss03";
   }
 
   :focus-visible {
@@ -300,7 +307,7 @@ body {
 
 @layer utilities {
   .text-display {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 800;
     letter-spacing: -0.02em;
     line-height: 0.95;
@@ -351,5 +358,3 @@ body {
     box-shadow: 0 0 0 3px rgba(107, 63, 228, 0.35);
   }
 }
-
-

@@ -6,7 +6,7 @@ export type BudgetAnswer = {
   presentation: number;
 };
 
-export type AlternativeUsesObject = 'trombone' | 'brique' | 'elastique';
+export type AlternativeUsesObject = "trombone" | "brique" | "elastique";
 
 export type AlternativeUsesAnswer = {
   object: AlternativeUsesObject;
@@ -16,7 +16,7 @@ export type AlternativeUsesAnswer = {
 
 export type TradeoffAnswer = {
   pairId: string;
-  choice: 'A' | 'B';
+  choice: "A" | "B";
   regretForOther: 1 | 2 | 3 | 4 | 5;
 };
 
@@ -27,7 +27,7 @@ export type OpenQuestionAnswer = {
 
 export type MultipleChoiceAnswer = {
   questionId: string;
-  kind: 'single' | 'ranking';
+  kind: "single" | "ranking";
   value: string | string[];
 };
 
@@ -36,7 +36,7 @@ export type ValuesRankingAnswer = {
   bottom3: string[];
 };
 
-export type RiasecResponse = 'like' | 'neutral' | 'dislike';
+export type RiasecResponse = "like" | "neutral" | "dislike";
 export type RiasecAnswer = {
   responses: Record<string, RiasecResponse>;
 };
@@ -54,26 +54,30 @@ export type SocialNuanceAnswer = {
 };
 
 export type TextMemoAnswer = {
-  mode: 'text' | 'audio';
+  mode: "text" | "audio";
   content: string;
   wordCount?: number;
 };
 
 export type Audience =
-  | 'student-exploring'
-  | 'student-switching'
-  | 'professional-questioning'
-  | 'adult-reconverting';
+  | "student-exploring"
+  | "student-switching"
+  | "professional-questioning"
+  | "adult-reconverting";
 
-export type QualificationHorizon = 'immediate' | 'one-year' | 'longer' | 'unknown';
+export type QualificationHorizon =
+  | "immediate"
+  | "one-year"
+  | "longer"
+  | "unknown";
 
 export type QualificationConstraint =
-  | 'finances'
-  | 'family'
-  | 'geography'
-  | 'health'
-  | 'time'
-  | 'none';
+  | "finances"
+  | "family"
+  | "geography"
+  | "health"
+  | "time"
+  | "none";
 
 export type Qualification = {
   horizon: QualificationHorizon;
@@ -98,7 +102,7 @@ export type AssessmentAnswers = {
   textMemo?: TextMemoAnswer;
 };
 
-export const SCHEMA_VERSION = '2.0';
+export const SCHEMA_VERSION = "2.0";
 
 export type AssessmentState = {
   schemaVersion: typeof SCHEMA_VERSION;

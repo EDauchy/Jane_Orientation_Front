@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from '../../lib/supabase';
+import { supabase } from "../../lib/supabase";
 import Map from "../../components/Map";
-import PageLoader from '../../components/ui/PageLoader';
+import PageLoader from "../../components/ui/PageLoader";
 
 export default function DashboardMaps() {
   //const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
-  const [cityFilter, setCityFilter] = useState('Paris');
+  const [cityFilter, setCityFilter] = useState("Paris");
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -14,17 +14,19 @@ export default function DashboardMaps() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
 
         if (!session?.access_token) {
-          navigate('/login');
+          navigate("/login");
           return;
         }
 
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch("/api/auth/me", {
           headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
+            Authorization: `Bearer ${session.access_token}`,
+          },
         });
 
         if (res.ok) {
@@ -34,11 +36,11 @@ export default function DashboardMaps() {
             setCityFilter(data.user.details.city_preference);
           }
         } else {
-          navigate('/login');
+          navigate("/login");
         }
       } catch (error) {
-        console.error('Error fetching profile', error);
-        navigate('/login');
+        console.error("Error fetching profile", error);
+        navigate("/login");
       } finally {
         setLoading(false);
       }
@@ -50,14 +52,14 @@ export default function DashboardMaps() {
   if (loading) return <PageLoader />;
   if (!profile) return <div className="p-8">Error loading profile.</div>;
 
-
-
   return (
     <div className="h-full w-full">
       {/* <StyledTitle text='Maps' className='text-[1.7rem] pb-5' /> */}
 
-      <Map city={cityFilter} suggestedJobs={profile.details?.test_results || []} />
-
+      <Map
+        city={cityFilter}
+        suggestedJobs={profile.details?.test_results || []}
+      />
     </div>
   );
 }

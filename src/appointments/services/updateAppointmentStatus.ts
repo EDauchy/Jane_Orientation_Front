@@ -7,9 +7,11 @@ export type UpdateAppointmentPayload = {
 
 export async function updateAppointmentStatus(
   id: string,
-  payload: UpdateAppointmentPayload
+  payload: UpdateAppointmentPayload,
 ) {
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   if (!session?.access_token) {
     throw new Error("NO_SESSION");

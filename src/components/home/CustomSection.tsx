@@ -2,7 +2,6 @@ import React from "react";
 import StyledTitle from "./StyledTitle";
 import type { CustomSectionProps } from "../../shard/types";
 
-
 const CustomSection: React.FC<CustomSectionProps> = ({ title, children }) => {
   return (
     <section className="relative w-full py-24 overflow-hidden bg-white flex flex-col items-center justify-center">
@@ -37,6 +36,6 @@ const CustomSection: React.FC<CustomSectionProps> = ({ title, children }) => {
       </div>
     </section>
   );
-}
+};
 
 export default CustomSection;

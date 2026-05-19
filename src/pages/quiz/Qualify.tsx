@@ -1,21 +1,21 @@
-import { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
-import { Button, Highlight } from '../../components/quiz/ui';
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { Button, Highlight } from "../../components/quiz/ui";
 import {
   AUDIENCE_OPTIONS,
   CONSTRAINT_OPTIONS,
   HORIZON_OPTIONS,
   MAX_CONSTRAINTS,
-} from '../../content/qualify.fr';
-import { firstSlug } from '../../lib/quiz/flow/sequence';
-import { useAssessment } from '../../lib/quiz/store';
+} from "../../content/qualify.fr";
+import { firstSlug } from "../../lib/quiz/flow/sequence";
+import { useAssessment } from "../../lib/quiz/store";
 import type {
   Audience,
   QualificationConstraint,
   QualificationHorizon,
-} from '../../lib/quiz/types';
+} from "../../lib/quiz/types";
 
 export default function Qualify() {
   const navigate = useNavigate();
@@ -26,9 +26,15 @@ export default function Qualify() {
   const existingQualification = useAssessment((s) => s.state.qualification);
   const existingAnswers = useAssessment((s) => s.state.answers);
 
-  const [audience, setAudienceLocal] = useState<Audience | null>(existingAudience);
-  const [horizon, setHorizon] = useState<QualificationHorizon | null>(existingQualification?.horizon ?? null);
-  const [constraints, setConstraints] = useState<QualificationConstraint[]>(existingQualification?.constraints ?? []);
+  const [audience, setAudienceLocal] = useState<Audience | null>(
+    existingAudience,
+  );
+  const [horizon, setHorizon] = useState<QualificationHorizon | null>(
+    existingQualification?.horizon ?? null,
+  );
+  const [constraints, setConstraints] = useState<QualificationConstraint[]>(
+    existingQualification?.constraints ?? [],
+  );
 
   const canSubmit = useMemo(
     () => audience !== null && horizon !== null,
@@ -37,10 +43,10 @@ export default function Qualify() {
 
   function toggleConstraint(id: QualificationConstraint) {
     setConstraints((prev) => {
-      if (id === 'none') {
-        return prev.includes('none') ? [] : ['none'];
+      if (id === "none") {
+        return prev.includes("none") ? [] : ["none"];
       }
-      const withoutNone = prev.filter((c) => c !== 'none');
+      const withoutNone = prev.filter((c) => c !== "none");
       if (withoutNone.includes(id)) return withoutNone.filter((c) => c !== id);
       if (withoutNone.length >= MAX_CONSTRAINTS) return withoutNone;
       return [...withoutNone, id];
@@ -92,9 +98,7 @@ export default function Qualify() {
           </div>
 
           <fieldset className="flex flex-col gap-3">
-            <legend className="label mb-2">
-              1 — Où en es-tu ?
-            </legend>
+            <legend className="label mb-2">1 — Où en es-tu ?</legend>
             <div className="flex flex-col gap-2">
               {AUDIENCE_OPTIONS.map((opt) => {
                 const selected = audience === opt.id;
@@ -106,19 +110,21 @@ export default function Qualify() {
                     aria-pressed={selected}
                     className={`text-left rounded-2xl border px-4 py-3 transition-colors ${
                       selected
-                        ? 'border-purple bg-purple-lt/60'
-                        : 'border-ink/10 bg-white hover:border-ink/30'
+                        ? "border-purple bg-purple-lt/60"
+                        : "border-ink/10 bg-white hover:border-ink/30"
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <span
                         aria-hidden="true"
                         className={`mt-1 w-4 h-4 rounded-full shrink-0 border-2 ${
-                          selected ? 'border-purple bg-purple' : 'border-ink/30'
+                          selected ? "border-purple bg-purple" : "border-ink/30"
                         }`}
                       />
                       <div className="flex-1">
-                        <div className="font-bold text-[15px] text-ink">{opt.label}</div>
+                        <div className="font-bold text-[15px] text-ink">
+                          {opt.label}
+                        </div>
                         <div className="text-[13px] text-muted leading-relaxed">
                           {opt.description}
                         </div>
@@ -145,8 +151,8 @@ export default function Qualify() {
                     aria-pressed={selected}
                     className={`rounded-full px-4 h-11 text-[14px] font-bold border transition-colors ${
                       selected
-                        ? 'bg-ink text-white border-ink'
-                        : 'bg-white text-ink border-ink/15 hover:border-ink/40'
+                        ? "bg-ink text-white border-ink"
+                        : "bg-white text-ink border-ink/15 hover:border-ink/40"
                     }`}
                   >
                     {opt.label}
@@ -168,8 +174,9 @@ export default function Qualify() {
                 const selected = constraints.includes(opt.id);
                 const atCap =
                   !selected &&
-                  opt.id !== 'none' &&
-                  constraints.filter((c) => c !== 'none').length >= MAX_CONSTRAINTS;
+                  opt.id !== "none" &&
+                  constraints.filter((c) => c !== "none").length >=
+                    MAX_CONSTRAINTS;
                 return (
                   <button
                     key={opt.id}
@@ -179,8 +186,8 @@ export default function Qualify() {
                     disabled={atCap}
                     className={`inline-flex items-center gap-1.5 rounded-full px-4 h-10 text-[13px] font-bold border transition-colors ${
                       selected
-                        ? 'bg-purple text-white border-purple'
-                        : 'bg-white text-ink border-ink/15 hover:border-ink/40 disabled:opacity-40 disabled:cursor-not-allowed'
+                        ? "bg-purple text-white border-purple"
+                        : "bg-white text-ink border-ink/15 hover:border-ink/40 disabled:opacity-40 disabled:cursor-not-allowed"
                     }`}
                   >
                     {selected ? <Check size={14} aria-hidden="true" /> : null}
@@ -203,8 +210,8 @@ export default function Qualify() {
               Commencer le test
             </Button>
             <p className="text-[12px] leading-relaxed text-muted max-w-[520px]">
-              Ceci n'est pas un diagnostic. Les réponses alimentent un compte-rendu
-              personnel — aucun jugement, aucune note.
+              Ceci n'est pas un diagnostic. Les réponses alimentent un
+              compte-rendu personnel — aucun jugement, aucune note.
             </p>
           </div>
         </motion.div>

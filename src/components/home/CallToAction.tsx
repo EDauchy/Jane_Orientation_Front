@@ -6,7 +6,6 @@ const CallToAction = () => {
   const navigate = useNavigate();
   return (
     <div className="relative w-full overflow-hidden bg-white py-30 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[400px]">
-
       <img
         src="./CallToAction-etoile.png"
         className="absolute left-[20%] w-[10vw] bottom-5"
@@ -45,7 +44,7 @@ const CallToAction = () => {
 
           {/* Le Bouton Principal */}
           <button
-          onClick={() => navigate('/quiz')}
+            onClick={() => navigate("/quiz")}
             className="flex items-center gap-2 text-white text-lg px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
             style={{
               background:
@@ -56,8 +55,11 @@ const CallToAction = () => {
             <Sparkles className="w-1 h-1 text-white" fill="currentColor" />
           </button>
 
-          <img src="./CallToAction-image.png" className="absolute -right-10 -bottom-10 w-12 rotate-180" alt="" />
-
+          <img
+            src="./CallToAction-image.png"
+            className="absolute -right-10 -bottom-10 w-12 rotate-180"
+            alt=""
+          />
         </div>
       </div>
     </div>

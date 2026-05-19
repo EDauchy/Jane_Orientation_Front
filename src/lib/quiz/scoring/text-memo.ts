@@ -1,7 +1,7 @@
-import type { TextMemoAnswer } from '../types';
+import type { TextMemoAnswer } from "../types";
 
 export type TextMemoSignals = {
-  mode: 'text' | 'audio';
+  mode: "text" | "audio";
   present: boolean;
   wordCount: number;
   charCount: number;
@@ -11,19 +11,40 @@ export type TextMemoSignals = {
 };
 
 const REVERSAL_TERMS = [
-  'changé d\'avis', 'changer d\'avis', 'revu ma position', 'finalement',
-  'au début je pensais', 'puis j\'ai compris', 'm\'a fait réaliser',
-  'j\'ai fini par', 'avant je', 'maintenant je',
+  "changé d'avis",
+  "changer d'avis",
+  "revu ma position",
+  "finalement",
+  "au début je pensais",
+  "puis j'ai compris",
+  "m'a fait réaliser",
+  "j'ai fini par",
+  "avant je",
+  "maintenant je",
 ];
 
 const OWNERSHIP_TERMS = [
-  'j\'ai eu tort', 'j\'ai reconnu', 'je m\'étais trompé', 'je me suis trompée',
-  'j\'ai appris', 'ma responsabilité', 'c\'est de ma faute', 'je l\'assume',
+  "j'ai eu tort",
+  "j'ai reconnu",
+  "je m'étais trompé",
+  "je me suis trompée",
+  "j'ai appris",
+  "ma responsabilité",
+  "c'est de ma faute",
+  "je l'assume",
 ];
 
 const TIME_ANCHORS = [
-  'hier', 'la semaine', 'le mois', 'l\'an', 'avant', 'après', 'ensuite',
-  'à l\'époque', 'il y a', 'pendant',
+  "hier",
+  "la semaine",
+  "le mois",
+  "l'an",
+  "avant",
+  "après",
+  "ensuite",
+  "à l'époque",
+  "il y a",
+  "pendant",
 ];
 
 function has(text: string, terms: string[]): boolean {
@@ -31,10 +52,12 @@ function has(text: string, terms: string[]): boolean {
   return terms.some((t) => lower.includes(t));
 }
 
-export function analyzeTextMemo(answer: TextMemoAnswer | undefined): TextMemoSignals {
+export function analyzeTextMemo(
+  answer: TextMemoAnswer | undefined,
+): TextMemoSignals {
   if (!answer) {
     return {
-      mode: 'text',
+      mode: "text",
       present: false,
       wordCount: 0,
       charCount: 0,
@@ -44,13 +67,13 @@ export function analyzeTextMemo(answer: TextMemoAnswer | undefined): TextMemoSig
     };
   }
 
-  const content = (answer.content ?? '').trim();
+  const content = (answer.content ?? "").trim();
   const words = content.length === 0 ? [] : content.split(/\s+/);
   const wordCount = answer.wordCount ?? words.length;
 
   return {
     mode: answer.mode,
-    present: content.length > 0 || answer.mode === 'audio',
+    present: content.length > 0 || answer.mode === "audio",
     wordCount,
     charCount: content.length,
     hasReversalMarkers: has(content, REVERSAL_TERMS),

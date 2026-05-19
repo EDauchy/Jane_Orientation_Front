@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mic, Pause, Play, Square, Trash2, Type } from 'lucide-react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
-import type { TextMemoAnswer } from '../../../lib/quiz/types';
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Mic, Pause, Play, Square, Trash2, Type } from "lucide-react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
+import type { TextMemoAnswer } from "../../../lib/quiz/types";
 import {
   MEMO_MAX_CHARS,
   MEMO_MAX_DURATION_MS,
   MEMO_MIN_CHARS,
-} from '../../../lib/quiz/validators/text-memo';
+} from "../../../lib/quiz/validators/text-memo";
 
-type Mode = 'text' | 'audio';
+type Mode = "text" | "audio";
 
 function hasMediaRecorder(): boolean {
   return (
-    typeof window !== 'undefined' &&
-    typeof window.MediaRecorder !== 'undefined' &&
-    typeof navigator !== 'undefined' &&
+    typeof window !== "undefined" &&
+    typeof window.MediaRecorder !== "undefined" &&
+    typeof navigator !== "undefined" &&
     navigator.mediaDevices?.getUserMedia != null
   );
 }
@@ -26,14 +26,14 @@ function formatTime(ms: number): string {
   const total = Math.max(0, Math.floor(ms / 1000));
   const m = Math.floor(total / 60);
   const s = total % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 export function TextMemo({ moduleNumber, onReady }: ModuleProps) {
   const existing = useAssessment((s) => s.state.answers.textMemo);
   const setTextMemo = useAssessment((s) => s.setTextMemo);
 
-  const [mode, setMode] = useState<Mode>(existing?.mode ?? 'text');
+  const [mode, setMode] = useState<Mode>(existing?.mode ?? "text");
   const voiceSupported = hasMediaRecorder();
 
   return (
@@ -44,7 +44,8 @@ export function TextMemo({ moduleNumber, onReady }: ModuleProps) {
         color="green"
         title={
           <>
-            Une fois où tu as <Highlight color="yellow">changé d'avis</Highlight>
+            Une fois où tu as{" "}
+            <Highlight color="yellow">changé d'avis</Highlight>
           </>
         }
       />
@@ -56,11 +57,11 @@ export function TextMemo({ moduleNumber, onReady }: ModuleProps) {
       <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
-          onClick={() => setMode('text')}
+          onClick={() => setMode("text")}
           className={`h-11 rounded-full inline-flex items-center justify-center gap-2 text-[13px] font-bold transition-all ${
-            mode === 'text'
-              ? 'bg-ink text-white'
-              : 'bg-white border border-ink/10 text-ink hover:bg-ink/5'
+            mode === "text"
+              ? "bg-ink text-white"
+              : "bg-white border border-ink/10 text-ink hover:bg-ink/5"
           }`}
         >
           <Type size={15} />
@@ -68,29 +69,33 @@ export function TextMemo({ moduleNumber, onReady }: ModuleProps) {
         </button>
         <button
           type="button"
-          onClick={() => voiceSupported && setMode('audio')}
+          onClick={() => voiceSupported && setMode("audio")}
           disabled={!voiceSupported}
           className={`h-11 rounded-full inline-flex items-center justify-center gap-2 text-[13px] font-bold transition-all disabled:opacity-40 disabled:pointer-events-none ${
-            mode === 'audio'
-              ? 'bg-ink text-white'
-              : 'bg-white border border-ink/10 text-ink hover:bg-ink/5'
+            mode === "audio"
+              ? "bg-ink text-white"
+              : "bg-white border border-ink/10 text-ink hover:bg-ink/5"
           }`}
         >
           <Mic size={15} />
           Mode voix
-          {!voiceSupported ? <span className="text-[10px] font-normal opacity-70">(indisponible)</span> : null}
+          {!voiceSupported ? (
+            <span className="text-[10px] font-normal opacity-70">
+              (indisponible)
+            </span>
+          ) : null}
         </button>
       </div>
 
-      {mode === 'text' ? (
+      {mode === "text" ? (
         <TextEditor
-          initial={existing?.mode === 'text' ? existing.content : ''}
+          initial={existing?.mode === "text" ? existing.content : ""}
           onReady={onReady}
           setMemo={setTextMemo}
         />
       ) : (
         <VoiceRecorder
-          initial={existing?.mode === 'audio' ? existing : undefined}
+          initial={existing?.mode === "audio" ? existing : undefined}
           onReady={onReady}
           setMemo={setTextMemo}
         />
@@ -115,7 +120,7 @@ function TextEditor({ initial, onReady, setMemo }: TextEditorProps) {
   useEffect(() => {
     onReady(valid);
     if (valid) {
-      setMemo({ mode: 'text', content: trimmed, wordCount: words });
+      setMemo({ mode: "text", content: trimmed, wordCount: words });
     }
   }, [valid, trimmed, words, onReady, setMemo]);
 
@@ -158,7 +163,7 @@ function TextEditor({ initial, onReady, setMemo }: TextEditorProps) {
   );
 }
 
-type VoicePhase = 'idle' | 'recording' | 'recorded';
+type VoicePhase = "idle" | "recording" | "recorded";
 
 type VoiceRecorderProps = {
   initial?: TextMemoAnswer;
@@ -168,7 +173,7 @@ type VoiceRecorderProps = {
 
 function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
   const [phase, setPhase] = useState<VoicePhase>(
-    initial?.content ? 'recorded' : 'idle',
+    initial?.content ? "recorded" : "idle",
   );
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -180,14 +185,14 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
   const mediaRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
-  const startRef = useRef<number>(0);
+  const startRef = useRef<number | null>(null);
   const tickRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const ready = phase === 'recorded' && storedDataUrl != null;
+    const ready = phase === "recorded" && storedDataUrl != null;
     onReady(ready);
     if (ready && storedDataUrl) {
-      setMemo({ mode: 'audio', content: storedDataUrl });
+      setMemo({ mode: "audio", content: storedDataUrl });
     }
   }, [phase, storedDataUrl, onReady, setMemo]);
 
@@ -211,28 +216,31 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
       };
       rec.onstop = () => {
         const blob = new Blob(chunksRef.current, {
-          type: rec.mimeType || 'audio/webm',
+          type: rec.mimeType || "audio/webm",
         });
         const url = URL.createObjectURL(blob);
         setBlobUrl(url);
         const reader = new FileReader();
         reader.onloadend = () => {
-          if (typeof reader.result === 'string') {
+          if (typeof reader.result === "string") {
             setStoredDataUrl(reader.result);
           }
         };
         reader.readAsDataURL(blob);
         streamRef.current?.getTracks().forEach((t) => t.stop());
         streamRef.current = null;
-        setPhase('recorded');
+        setPhase("recorded");
       };
       rec.start();
       mediaRef.current = rec;
-      startRef.current = Date.now();
+      startRef.current = null;
       setElapsed(0);
-      setPhase('recording');
+      setPhase("recording");
 
       tickRef.current = window.setInterval(() => {
+        if (startRef.current == null) {
+          startRef.current = Date.now();
+        }
         const el = Date.now() - startRef.current;
         setElapsed(el);
         if (el >= MEMO_MAX_DURATION_MS) {
@@ -241,9 +249,9 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
       }, 200);
     } catch (e) {
       setError(
-        'Accès au micro refusé ou indisponible. Tu peux passer en mode texte.',
+        "Accès au micro refusé ou indisponible. Tu peux passer en mode texte.",
       );
-      setPhase('idle');
+      setPhase("idle");
     }
   }
 
@@ -253,7 +261,7 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
       tickRef.current = null;
     }
     const rec = mediaRef.current;
-    if (rec && rec.state !== 'inactive') rec.stop();
+    if (rec && rec.state !== "inactive") rec.stop();
     mediaRef.current = null;
   }
 
@@ -262,7 +270,8 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
     setBlobUrl(null);
     setStoredDataUrl(null);
     setElapsed(0);
-    setPhase('idle');
+    startRef.current = null;
+    setPhase("idle");
   }
 
   return (
@@ -273,7 +282,7 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
         </div>
       ) : null}
 
-      {phase === 'idle' ? (
+      {phase === "idle" ? (
         <motion.button
           type="button"
           onClick={startRecording}
@@ -285,7 +294,7 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
         </motion.button>
       ) : null}
 
-      {phase === 'recording' ? (
+      {phase === "recording" ? (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -306,7 +315,7 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
               className="h-full bg-green"
               initial={{ width: 0 }}
               animate={{ width: `${(elapsed / MEMO_MAX_DURATION_MS) * 100}%` }}
-              transition={{ ease: 'linear' }}
+              transition={{ ease: "linear" }}
             />
           </div>
 
@@ -322,7 +331,7 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
         </div>
       ) : null}
 
-      {phase === 'recorded' ? (
+      {phase === "recorded" ? (
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <Pill variant="green" size="sm">
@@ -356,16 +365,15 @@ function VoiceRecorder({ initial, onReady, setMemo }: VoiceRecorderProps) {
             </div>
           </div>
           <p className="text-[11px] text-muted leading-snug">
-            Audio stocké localement dans ton navigateur (localStorage). Rien n'est
-            envoyé en ligne.
+            Audio stocké localement dans ton navigateur (localStorage). Rien
+            n'est envoyé en ligne.
           </p>
         </div>
       ) : null}
 
-      {phase === 'idle' && !error ? (
+      {phase === "idle" && !error ? (
         <div className="flex items-center gap-2 text-[11px] text-muted">
-          <Pause size={12} />
-          2 minutes max. Le chrono s'arrête tout seul.
+          <Pause size={12} />2 minutes max. Le chrono s'arrête tout seul.
         </div>
       ) : null}
     </Card>

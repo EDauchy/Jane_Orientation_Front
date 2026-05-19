@@ -1,13 +1,21 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Clapperboard, Clock3, Lock, RotateCcw, Sparkles } from 'lucide-react';
-import { Highlight, Pill } from '../../components/quiz/ui';
-import { useAuth } from '../../context/AuthContext';
-import { useAssessment } from '../../lib/quiz/store';
-import { slugAt, totalInFlow } from '../../lib/quiz/flow/sequence';
-import LoginModal from '../../components/LoginModal';
-import { seedDemoData } from '../../lib/quiz/demoSeed';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clapperboard,
+  Clock3,
+  Lock,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
+import { Highlight, Pill } from "../../components/quiz/ui";
+import { useAuth } from "../../context/AuthContext";
+import { useAssessment } from "../../lib/quiz/store";
+import { slugAt, totalInFlow } from "../../lib/quiz/flow/sequence";
+import LoginModal from "../../components/LoginModal";
+import { seedDemoData } from "../../lib/quiz/demoSeed";
 
 export default function Landing() {
   const { user, loading } = useAuth();
@@ -29,26 +37,32 @@ export default function Landing() {
       : 0;
   const moduleLabel = hasSession
     ? `Module ${assessmentState.currentModuleIdx + 1}/${total}`
-    : '';
+    : "";
 
   function handlePrimary() {
-    if (!user) { setIsLoginOpen(true); return; }
+    if (!user) {
+      setIsLoginOpen(true);
+      return;
+    }
     if (hasSession && currentSlug) {
       navigate(`/quiz/assessment/${currentSlug}`);
     } else {
-      navigate('/quiz/qualify');
+      navigate("/quiz/qualify");
     }
   }
 
   function handleRestart() {
     resetSession();
-    navigate('/quiz/qualify');
+    navigate("/quiz/qualify");
   }
 
   function handleDemo() {
-    if (!user) { setIsLoginOpen(true); return; }
+    if (!user) {
+      setIsLoginOpen(true);
+      return;
+    }
     seedDemoData();
-    navigate('/quiz/qualify');
+    navigate("/quiz/qualify");
   }
 
   return (
@@ -67,8 +81,9 @@ export default function Landing() {
 
             <div className="flex flex-col gap-4 max-w-[620px] text-[16px] sm:text-[18px] leading-relaxed text-muted">
               <p>
-                Que tu cherches ta filière, que tu penses changer de voie, ou que
-                tu sois en pleine reconversion — ce parcours s'adapte à ta situation.
+                Que tu cherches ta filière, que tu penses changer de voie, ou
+                que tu sois en pleine reconversion — ce parcours s'adapte à ta
+                situation.
               </p>
               <p>
                 15 à 20 minutes, ton rythme, sans jugement. À la fin, tu repars
@@ -112,7 +127,7 @@ export default function Landing() {
                   disabled={loading}
                   className="inline-flex items-center gap-2 h-14 px-7 rounded-full bg-purple text-white text-[16px] font-bold hover:bg-purple-dk transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {hasSession ? 'Reprendre le quiz' : 'Commencer'}
+                  {hasSession ? "Reprendre le quiz" : "Commencer"}
                   {hasSession && (
                     <span className="text-[12px] font-normal opacity-80">
                       — {moduleLabel}
@@ -157,7 +172,11 @@ export default function Landing() {
         </div>
       </footer>
 
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} redirectTo="/quiz" />
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        redirectTo="/quiz"
+      />
     </div>
   );
 }

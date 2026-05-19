@@ -1,5 +1,5 @@
-import type { Audience } from '../types';
-import { FLOWS } from './audience';
+import type { Audience } from "../types";
+import { FLOWS } from "./audience";
 
 export function getFlow(audience: Audience): ReadonlyArray<string> {
   return FLOWS[audience];

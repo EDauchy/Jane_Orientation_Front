@@ -11,7 +11,6 @@ export default function Blog() {
     <div className="min-h-screen bg-white">
       <Header />
 
-
       <main className="pt-32 pb-16 px-6 md:px-12 lg:px-24">
         <h1 className="font-montserrat font-black text-primary text-3xl md:text-4xl uppercase text-center leading-tight mb-6">
           L'avenir appartient à ceux qui choisissent en connaissance
@@ -37,7 +36,12 @@ export default function Blog() {
         ) : (
           <div className="flex flex-wrap justify-center gap-[18px]">
             {articles.map((article, i) => (
-              <a key={article.id} href={article.url} target="_blank" rel="noopener noreferrer">
+              <a
+                key={article.id}
+                href={article.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ArticleCard {...toCardProps(article, i)} />
               </a>
             ))}

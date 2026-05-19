@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Check } from 'lucide-react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
-import type { TradeoffAnswer } from '../../../lib/quiz/types';
-import { TRADEOFF_PAIR_IDS, type TradeoffPairId } from '../../../lib/quiz/validators/tradeoff';
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Check } from "lucide-react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
+import type { TradeoffAnswer } from "../../../lib/quiz/types";
+import {
+  TRADEOFF_PAIR_IDS,
+  type TradeoffPairId,
+} from "../../../lib/quiz/validators/tradeoff";
 
 type Pair = {
   id: TradeoffPairId;
@@ -17,86 +20,88 @@ type Pair = {
 
 const PAIRS: Pair[] = [
   {
-    id: 'salary-vs-passion',
-    kicker: 'Dilemme 1',
-    question: 'Deux offres sur la table, tu signes laquelle ?',
+    id: "salary-vs-passion",
+    kicker: "Dilemme 1",
+    question: "Deux offres sur la table, tu signes laquelle ?",
     A: {
-      title: '60k€ en grand groupe',
-      subtitle: 'Horaires fixes, sujet qui ne te passionne pas trop.',
+      title: "60k€ en grand groupe",
+      subtitle: "Horaires fixes, sujet qui ne te passionne pas trop.",
     },
     B: {
-      title: '38k€ en startup',
-      subtitle: 'Horaires libres, sujet qui te passionne vraiment.',
+      title: "38k€ en startup",
+      subtitle: "Horaires libres, sujet qui te passionne vraiment.",
     },
   },
   {
-    id: 'remote-vs-team',
-    kicker: 'Dilemme 2',
-    question: 'Le cadre de travail, c\'est…',
+    id: "remote-vs-team",
+    kicker: "Dilemme 2",
+    question: "Le cadre de travail, c'est…",
     A: {
-      title: 'Télétravail 100 %',
-      subtitle: 'Équipe distribuée, autonomie maximale.',
+      title: "Télétravail 100 %",
+      subtitle: "Équipe distribuée, autonomie maximale.",
     },
     B: {
-      title: 'Bureau 5 jours / 5',
-      subtitle: 'Équipe soudée, interactions quotidiennes.',
+      title: "Bureau 5 jours / 5",
+      subtitle: "Équipe soudée, interactions quotidiennes.",
     },
   },
   {
-    id: 'expert-vs-generalist',
-    kicker: 'Dilemme 3',
-    question: 'Dans 5 ans, tu préfères être…',
+    id: "expert-vs-generalist",
+    kicker: "Dilemme 3",
+    question: "Dans 5 ans, tu préfères être…",
     A: {
-      title: 'Expert pointu dans une niche',
-      subtitle: 'Une référence sur un sujet précis.',
+      title: "Expert pointu dans une niche",
+      subtitle: "Une référence sur un sujet précis.",
     },
     B: {
-      title: 'Généraliste polyvalent',
-      subtitle: 'À l\'aise sur beaucoup de sujets différents.',
+      title: "Généraliste polyvalent",
+      subtitle: "À l'aise sur beaucoup de sujets différents.",
     },
   },
   {
-    id: 'employee-vs-freelance',
-    kicker: 'Dilemme 4',
-    question: 'Ton rapport à l\'argent du mois prochain…',
+    id: "employee-vs-freelance",
+    kicker: "Dilemme 4",
+    question: "Ton rapport à l'argent du mois prochain…",
     A: {
-      title: 'Salarié, revenu stable',
-      subtitle: 'Le même montant tous les mois, pas de surprise.',
+      title: "Salarié, revenu stable",
+      subtitle: "Le même montant tous les mois, pas de surprise.",
     },
     B: {
-      title: 'Freelance, revenu ±40 %',
-      subtitle: 'Potentiellement plus haut, parfois plus bas.',
+      title: "Freelance, revenu ±40 %",
+      subtitle: "Potentiellement plus haut, parfois plus bas.",
     },
   },
   {
-    id: 'impact-vs-recognition',
-    kicker: 'Dilemme 5',
-    question: 'Tu choisirais un poste où…',
+    id: "impact-vs-recognition",
+    kicker: "Dilemme 5",
+    question: "Tu choisirais un poste où…",
     A: {
-      title: 'Impact visible, zéro reconnaissance',
-      subtitle: 'Ce que tu fais change des choses, mais personne ne le sait.',
+      title: "Impact visible, zéro reconnaissance",
+      subtitle: "Ce que tu fais change des choses, mais personne ne le sait.",
     },
     B: {
-      title: 'Reconnaissance forte, zéro impact',
-      subtitle: 'Tu es célébré(e), mais ton travail ne change rien.',
+      title: "Reconnaissance forte, zéro impact",
+      subtitle: "Tu es célébré(e), mais ton travail ne change rien.",
     },
   },
 ];
 
 const REGRET_LABELS: Record<1 | 2 | 3 | 4 | 5, string> = {
-  1: 'Aucun regret',
-  2: 'Léger',
-  3: 'Hésitant',
-  4: 'Lourd',
-  5: 'Je l\'aurais presque pris',
+  1: "Aucun regret",
+  2: "Léger",
+  3: "Hésitant",
+  4: "Lourd",
+  5: "Je l'aurais presque pris",
 };
 
 type Draft = {
-  choice: 'A' | 'B' | null;
+  choice: "A" | "B" | null;
   regret: 1 | 2 | 3 | 4 | 5 | null;
 };
 
-function draftFromAnswers(answers: TradeoffAnswer[]): Record<TradeoffPairId, Draft> {
+function draftFromAnswers(
+  answers: TradeoffAnswer[],
+): Record<TradeoffPairId, Draft> {
   const out = {} as Record<TradeoffPairId, Draft>;
   for (const id of TRADEOFF_PAIR_IDS) {
     out[id] = { choice: null, regret: null };
@@ -143,7 +148,7 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
     if (allDone) {
       const answers: TradeoffAnswer[] = PAIRS.map((p) => ({
         pairId: p.id,
-        choice: drafts[p.id].choice as 'A' | 'B',
+        choice: drafts[p.id].choice as "A" | "B",
         regretForOther: drafts[p.id].regret as 1 | 2 | 3 | 4 | 5,
       }));
       setTradeoff(answers);
@@ -153,7 +158,7 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
   const pair = PAIRS[cursor];
   const draft = drafts[pair.id];
 
-  function chooseSide(side: 'A' | 'B') {
+  function chooseSide(side: "A" | "B") {
     setDrafts((prev) => ({
       ...prev,
       [pair.id]: { choice: side, regret: prev[pair.id].regret },
@@ -191,7 +196,8 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
         color="pink"
         title={
           <>
-            Cinq dilemmes, <Highlight color="yellow">ton regret</Highlight> mesuré
+            Cinq dilemmes, <Highlight color="yellow">ton regret</Highlight>{" "}
+            mesuré
           </>
         }
       />
@@ -226,9 +232,9 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
           </Card>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {(['A', 'B'] as const).map((side) => {
+            {(["A", "B"] as const).map((side) => {
               const selected = draft.choice === side;
-              const data = side === 'A' ? pair.A : pair.B;
+              const data = side === "A" ? pair.A : pair.B;
               return (
                 <motion.button
                   key={side}
@@ -237,24 +243,26 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
                   onClick={() => chooseSide(side)}
                   className={`text-left rounded-3xl p-4 transition-all border-2 ${
                     selected
-                      ? 'bg-pink text-white border-pink shadow-md'
-                      : 'bg-white border-ink/10 hover:border-pink/40'
+                      ? "bg-pink text-white border-pink shadow-md"
+                      : "bg-white border-ink/10 hover:border-pink/40"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span
                       className={`text-[11px] font-black tracking-wider ${
-                        selected ? 'text-white/80' : 'text-pink'
+                        selected ? "text-white/80" : "text-pink"
                       }`}
                     >
                       OPTION {side}
                     </span>
                     {selected ? <Check size={18} /> : null}
                   </div>
-                  <div className="text-[16px] font-bold leading-tight">{data.title}</div>
+                  <div className="text-[16px] font-bold leading-tight">
+                    {data.title}
+                  </div>
                   <div
                     className={`text-[13px] mt-1 leading-relaxed ${
-                      selected ? 'text-white/90' : 'text-muted'
+                      selected ? "text-white/90" : "text-muted"
                     }`}
                   >
                     {data.subtitle}
@@ -270,14 +278,18 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <Card variant="white" padding="md" className="flex flex-col gap-3">
+              <Card
+                variant="white"
+                padding="md"
+                className="flex flex-col gap-3"
+              >
                 <div className="flex flex-col gap-1">
                   <span className="label">Le regret pour l'autre</span>
                   <p className="text-[14px] leading-snug">
-                    À quel point{' '}
+                    À quel point{" "}
                     <strong>
-                      {draft.choice === 'A' ? pair.B.title : pair.A.title}
-                    </strong>{' '}
+                      {draft.choice === "A" ? pair.B.title : pair.A.title}
+                    </strong>{" "}
                     t'aurait manqué ?
                   </p>
                 </div>
@@ -292,8 +304,8 @@ export function TradeoffScenario({ moduleNumber, onReady }: ModuleProps) {
                         onClick={() => setRegret(v)}
                         className={`h-12 rounded-2xl text-[15px] font-black transition-all ${
                           selected
-                            ? 'bg-ink text-white ring-2 ring-offset-2 ring-pink'
-                            : 'bg-purple-lt text-ink hover:bg-pink/20'
+                            ? "bg-ink text-white ring-2 ring-offset-2 ring-pink"
+                            : "bg-purple-lt text-ink hover:bg-pink/20"
                         }`}
                       >
                         {v}

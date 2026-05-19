@@ -1,14 +1,19 @@
-import type { ReactNode } from 'react';
-import { Pill } from './Pill';
+import type { ReactNode } from "react";
+import { Pill } from "./Pill";
 
 type Props = {
   num: number;
   title: ReactNode;
   label?: string;
-  color?: 'purple' | 'orange' | 'pink' | 'yellow' | 'green';
+  color?: "purple" | "orange" | "pink" | "yellow" | "green";
 };
 
-export function ModuleHeader({ num, title, label = 'MODULE', color = 'purple' }: Props) {
+export function ModuleHeader({
+  num,
+  title,
+  label = "MODULE",
+  color = "purple",
+}: Props) {
   return (
     <header className="flex flex-col gap-3 mb-6">
       <div className="flex items-center gap-2">

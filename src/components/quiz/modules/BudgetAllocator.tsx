@@ -1,25 +1,28 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
-import { BudgetSchema } from '../../../lib/quiz/validators/budget';
-import type { BudgetAnswer } from '../../../lib/quiz/types';
-import { BUDGET_PHASES, type BudgetPhase } from '../../../lib/quiz/scoring/budget';
+import { useEffect, useMemo, useState } from "react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
+import { BudgetSchema } from "../../../lib/quiz/validators/budget";
+import type { BudgetAnswer } from "../../../lib/quiz/types";
+import {
+  BUDGET_PHASES,
+  type BudgetPhase,
+} from "../../../lib/quiz/scoring/budget";
 
 const PHASE_LABELS: Record<BudgetPhase, string> = {
-  ideation: 'Idéation',
-  planning: 'Planification',
-  execution: 'Exécution',
-  polish: 'Peaufinage',
-  presentation: 'Présentation',
+  ideation: "Idéation",
+  planning: "Planification",
+  execution: "Exécution",
+  polish: "Peaufinage",
+  presentation: "Présentation",
 };
 
 const PHASE_HINTS: Record<BudgetPhase, string> = {
-  ideation: 'Chercher, explorer, comprendre le problème',
-  planning: 'Structurer, estimer, cadrer avant de lancer',
-  execution: 'Produire le cœur du livrable, faire le sale boulot',
-  polish: 'Corriger, raffiner, rendre agréable',
-  presentation: 'Mettre en scène, présenter, vendre',
+  ideation: "Chercher, explorer, comprendre le problème",
+  planning: "Structurer, estimer, cadrer avant de lancer",
+  execution: "Produire le cœur du livrable, faire le sale boulot",
+  polish: "Corriger, raffiner, rendre agréable",
+  presentation: "Mettre en scène, présenter, vendre",
 };
 
 const EMPTY: BudgetAnswer = {
@@ -66,19 +69,20 @@ export function BudgetAllocator({ moduleNumber, onReady }: ModuleProps) {
         }
       />
       <p className="text-[15px] leading-relaxed text-muted">
-        Tu as <strong>100 jetons d'énergie</strong>. Répartis-les entre les 5 phases d'un
-        projet comme tu le ferais naturellement. Pas de bonne réponse.
+        Tu as <strong>100 jetons d'énergie</strong>. Répartis-les entre les 5
+        phases d'un projet comme tu le ferais naturellement. Pas de bonne
+        réponse.
       </p>
 
       <Card
-        variant={isValid ? 'soft' : 'white'}
+        variant={isValid ? "soft" : "white"}
         padding="md"
         className="flex items-center justify-between gap-3"
       >
         <div className="flex flex-col">
           <span className="label">Total</span>
           <span
-            className={`text-[32px] font-black leading-none ${isValid ? 'text-green' : total > 100 ? 'text-red' : 'text-ink'}`}
+            className={`text-[32px] font-black leading-none ${isValid ? "text-green" : total > 100 ? "text-red" : "text-ink"}`}
           >
             {total}
             <span className="text-[18px] font-bold text-muted"> / 100</span>
@@ -138,9 +142,9 @@ export function BudgetAllocator({ moduleNumber, onReady }: ModuleProps) {
 
       <Card variant="soft" padding="md">
         <p className="text-[12px] leading-relaxed text-ink/70">
-          Astuce : il n'y a pas de bonne répartition. Si tu mets tout dans
-          « exécution » ou zéro dans « présentation », ce sont juste des
-          signaux sur ta façon de bosser.
+          Astuce : il n'y a pas de bonne répartition. Si tu mets tout dans «
+          exécution » ou zéro dans « présentation », ce sont juste des signaux
+          sur ta façon de bosser.
         </p>
       </Card>
     </div>

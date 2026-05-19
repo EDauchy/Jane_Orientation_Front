@@ -7,23 +7,36 @@ import { addDays, startOfWeek, format, isSameDay } from "date-fns";
 import AppointmentCard from "./AppointmentCard";
 
 type AppointmentCalendarProps = {
-  onUpdateStatus: (id: string, status: string | undefined, date?: string) => void;
+  onUpdateStatus: (
+    id: string,
+    status: string | undefined,
+    date?: string,
+  ) => void;
   onOpenReviewModal: (id: string, name: string) => void;
-  onOpenRescheduleModal: (id: string, date: string, proAvailability?: any, isUserA?: boolean) => void;
-  onOpenConfirmDeleteModal: (id: string, title: string, confirmBtnText?: string) => void;
+  onOpenRescheduleModal: (
+    id: string,
+    date: string,
+    proAvailability?: any,
+    isUserA?: boolean,
+  ) => void;
+  onOpenConfirmDeleteModal: (
+    id: string,
+    title: string,
+    confirmBtnText?: string,
+  ) => void;
 };
 
 export default function AppointmentCalendar({
   onUpdateStatus,
   onOpenReviewModal,
   onOpenRescheduleModal,
-  onOpenConfirmDeleteModal
+  onOpenConfirmDeleteModal,
 }: AppointmentCalendarProps) {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentWeekStart, setCurrentWeekStart] = useState(
-    startOfWeek(new Date(), { weekStartsOn: 1 }) // Monday start
+    startOfWeek(new Date(), { weekStartsOn: 1 }), // Monday start
   );
 
   const fetchAppointments = async () => {
@@ -44,7 +57,7 @@ export default function AppointmentCalendar({
 
   // Monday to Friday only (no Saturday & Sunday)
   const weekDays = Array.from({ length: 5 }).map((_, i) =>
-    addDays(currentWeekStart, i)
+    addDays(currentWeekStart, i),
   );
 
   const nextWeek = () => setCurrentWeekStart(addDays(currentWeekStart, 7));
@@ -76,7 +89,7 @@ export default function AppointmentCalendar({
       <div className="grid grid-cols-5 gap-6">
         {weekDays.map((day) => {
           const dayAppointments = appointments.filter((apt) =>
-            isSameDay(new Date(apt.date), day)
+            isSameDay(new Date(apt.date), day),
           );
 
           return (

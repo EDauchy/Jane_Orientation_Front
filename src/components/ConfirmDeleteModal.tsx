@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 
 interface ConfirmDeleteModalProps {
   isOpen: boolean;
@@ -14,8 +14,8 @@ export default function ConfirmDeleteModal({
   onClose,
   onConfirm,
   title,
-  confirmText = 'Supprimer',
-  cancelText = 'Annuler'
+  confirmText = "Supprimer",
+  cancelText = "Annuler",
 }: ConfirmDeleteModalProps) {
   if (!isOpen) return null;
 
@@ -29,9 +29,7 @@ export default function ConfirmDeleteModal({
       <div className="modal-bg-confirm-delete rounded-2xl shadow-2xl max-w-md w-full p-6 relative animate-fade-in">
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
-          <h2 className="text-xl font-bold text-gray-800 pr-8">
-            {title}
-          </h2>
+          <h2 className="text-xl font-bold text-gray-800 pr-8">{title}</h2>
           <button
             onClick={onClose}
             className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded-full transition-colors"

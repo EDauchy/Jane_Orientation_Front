@@ -2,9 +2,7 @@ import SocialLinks from "./SocialLinks";
 export default function ContactForm() {
   return (
     <section className=" w-full flex items-center justify-center">
-
       <div className=" flex w-200 md:flex-row flex-col">
-
         <div className="md:w-2/3 ">
           <div className="h-25">
             <h2 className="text-center text-4xl font-extrabold uppercase text-primary [text-shadow:1px_1px_0_#fff] ">
@@ -33,7 +31,7 @@ export default function ContactForm() {
                 placeholder="Objet"
                 className="w-full px-3 py-2 border rounded-lg border-white focus:outline-none focus:ring-2 bg-white focus:ring-primary placeholder:text-[#c8aeff]"
               />
-          
+
               <textarea
                 placeholder="Votre message"
                 className="w-full px-3 py-2 border rounded-lg border-white focus:outline-none focus:ring-2 bg-white focus:ring-primary placeholder:text-[#c8aeff] text-gray-800"
@@ -47,7 +45,6 @@ export default function ContactForm() {
         <div className="relative md:w-1/3 flex md:flex-col flex-col-reverse ">
           <div className="hidden md:block absolute -left-[25px] top-[75px] w-[calc(25px)] h-[25px] bg-[radial-gradient(circle_at_top_left,transparent_25px,#c8aeff_25px)] "></div>{" "}
           <div className="hidden md:block absolute left-0 bottom-[55px] w-[calc(25px)] h-[25px] bg-[radial-gradient(circle_at_bottom_right,transparent_25px,#c8aeff_25px)] "></div>{" "}
-
           <div className="flex-1 bg-[#c8aeff] md:rounded-[25px] md:rounded-bl-none rounded-b-[25px] text-start p-5 md:mt-10 mx-4 md:mx-0 ">
             <div className="h-full bg-primary px-7 py-12 rounded-[15px]">
               <div className="h-full flex flex-col items-start justify-between text-sm">
@@ -66,8 +63,6 @@ export default function ContactForm() {
                   <SocialLinks color="#FFFFFF" />
                 </div>
               </div>
-
-
             </div>
           </div>
           <div className="md:h-20 md:p-4 md:w-full md:bg-transparent bg-[#c8aeff] mx-4 md:mx-0 px-5">

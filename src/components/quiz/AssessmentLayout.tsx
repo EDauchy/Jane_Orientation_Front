@@ -1,8 +1,8 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
-import { ProgressBar } from './ui';
+import { useEffect, useRef, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import { ProgressBar } from "./ui";
 
 type Props = {
   idx: number;
@@ -28,7 +28,7 @@ export function AssessmentLayout({
 
   useEffect(() => {
     mainRef.current?.focus({ preventScroll: true });
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [slugKey]);
 
   const backNode = onBack ? (
@@ -66,16 +66,12 @@ export function AssessmentLayout({
         <div className="max-w-[720px] mx-auto px-4 sm:px-6 pt-3 pb-3 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             {backNode}
-            <span
-              className="label"
-              aria-live="polite"
-              aria-atomic="true"
-            >
+            <span className="label" aria-live="polite" aria-atomic="true">
               <span className="sr-only">Étape </span>
-              {String(progressValue).padStart(2, '0')}
+              {String(progressValue).padStart(2, "0")}
               <span aria-hidden="true"> / </span>
               <span className="sr-only"> sur </span>
-              {String(total).padStart(2, '0')}
+              {String(total).padStart(2, "0")}
             </span>
           </div>
           <ProgressBar value={progressValue} total={total} />
@@ -104,7 +100,9 @@ export function AssessmentLayout({
 
       {footer ? (
         <footer className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white/95 to-white/0 pt-6 pb-6">
-          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6">{footer}</div>
+          <div className="w-full max-w-[720px] mx-auto px-4 sm:px-6">
+            {footer}
+          </div>
         </footer>
       ) : null}
     </div>

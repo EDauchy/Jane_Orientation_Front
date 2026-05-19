@@ -19,7 +19,7 @@ export default function Login() {
         {
           email,
           password,
-        }
+        },
       );
 
       if (authError) {

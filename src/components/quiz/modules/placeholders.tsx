@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleConfig } from '../../../lib/quiz/modules-config';
+import type { ReactNode } from "react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleConfig } from "../../../lib/quiz/modules-config";
 
 export type ModuleProps = {
   config: ModuleConfig;
@@ -23,11 +23,16 @@ function PlaceholderBody({
   title: ReactNode;
   subtitle: string;
   children?: ReactNode;
-  color?: 'purple' | 'orange' | 'pink' | 'yellow' | 'green';
+  color?: "purple" | "orange" | "pink" | "yellow" | "green";
 }) {
   return (
     <div className="flex flex-col gap-5">
-      <ModuleHeader num={moduleNumber} label={kicker} title={title} color={color ?? 'purple'} />
+      <ModuleHeader
+        num={moduleNumber}
+        label={kicker}
+        title={title}
+        color={color ?? "purple"}
+      />
       <p className="text-[15px] leading-relaxed text-muted">{subtitle}</p>
 
       <Card variant="soft" padding="md" className="flex flex-col gap-2">
@@ -35,11 +40,11 @@ function PlaceholderBody({
           Placeholder — contenu phase 3/4
         </Pill>
         <div className="text-[13px] text-ink/70 leading-relaxed">
-          <strong>slug:</strong> <code>{config.slug}</code> ·{' '}
-          <strong>component:</strong> <code>{config.component}</code> ·{' '}
+          <strong>slug:</strong> <code>{config.slug}</code> ·{" "}
+          <strong>component:</strong> <code>{config.component}</code> ·{" "}
           <strong>category:</strong> <code>{config.category}</code>
-          {config.hidden ? ' · hidden' : ''}
-          {config.optional ? ' · optional' : ''}
+          {config.hidden ? " · hidden" : ""}
+          {config.optional ? " · optional" : ""}
         </div>
       </Card>
 
@@ -48,7 +53,10 @@ function PlaceholderBody({
   );
 }
 
-export function BudgetAllocatorPlaceholder({ config, moduleNumber }: ModuleProps) {
+export function BudgetAllocatorPlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   return (
     <PlaceholderBody
       config={config}
@@ -65,7 +73,10 @@ export function BudgetAllocatorPlaceholder({ config, moduleNumber }: ModuleProps
   );
 }
 
-export function AlternativeUsesPlaceholder({ config, moduleNumber }: ModuleProps) {
+export function AlternativeUsesPlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   return (
     <PlaceholderBody
       config={config}
@@ -82,7 +93,10 @@ export function AlternativeUsesPlaceholder({ config, moduleNumber }: ModuleProps
   );
 }
 
-export function TradeoffScenarioPlaceholder({ config, moduleNumber }: ModuleProps) {
+export function TradeoffScenarioPlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   return (
     <PlaceholderBody
       config={config}
@@ -95,7 +109,10 @@ export function TradeoffScenarioPlaceholder({ config, moduleNumber }: ModuleProp
   );
 }
 
-export function ValuesRankingPlaceholder({ config, moduleNumber }: ModuleProps) {
+export function ValuesRankingPlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   return (
     <PlaceholderBody
       config={config}
@@ -125,7 +142,10 @@ export function RiasecPlaceholder({ config, moduleNumber }: ModuleProps) {
   );
 }
 
-export function RiskTolerancePlaceholder({ config, moduleNumber }: ModuleProps) {
+export function RiskTolerancePlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   return (
     <PlaceholderBody
       config={config}
@@ -142,50 +162,50 @@ const OPEN_QUESTIONS: Record<
   string,
   { kicker: string; title: ReactNode; subtitle: string }
 > = {
-  'open-energy': {
-    kicker: 'QUESTION OUVERTE',
+  "open-energy": {
+    kicker: "QUESTION OUVERTE",
     title: (
       <>
         Ce qui te donne de <Highlight color="yellow">l'énergie</Highlight>
       </>
     ),
     subtitle:
-      '2 ou 3 tâches qui te soutiennent même quand elles sont longues ou exigeantes. Qu\'ont-elles en commun ?',
+      "2 ou 3 tâches qui te soutiennent même quand elles sont longues ou exigeantes. Qu'ont-elles en commun ?",
   },
-  'open-friction': {
-    kicker: 'QUESTION OUVERTE',
+  "open-friction": {
+    kicker: "QUESTION OUVERTE",
     title: (
       <>
         Ce qui te <Highlight color="orange">vide</Highlight>
       </>
     ),
     subtitle:
-      'Quelles tâches ou environnements t\'épuisent vite, même s\'ils sont objectivement simples ?',
+      "Quelles tâches ou environnements t'épuisent vite, même s'ils sont objectivement simples ?",
   },
-  'open-projection': {
-    kicker: 'PROJECTION',
+  "open-projection": {
+    kicker: "PROJECTION",
     title: <>Sans contraintes — 6 mois ?</>,
     subtitle:
-      'Aucune contrainte d\'argent, diplôme ou regard des autres. Quel rôle aimerais-tu tester ?',
+      "Aucune contrainte d'argent, diplôme ou regard des autres. Quel rôle aimerais-tu tester ?",
   },
-  'open-blank-page': {
-    kicker: 'QUESTION OUVERTE',
+  "open-blank-page": {
+    kicker: "QUESTION OUVERTE",
     title: <>Une journée totalement libre</>,
-    subtitle: 'Zéro obligation. Raconte-la dans l\'ordre, du réveil au coucher.',
+    subtitle: "Zéro obligation. Raconte-la dans l'ordre, du réveil au coucher.",
   },
-  'open-outside-view': {
-    kicker: 'QUESTION OUVERTE',
+  "open-outside-view": {
+    kicker: "QUESTION OUVERTE",
     title: <>Ce qu\'un proche dirait de toi</>,
     subtitle:
-      'Si un proche devait expliquer en 3 phrases ce pour quoi tu es naturellement doué(e), que dirait-il ?',
+      "Si un proche devait expliquer en 3 phrases ce pour quoi tu es naturellement doué(e), que dirait-il ?",
   },
 };
 
 export function OpenQuestionPlaceholder({ config, moduleNumber }: ModuleProps) {
   const data = OPEN_QUESTIONS[config.slug] ?? {
-    kicker: 'QUESTION OUVERTE',
-    title: 'Question ouverte',
-    subtitle: 'Placeholder open question',
+    kicker: "QUESTION OUVERTE",
+    title: "Question ouverte",
+    subtitle: "Placeholder open question",
   };
   return (
     <PlaceholderBody
@@ -203,38 +223,41 @@ const QCM_QUESTIONS: Record<
   string,
   { kicker: string; title: ReactNode; subtitle: string }
 > = {
-  'qcm-decision': {
-    kicker: 'QCM',
+  "qcm-decision": {
+    kicker: "QCM",
     title: <>Quand tu décides, tu t'appuies sur…</>,
-    subtitle: 'Une réponse. La plus honnête.',
+    subtitle: "Une réponse. La plus honnête.",
   },
-  'qcm-rhythm': {
-    kicker: 'RANKING',
+  "qcm-rhythm": {
+    kicker: "RANKING",
     title: <>Classe ces rythmes</>,
-    subtitle: 'Du plus désirable au moins désirable.',
+    subtitle: "Du plus désirable au moins désirable.",
   },
-  'qcm-group-role': {
-    kicker: 'QCM',
+  "qcm-group-role": {
+    kicker: "QCM",
     title: <>Ton rôle en groupe</>,
-    subtitle: 'Celui que tu prends spontanément, sans qu\'on te le demande.',
+    subtitle: "Celui que tu prends spontanément, sans qu'on te le demande.",
   },
-  'qcm-stress': {
-    kicker: 'QCM',
+  "qcm-stress": {
+    kicker: "QCM",
     title: <>Plusieurs imprévus en même temps</>,
-    subtitle: 'Ta première réaction honnête, pas la « bonne » réponse.',
+    subtitle: "Ta première réaction honnête, pas la « bonne » réponse.",
   },
-  'qcm-satisfaction': {
-    kicker: 'QCM',
+  "qcm-satisfaction": {
+    kicker: "QCM",
     title: <>La satisfaction la plus profonde</>,
-    subtitle: 'Celle qui te reste dans le corps une fois le projet fini.',
+    subtitle: "Celle qui te reste dans le corps une fois le projet fini.",
   },
 };
 
-export function MultipleChoicePlaceholder({ config, moduleNumber }: ModuleProps) {
+export function MultipleChoicePlaceholder({
+  config,
+  moduleNumber,
+}: ModuleProps) {
   const data = QCM_QUESTIONS[config.slug] ?? {
-    kicker: 'QCM',
-    title: 'QCM',
-    subtitle: 'Placeholder QCM',
+    kicker: "QCM",
+    title: "QCM",
+    subtitle: "Placeholder QCM",
   };
   return (
     <PlaceholderBody

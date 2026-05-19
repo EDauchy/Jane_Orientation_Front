@@ -1,4 +1,4 @@
-import { Sparkles, ArrowRight, Check } from 'lucide-react';
+import { Sparkles, ArrowRight, Check } from "lucide-react";
 import {
   Highlight,
   Pill,
@@ -7,9 +7,15 @@ import {
   ProgressBar,
   ModuleHeader,
   StepShell,
-} from '../../components/quiz/ui';
+} from "../../components/quiz/ui";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-4 pt-10 first:pt-0">
       <div className="flex items-center gap-3">
@@ -29,7 +35,12 @@ export default function UiPreview() {
           <Button variant="ghost" size="lg">
             Retour
           </Button>
-          <Button variant="primary" size="lg" fullWidth trailingIcon={<ArrowRight size={18} />}>
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
+            trailingIcon={<ArrowRight size={18} />}
+          >
             Continuer
           </Button>
         </div>
@@ -40,12 +51,12 @@ export default function UiPreview() {
           UI PREVIEW
         </Pill>
         <h1 className="text-display text-[44px] sm:text-[56px] mt-4 text-ink">
-          Design <Highlight color="yellow">system</Highlight> playground —{' '}
+          Design <Highlight color="yellow">system</Highlight> playground —{" "}
           <Highlight color="pink">Jane</Highlight> style
         </h1>
         <p className="mt-4 text-[15px] leading-relaxed text-muted max-w-[560px]">
-          Page de QA non linkée. Tous les composants réutilisables du design system sont
-          empilés ici. Route accessible via URL uniquement.
+          Page de QA non linkée. Tous les composants réutilisables du design
+          system sont empilés ici. Route accessible via URL uniquement.
         </p>
       </div>
 
@@ -128,12 +139,14 @@ export default function UiPreview() {
           </Card>
           <Card variant="soft" padding="md">
             <p className="text-[14px]">
-              Carte <Highlight color="yellow">soft</Highlight> violet pâle pour bloc informatif.
+              Carte <Highlight color="yellow">soft</Highlight> violet pâle pour
+              bloc informatif.
             </p>
           </Card>
           <Card variant="white" padding="md">
             <p className="text-[14px]">
-              Carte <strong>white</strong> avec ombre douce pour contenus neutres.
+              Carte <strong>white</strong> avec ombre douce pour contenus
+              neutres.
             </p>
           </Card>
         </div>
@@ -141,7 +154,11 @@ export default function UiPreview() {
 
       <Section title="Buttons">
         <div className="flex flex-wrap gap-3">
-          <Button variant="primary" size="lg" trailingIcon={<ArrowRight size={18} />}>
+          <Button
+            variant="primary"
+            size="lg"
+            trailingIcon={<ArrowRight size={18} />}
+          >
             Continuer
           </Button>
           <Button variant="secondary" size="lg">
@@ -194,7 +211,8 @@ export default function UiPreview() {
           </h2>
           <h3 className="text-[18px] font-bold">h3 body-bold / 18</h3>
           <p className="text-[15px] leading-relaxed">
-            Body 15 leading-relaxed — corps standard pour les paragraphes du flow.
+            Body 15 leading-relaxed — corps standard pour les paragraphes du
+            flow.
           </p>
           <span className="label">label 12 uppercase wide</span>
         </div>
@@ -203,21 +221,21 @@ export default function UiPreview() {
       <Section title="Palette">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { name: 'purple', cls: 'bg-purple text-white' },
-            { name: 'purpleDk', cls: 'bg-purple-dk text-white' },
-            { name: 'purpleLt', cls: 'bg-purple-lt text-ink' },
-            { name: 'orange', cls: 'bg-orange text-white' },
-            { name: 'orangeLt', cls: 'bg-orange-lt text-ink' },
-            { name: 'pink', cls: 'bg-pink text-white' },
-            { name: 'pinkLt', cls: 'bg-pink-lt text-ink' },
-            { name: 'yellow', cls: 'bg-yellow text-ink' },
-            { name: 'yellowDk', cls: 'bg-yellow-dk text-ink' },
-            { name: 'green', cls: 'bg-green text-ink' },
-            { name: 'greenLt', cls: 'bg-green-lt text-ink' },
-            { name: 'red', cls: 'bg-red text-white' },
-            { name: 'redLt', cls: 'bg-red-lt text-ink' },
-            { name: 'ink', cls: 'bg-ink text-white' },
-            { name: 'muted', cls: 'bg-muted text-white' },
+            { name: "purple", cls: "bg-purple text-white" },
+            { name: "purpleDk", cls: "bg-purple-dk text-white" },
+            { name: "purpleLt", cls: "bg-purple-lt text-ink" },
+            { name: "orange", cls: "bg-orange text-white" },
+            { name: "orangeLt", cls: "bg-orange-lt text-ink" },
+            { name: "pink", cls: "bg-pink text-white" },
+            { name: "pinkLt", cls: "bg-pink-lt text-ink" },
+            { name: "yellow", cls: "bg-yellow text-ink" },
+            { name: "yellowDk", cls: "bg-yellow-dk text-ink" },
+            { name: "green", cls: "bg-green text-ink" },
+            { name: "greenLt", cls: "bg-green-lt text-ink" },
+            { name: "red", cls: "bg-red text-white" },
+            { name: "redLt", cls: "bg-red-lt text-ink" },
+            { name: "ink", cls: "bg-ink text-white" },
+            { name: "muted", cls: "bg-muted text-white" },
           ].map((c) => (
             <div
               key={c.name}

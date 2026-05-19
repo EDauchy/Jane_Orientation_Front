@@ -1,8 +1,11 @@
-import type { TradeoffAnswer } from '../types';
-import type { TradeoffPairId } from '../validators/tradeoff';
+import type { TradeoffAnswer } from "../types";
+import type { TradeoffPairId } from "../validators/tradeoff";
 
 export type TradeoffSignals = {
-  byPair: Record<TradeoffPairId, { choice: 'A' | 'B'; regret: number } | undefined>;
+  byPair: Record<
+    TradeoffPairId,
+    { choice: "A" | "B"; regret: number } | undefined
+  >;
   passionOverMoney: boolean;
   remotePreferred: boolean;
   expertPath: boolean;
@@ -21,12 +24,12 @@ function findPair(
 }
 
 export function analyzeTradeoff(answers: TradeoffAnswer[]): TradeoffSignals {
-  const byPair: TradeoffSignals['byPair'] = {
-    'salary-vs-passion': undefined,
-    'remote-vs-team': undefined,
-    'expert-vs-generalist': undefined,
-    'employee-vs-freelance': undefined,
-    'impact-vs-recognition': undefined,
+  const byPair: TradeoffSignals["byPair"] = {
+    "salary-vs-passion": undefined,
+    "remote-vs-team": undefined,
+    "expert-vs-generalist": undefined,
+    "employee-vs-freelance": undefined,
+    "impact-vs-recognition": undefined,
   };
 
   for (const a of answers) {
@@ -36,17 +39,22 @@ export function analyzeTradeoff(answers: TradeoffAnswer[]): TradeoffSignals {
     };
   }
 
-  const passionOverMoney = findPair(answers, 'salary-vs-passion')?.choice === 'B';
-  const remotePreferred = findPair(answers, 'remote-vs-team')?.choice === 'A';
-  const expertPath = findPair(answers, 'expert-vs-generalist')?.choice === 'A';
-  const freelanceLeaning = findPair(answers, 'employee-vs-freelance')?.choice === 'B';
-  const impactOverRecognition = findPair(answers, 'impact-vs-recognition')?.choice === 'A';
+  const passionOverMoney =
+    findPair(answers, "salary-vs-passion")?.choice === "B";
+  const remotePreferred = findPair(answers, "remote-vs-team")?.choice === "A";
+  const expertPath = findPair(answers, "expert-vs-generalist")?.choice === "A";
+  const freelanceLeaning =
+    findPair(answers, "employee-vs-freelance")?.choice === "B";
+  const impactOverRecognition =
+    findPair(answers, "impact-vs-recognition")?.choice === "A";
 
   const regrets = answers.map((a) => a.regretForOther);
   const highRegretAverage =
     regrets.length === 0
       ? 0
-      : Math.round((regrets.reduce((s, r) => s + r, 0) / regrets.length) * 100) / 100;
+      : Math.round(
+          (regrets.reduce((s, r) => s + r, 0) / regrets.length) * 100,
+        ) / 100;
 
   const decisiveCount = regrets.filter((r) => r <= 2).length;
   const ambivalentCount = regrets.filter((r) => r >= 4).length;

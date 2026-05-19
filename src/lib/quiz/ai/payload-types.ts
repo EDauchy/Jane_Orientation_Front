@@ -1,24 +1,30 @@
-import type { RiasecLetter } from '../scoring/riasec';
+import type { RiasecLetter } from "../scoring/riasec";
 
 export const PAYLOAD_SCHEMA_VERSION = 1;
 
 export type AiPayloadMeta = {
   sessionId: string;
-  locale: 'fr';
+  locale: "fr";
   startedAt: string;
   completedAt: string | null;
   schemaVersion: number;
 };
 
 export type AiCognitiveSignals = {
-  decisionStyle: 'analytical' | 'intuitive' | 'social' | 'pragmatic' | 'empirical' | 'unknown';
-  fluencyBucket: 'low' | 'medium' | 'high' | 'unknown';
-  divergenceBucket: 'low' | 'medium' | 'high' | 'unknown';
+  decisionStyle:
+    | "analytical"
+    | "intuitive"
+    | "social"
+    | "pragmatic"
+    | "empirical"
+    | "unknown";
+  fluencyBucket: "low" | "medium" | "high" | "unknown";
+  divergenceBucket: "low" | "medium" | "high" | "unknown";
   budgetDominantPhase: string;
   budgetBalanced: boolean;
   budgetStarterBias: boolean;
   budgetFinisherBias: boolean;
-  overallTextTone: 'concrete' | 'abstract' | 'mixed' | 'unknown';
+  overallTextTone: "concrete" | "abstract" | "mixed" | "unknown";
 };
 
 export type AiInterestsSignals = {
@@ -43,12 +49,12 @@ export type AiValuesSignals = {
 
 export type AiWorkContextSignals = {
   axisPosition: number;
-  mode: 'employed' | 'freelance' | 'founder' | 'hybrid' | 'unknown';
-  summary: 'entrepreneurial' | 'structure' | 'ambivalent' | 'mixed' | 'unknown';
-  incomeStability: 'variable' | 'mixed' | 'stable' | 'unknown';
-  workSolitude: 'avoids_solo' | 'mixed_solo' | 'craves_solo' | 'unknown';
-  hierarchy: 'averse' | 'neutral' | 'comforting' | 'unknown';
-  buildVsJoin: 'joiner' | 'mixed' | 'builder' | 'unknown';
+  mode: "employed" | "freelance" | "founder" | "hybrid" | "unknown";
+  summary: "entrepreneurial" | "structure" | "ambivalent" | "mixed" | "unknown";
+  incomeStability: "variable" | "mixed" | "stable" | "unknown";
+  workSolitude: "avoids_solo" | "mixed_solo" | "craves_solo" | "unknown";
+  hierarchy: "averse" | "neutral" | "comforting" | "unknown";
+  buildVsJoin: "joiner" | "mixed" | "builder" | "unknown";
   risktakingEntrepreneurial: boolean;
   structureSeeker: boolean;
   ambivalent: boolean;
@@ -56,7 +62,7 @@ export type AiWorkContextSignals = {
 
 export type AiTradeoffSummary = {
   pairId: string;
-  choice: 'A' | 'B';
+  choice: "A" | "B";
   regretForOther: number;
 };
 
@@ -75,10 +81,14 @@ export type AiBehavioralSignals = {
   satisfactionSource: string;
   rhythmTopChoice: string;
   socialInterpretationsCount: number;
-  socialDiversityBucket: 'low' | 'medium' | 'high' | 'unknown';
-  socialAffectBalance: 'mostly-negative' | 'mostly-positive' | 'balanced' | 'unknown';
+  socialDiversityBucket: "low" | "medium" | "high" | "unknown";
+  socialAffectBalance:
+    | "mostly-negative"
+    | "mostly-positive"
+    | "balanced"
+    | "unknown";
   memoPresent: boolean;
-  memoMode: 'text' | 'audio' | 'none';
+  memoMode: "text" | "audio" | "none";
   memoHasReversalMarkers: boolean;
   memoHasOwnershipMarkers: boolean;
 };
@@ -101,7 +111,7 @@ export type AiOpenQuestionResponse = {
   questionId: string;
   text: string;
   wordCount: number;
-  tone: 'concrete' | 'abstract' | 'mixed';
+  tone: "concrete" | "abstract" | "mixed";
 };
 
 export type AiSocialNuanceResponse = {
@@ -110,7 +120,7 @@ export type AiSocialNuanceResponse = {
 };
 
 export type AiTextMemoResponse = {
-  mode: 'text';
+  mode: "text";
   content: string;
   wordCount: number;
 };

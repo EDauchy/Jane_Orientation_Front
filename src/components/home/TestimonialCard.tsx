@@ -1,14 +1,10 @@
 import React from "react";
 import type { TestimonialCardProps } from "../../shard/types";
 
-
-
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (
     <div className="relative h-[285px] min-w-[330px] transition-all duration-500">
-      <div
-        className="h-[190px] bg-primary px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300"
-      >
+      <div className="h-[190px] bg-primary px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300">
         <p className="text-white text-xl font-bold text-center leading-relaxed mb-2">
           {testimonial.title}
         </p>

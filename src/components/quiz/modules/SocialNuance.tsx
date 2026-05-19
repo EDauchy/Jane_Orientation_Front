@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Trash2 } from 'lucide-react';
-import { Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Plus, Trash2 } from "lucide-react";
+import { Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
 import {
   MAX_INTERPRETATION_CHARS,
   MAX_INTERPRETATIONS,
@@ -11,9 +11,9 @@ import {
   MIN_INTERPRETATIONS,
   SCENES,
   type SocialSceneId,
-} from '../../../lib/quiz/validators/social-nuance';
+} from "../../../lib/quiz/validators/social-nuance";
 
-const DEFAULT_SCENE: SocialSceneId = 'late-colleague';
+const DEFAULT_SCENE: SocialSceneId = "late-colleague";
 
 function pickScene(existingId: string | undefined): SocialSceneId {
   if (existingId && existingId in SCENES) return existingId as SocialSceneId;
@@ -29,7 +29,7 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
   const [items, setItems] = useState<string[]>(
     () => existing?.interpretations?.slice() ?? [],
   );
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
 
   const scene = SCENES[sceneId];
 
@@ -37,7 +37,9 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
     () =>
       items.filter((s) => {
         const len = s.trim().length;
-        return len >= MIN_INTERPRETATION_CHARS && len <= MAX_INTERPRETATION_CHARS;
+        return (
+          len >= MIN_INTERPRETATION_CHARS && len <= MAX_INTERPRETATION_CHARS
+        );
       }),
     [items],
   );
@@ -55,7 +57,7 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
     if (v.length < MIN_INTERPRETATION_CHARS) return;
     if (items.length >= MAX_INTERPRETATIONS) return;
     setItems((prev) => [...prev, v.slice(0, MAX_INTERPRETATION_CHARS)]);
-    setInput('');
+    setInput("");
   }
 
   function removeAt(idx: number) {
@@ -74,13 +76,16 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
         color="pink"
         title={
           <>
-            Qu'est-ce qu'il <Highlight color="yellow">se passe</Highlight> selon toi ?
+            Qu'est-ce qu'il <Highlight color="yellow">se passe</Highlight> selon
+            toi ?
           </>
         }
       />
       <p className="text-[15px] leading-relaxed text-muted">
-        Une scène ambiguë. Propose au moins {MIN_INTERPRETATIONS} interprétations
-        <strong> différentes</strong>. Pas de bonne réponse — on regarde la variété.
+        Une scène ambiguë. Propose au moins {MIN_INTERPRETATIONS}{" "}
+        interprétations
+        <strong> différentes</strong>. Pas de bonne réponse — on regarde la
+        variété.
       </p>
 
       <Card variant="pink" padding="lg" className="flex flex-col gap-2">
@@ -88,7 +93,9 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
         <h3 className="text-[18px] sm:text-[20px] font-bold leading-tight">
           {scene.title}
         </h3>
-        <p className="text-[14px] leading-relaxed text-white/90">{scene.description}</p>
+        <p className="text-[14px] leading-relaxed text-white/90">
+          {scene.description}
+        </p>
       </Card>
 
       <Card variant="white" padding="md" className="flex flex-col gap-2">
@@ -101,7 +108,9 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
         >
           <textarea
             value={input}
-            onChange={(e) => setInput(e.target.value.slice(0, MAX_INTERPRETATION_CHARS))}
+            onChange={(e) =>
+              setInput(e.target.value.slice(0, MAX_INTERPRETATION_CHARS))
+            }
             placeholder="ex. Il vient d'apprendre une mauvaise nouvelle et n'arrive pas à en parler."
             className="flex-1 min-h-[72px] rounded-2xl bg-purple-lt/60 px-4 py-3 text-[14px] leading-relaxed text-ink placeholder:text-muted resize-y focus:outline-none focus:ring-2 focus:ring-pink"
             maxLength={MAX_INTERPRETATION_CHARS}
@@ -162,7 +171,8 @@ export function SocialNuance({ moduleNumber, onReady }: ModuleProps) {
           </Pill>
         ) : (
           <span className="text-[11px] text-muted">
-            Encore {Math.max(0, MIN_INTERPRETATIONS - validItems.length)} à ajouter.
+            Encore {Math.max(0, MIN_INTERPRETATIONS - validItems.length)} à
+            ajouter.
           </span>
         )}
       </div>

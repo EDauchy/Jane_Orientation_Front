@@ -1,52 +1,52 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, X } from 'lucide-react';
-import { Button, Card, Highlight, ModuleHeader, Pill } from '../ui';
-import type { ModuleProps } from './placeholders';
-import { useAssessment } from '../../../lib/quiz/store';
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, X } from "lucide-react";
+import { Button, Card, Highlight, ModuleHeader, Pill } from "../ui";
+import type { ModuleProps } from "./placeholders";
+import { useAssessment } from "../../../lib/quiz/store";
 import {
   VALUE_IDS,
   type ValueId,
   ValuesRankingSchema,
-} from '../../../lib/quiz/validators/values';
+} from "../../../lib/quiz/validators/values";
 
 const VALUE_DEFS: Record<ValueId, { label: string; hint: string }> = {
   autonomy: {
-    label: 'Autonomie',
-    hint: 'Décider moi-même de ce que je fais, comment',
+    label: "Autonomie",
+    hint: "Décider moi-même de ce que je fais, comment",
   },
   financial_security: {
-    label: 'Sécurité financière',
-    hint: 'Revenu stable, pas d\'aléas',
+    label: "Sécurité financière",
+    hint: "Revenu stable, pas d'aléas",
   },
   social_impact: {
-    label: 'Impact social',
-    hint: 'Aider, changer quelque chose pour d\'autres',
+    label: "Impact social",
+    hint: "Aider, changer quelque chose pour d'autres",
   },
   recognition: {
-    label: 'Reconnaissance',
-    hint: 'Être vu, apprécié pour son travail',
+    label: "Reconnaissance",
+    hint: "Être vu, apprécié pour son travail",
   },
   learning: {
-    label: 'Apprentissage',
-    hint: 'Apprendre, progresser, rester stimulé',
+    label: "Apprentissage",
+    hint: "Apprendre, progresser, rester stimulé",
   },
   work_life_balance: {
-    label: 'Équilibre perso',
-    hint: 'Temps, énergie pour autre chose',
+    label: "Équilibre perso",
+    hint: "Temps, énergie pour autre chose",
   },
   location_freedom: {
-    label: 'Liberté géographique',
-    hint: 'Choisir où vivre, pouvoir bouger',
+    label: "Liberté géographique",
+    hint: "Choisir où vivre, pouvoir bouger",
   },
   creativity: {
-    label: 'Créativité',
-    hint: 'Créer, inventer, exprimer quelque chose',
+    label: "Créativité",
+    hint: "Créer, inventer, exprimer quelque chose",
   },
-  status: { label: 'Statut', hint: 'Rang, autorité, prestige' },
+  status: { label: "Statut", hint: "Rang, autorité, prestige" },
   belonging: {
-    label: 'Appartenance',
-    hint: 'Faire partie d\'une équipe, d\'un collectif',
+    label: "Appartenance",
+    hint: "Faire partie d'une équipe, d'un collectif",
   },
 };
 
@@ -56,10 +56,11 @@ function PickedSlots({
   onRemove,
 }: {
   picked: ValueId[];
-  tone: 'top' | 'bottom';
+  tone: "top" | "bottom";
   onRemove: (v: ValueId) => void;
 }) {
-  const bgTop = tone === 'top' ? 'bg-purple text-white' : 'bg-muted/20 text-ink';
+  const bgTop =
+    tone === "top" ? "bg-purple text-white" : "bg-muted/20 text-ink";
   return (
     <ul className="grid grid-cols-3 gap-2">
       {[0, 1, 2].map((i) => {
@@ -123,7 +124,9 @@ function ValueGrid({
               whileTap={disabledBecauseFull ? undefined : { scale: 0.98 }}
               className="w-full text-left p-3 rounded-2xl bg-white border border-ink/10 hover:border-purple hover:bg-purple-lt transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <div className="text-[14px] font-bold leading-tight">{def.label}</div>
+              <div className="text-[14px] font-bold leading-tight">
+                {def.label}
+              </div>
               <div className="text-[12px] text-muted leading-tight mt-0.5">
                 {def.hint}
               </div>
@@ -140,7 +143,9 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
   const setValuesRanking = useAssessment((s) => s.setValuesRanking);
 
   const [step, setStep] = useState<1 | 2>(1);
-  const [top3, setTop3] = useState<ValueId[]>((existing?.top3 as ValueId[]) ?? []);
+  const [top3, setTop3] = useState<ValueId[]>(
+    (existing?.top3 as ValueId[]) ?? [],
+  );
   const [bottom3, setBottom3] = useState<ValueId[]>(
     (existing?.bottom3 as ValueId[]) ?? [],
   );
@@ -194,17 +199,18 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
         color="purple"
         title={
           <>
-            Tes <Highlight color="pink">3 intouchables</Highlight>, puis 3 laissables
+            Tes <Highlight color="pink">3 intouchables</Highlight>, puis 3
+            laissables
           </>
         }
       />
 
       <div className="flex items-center gap-2">
-        <Pill variant={step === 1 ? 'purple' : 'ghost'} size="sm">
+        <Pill variant={step === 1 ? "purple" : "ghost"} size="sm">
           1. Intouchables
         </Pill>
         <span className="text-muted">→</span>
-        <Pill variant={step === 2 ? 'purple' : 'ghost'} size="sm">
+        <Pill variant={step === 2 ? "purple" : "ghost"} size="sm">
           2. Laissables
         </Pill>
       </div>
@@ -212,9 +218,9 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
       {step === 1 ? (
         <section className="flex flex-col gap-4">
           <p className="text-[15px] leading-relaxed text-muted">
-            Choisis les <strong>3 valeurs que tu refuses de sacrifier</strong>, dans
-            l'ordre d'importance. Clique sur une valeur pour l'ajouter, re-clique
-            pour l'enlever.
+            Choisis les <strong>3 valeurs que tu refuses de sacrifier</strong>,
+            dans l'ordre d'importance. Clique sur une valeur pour l'ajouter,
+            re-clique pour l'enlever.
           </p>
 
           <Card variant="soft" padding="md" className="flex flex-col gap-3">
@@ -224,7 +230,7 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
 
           <div className="flex flex-col gap-2">
             <span className="label">
-              {topComplete ? 'Terminé — étape suivante' : 'Disponibles'}
+              {topComplete ? "Terminé — étape suivante" : "Disponibles"}
             </span>
             <ValueGrid
               options={availableForTop}
@@ -241,14 +247,17 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
             onClick={() => setStep(2)}
             trailingIcon={<ArrowRight size={18} />}
           >
-            {topComplete ? 'Étape 2 — les laissables' : `${top3.length}/3 choisies`}
+            {topComplete
+              ? "Étape 2 — les laissables"
+              : `${top3.length}/3 choisies`}
           </Button>
         </section>
       ) : (
         <section className="flex flex-col gap-4">
           <p className="text-[15px] leading-relaxed text-muted">
-            Parmi les 7 restantes, choisis les <strong>3 que tu peux laisser de côté</strong>{' '}
-            sans problème, dans l'ordre (la plus sacrifiable en premier).
+            Parmi les 7 restantes, choisis les{" "}
+            <strong>3 que tu peux laisser de côté</strong> sans problème, dans
+            l'ordre (la plus sacrifiable en premier).
           </p>
 
           <Card variant="soft" padding="md" className="flex flex-col gap-3">
@@ -262,12 +271,16 @@ export function ValuesRanking({ moduleNumber, onReady }: ModuleProps) {
                 ← revoir les intouchables
               </button>
             </div>
-            <PickedSlots picked={bottom3} tone="bottom" onRemove={removeBottom} />
+            <PickedSlots
+              picked={bottom3}
+              tone="bottom"
+              onRemove={removeBottom}
+            />
           </Card>
 
           <div className="flex flex-col gap-2">
             <span className="label">
-              {bottomComplete ? 'Terminé — tu peux continuer' : 'Disponibles'}
+              {bottomComplete ? "Terminé — tu peux continuer" : "Disponibles"}
             </span>
             <ValueGrid
               options={availableForBottom}

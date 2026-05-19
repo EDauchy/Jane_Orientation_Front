@@ -1,4 +1,4 @@
-import type { ValuesRankingAnswer } from '../types';
+import type { ValuesRankingAnswer } from "../types";
 
 export type ValuesSignals = {
   top3: string[];
@@ -28,19 +28,19 @@ export function analyzeValues(a: ValuesRankingAnswer): ValuesSignals {
     top3: [...a.top3],
     bottom3: [...a.bottom3],
     flags: {
-      hasAutonomyTop: top.has('autonomy'),
-      hasSecurityTop: top.has('financial_security'),
-      hasImpactTop: top.has('social_impact'),
-      hasLearningTop: top.has('learning'),
-      hasCreativityTop: top.has('creativity'),
-      hasBalanceTop: top.has('work_life_balance'),
-      hasStatusTop: top.has('status'),
-      hasRecognitionTop: top.has('recognition'),
-      hasBelongingTop: top.has('belonging'),
-      hasLocationFreedomTop: top.has('location_freedom'),
-      securityInBottom: bottom.has('financial_security'),
-      statusInBottom: bottom.has('status'),
-      recognitionInBottom: bottom.has('recognition'),
+      hasAutonomyTop: top.has("autonomy"),
+      hasSecurityTop: top.has("financial_security"),
+      hasImpactTop: top.has("social_impact"),
+      hasLearningTop: top.has("learning"),
+      hasCreativityTop: top.has("creativity"),
+      hasBalanceTop: top.has("work_life_balance"),
+      hasStatusTop: top.has("status"),
+      hasRecognitionTop: top.has("recognition"),
+      hasBelongingTop: top.has("belonging"),
+      hasLocationFreedomTop: top.has("location_freedom"),
+      securityInBottom: bottom.has("financial_security"),
+      statusInBottom: bottom.has("status"),
+      recognitionInBottom: bottom.has("recognition"),
     },
   };
 }

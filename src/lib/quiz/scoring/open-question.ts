@@ -1,5 +1,5 @@
-import type { OpenQuestionAnswer } from '../types';
-import type { OpenQuestionId } from '../validators/open-question';
+import type { OpenQuestionAnswer } from "../types";
+import type { OpenQuestionId } from "../validators/open-question";
 
 export type OpenQuestionSignal = {
   questionId: OpenQuestionId;
@@ -9,26 +9,44 @@ export type OpenQuestionSignal = {
   firstPersonCount: number;
   concreteMarkers: number;
   abstractMarkers: number;
-  tone: 'concrete' | 'abstract' | 'mixed';
+  tone: "concrete" | "abstract" | "mixed";
 };
 
 export type OpenQuestionSignals = {
   byQuestion: Partial<Record<OpenQuestionId, OpenQuestionSignal>>;
   totalWords: number;
   averageWords: number;
-  overallTone: 'concrete' | 'abstract' | 'mixed';
+  overallTone: "concrete" | "abstract" | "mixed";
 };
 
 const FIRST_PERSON_RE = /\b(je|j'|j\u2019|moi|mon|ma|mes)\b/gi;
 
 const CONCRETE_MARKERS = [
-  'quand', 'hier', 'aujourd', 'chaque jour', 'la semaine', 'le matin', 'chez',
-  'au bureau', 'exemple', 'par exemple', 'quand j', 'dernièrement',
+  "quand",
+  "hier",
+  "aujourd",
+  "chaque jour",
+  "la semaine",
+  "le matin",
+  "chez",
+  "au bureau",
+  "exemple",
+  "par exemple",
+  "quand j",
+  "dernièrement",
 ];
 
 const ABSTRACT_MARKERS = [
-  'en général', 'souvent', 'toujours', 'jamais', 'je pense que', 'je crois',
-  'peut-être', 'il me semble', 'globalement', 'dans l\'idée',
+  "en général",
+  "souvent",
+  "toujours",
+  "jamais",
+  "je pense que",
+  "je crois",
+  "peut-être",
+  "il me semble",
+  "globalement",
+  "dans l'idée",
 ];
 
 function countMatches(text: string, terms: string[]): number {
@@ -41,8 +59,10 @@ function countMatches(text: string, terms: string[]): number {
   return n;
 }
 
-export function analyzeOpenQuestion(answer: OpenQuestionAnswer): OpenQuestionSignal {
-  const text = answer.text ?? '';
+export function analyzeOpenQuestion(
+  answer: OpenQuestionAnswer,
+): OpenQuestionSignal {
+  const text = answer.text ?? "";
   const trimmed = text.trim();
   const words = trimmed.length === 0 ? [] : trimmed.split(/\s+/);
   const sentences = trimmed
@@ -54,9 +74,9 @@ export function analyzeOpenQuestion(answer: OpenQuestionAnswer): OpenQuestionSig
   const concreteMarkers = countMatches(trimmed, CONCRETE_MARKERS);
   const abstractMarkers = countMatches(trimmed, ABSTRACT_MARKERS);
 
-  let tone: OpenQuestionSignal['tone'] = 'mixed';
-  if (concreteMarkers > abstractMarkers + 1) tone = 'concrete';
-  else if (abstractMarkers > concreteMarkers + 1) tone = 'abstract';
+  let tone: OpenQuestionSignal["tone"] = "mixed";
+  if (concreteMarkers > abstractMarkers + 1) tone = "concrete";
+  else if (abstractMarkers > concreteMarkers + 1) tone = "abstract";
 
   return {
     questionId: answer.questionId as OpenQuestionId,
@@ -70,8 +90,10 @@ export function analyzeOpenQuestion(answer: OpenQuestionAnswer): OpenQuestionSig
   };
 }
 
-export function analyzeOpenQuestions(answers: OpenQuestionAnswer[]): OpenQuestionSignals {
-  const byQuestion: OpenQuestionSignals['byQuestion'] = {};
+export function analyzeOpenQuestions(
+  answers: OpenQuestionAnswer[],
+): OpenQuestionSignals {
+  const byQuestion: OpenQuestionSignals["byQuestion"] = {};
   let totalWords = 0;
   let concrete = 0;
   let abstract = 0;
@@ -84,14 +106,15 @@ export function analyzeOpenQuestions(answers: OpenQuestionAnswer[]): OpenQuestio
     abstract += sig.abstractMarkers;
   }
 
-  let overallTone: OpenQuestionSignals['overallTone'] = 'mixed';
-  if (concrete > abstract + 2) overallTone = 'concrete';
-  else if (abstract > concrete + 2) overallTone = 'abstract';
+  let overallTone: OpenQuestionSignals["overallTone"] = "mixed";
+  if (concrete > abstract + 2) overallTone = "concrete";
+  else if (abstract > concrete + 2) overallTone = "abstract";
 
   return {
     byQuestion,
     totalWords,
-    averageWords: answers.length === 0 ? 0 : Math.round(totalWords / answers.length),
+    averageWords:
+      answers.length === 0 ? 0 : Math.round(totalWords / answers.length),
     overallTone,
   };
 }

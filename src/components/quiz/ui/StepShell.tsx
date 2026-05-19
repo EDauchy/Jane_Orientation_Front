@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 type Props = {
   children: ReactNode;
@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-export function StepShell({ children, footer, className = '' }: Props) {
+export function StepShell({ children, footer, className = "" }: Props) {
   return (
     <div className="min-h-[100dvh] flex flex-col">
       <motion.main

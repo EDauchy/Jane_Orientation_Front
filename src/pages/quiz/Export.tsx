@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, RefreshCw, Sparkles, Loader2 } from 'lucide-react';
-import { Button, Card, Highlight, Pill } from '../../components/quiz/ui';
-import { useAssessment } from '../../lib/quiz/store';
-import { buildSubmissionPayload } from '../../lib/quiz/ai/build-submission';
-import RomeInferenceResults, { type RomeInference } from '../../components/quiz/RomeInferenceResults';
-import { supabase } from '../../lib/supabase';
+import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, RefreshCw, Sparkles, Loader2 } from "lucide-react";
+import { Button, Card, Highlight, Pill } from "../../components/quiz/ui";
+import { useAssessment } from "../../lib/quiz/store";
+import { buildSubmissionPayload } from "../../lib/quiz/ai/build-submission";
+import RomeInferenceResults, {
+  type RomeInference,
+} from "../../components/quiz/RomeInferenceResults";
+import { supabase } from "../../lib/supabase";
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
 type ApiResponse = {
   analysis: {
@@ -20,27 +22,16 @@ type ApiResponse = {
 };
 
 type Phase =
-  | { kind: 'idle' }
-  | { kind: 'loading' }
-  | { kind: 'error'; message: string }
-  | { kind: 'success'; data: ApiResponse };
+  | { kind: "idle" }
+  | { kind: "loading" }
+  | { kind: "error"; message: string }
+  | { kind: "success"; data: ApiResponse };
 
-type RomeAppellation = {
-  codeAppellation?: string;
-  libelleAppellation?: string;
-  scorePrediction?: number;
-};
-
-type RomeResultEntry = {
-  Identifiant?: string;
-  MetiersPredits?: RomeAppellation[];
-};
-
-const PILL_VARIANTS = ['purple', 'pink', 'orange', 'yellow', 'green'] as const;
+const PILL_VARIANTS = ["purple", "pink", "orange", "yellow", "green"] as const;
 
 export default function Export() {
   const state = useAssessment((s) => s.state);
-  const [phase, setPhase] = useState<Phase>({ kind: 'idle' });
+  const [phase, setPhase] = useState<Phase>({ kind: "idle" });
 
   const hasAnswers = useMemo(
     () => Object.keys(state.answers ?? {}).length > 0,
@@ -49,19 +40,19 @@ export default function Export() {
   const canSubmit = hasAnswers;
 
   async function runAnalysis() {
-    setPhase({ kind: 'loading' });
+    setPhase({ kind: "loading" });
     try {
       const payload = buildSubmissionPayload(state);
       const res = await fetch(`${API_URL}/api/quiz`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        const text = await res.text().catch(() => '');
+        const text = await res.text().catch(() => "");
         throw new Error(
-          `Le serveur a renvoyé ${res.status}${text ? ` — ${text.slice(0, 200)}` : ''}.`,
+          `Le serveur a renvoyé ${res.status}${text ? ` — ${text.slice(0, 200)}` : ""}.`,
         );
       }
 
@@ -69,16 +60,21 @@ export default function Export() {
 
       // Save ROME job names to profile test_results (best-effort, non-blocking)
       const romeData = data.romeRecommendations as RomeInference[];
-      const jobNames = romeData?.flatMap(g => g.metiersRome.slice(0, 3).map(m => m.libelleAppellation)) ?? [];
+      const jobNames =
+        romeData?.flatMap((g) =>
+          g.metiersRome.slice(0, 3).map((m) => m.libelleAppellation),
+        ) ?? [];
       if (jobNames.length > 0) {
         try {
-          const { data: { session } } = await supabase.auth.getSession();
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
           if (session?.access_token) {
-            await fetch('/api/profile/update', {
-              method: 'PUT',
+            await fetch("/api/profile/update", {
+              method: "PUT",
               headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`,
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${session.access_token}`,
               },
               body: JSON.stringify({ testResults: jobNames }),
             });
@@ -88,11 +84,11 @@ export default function Export() {
         }
       }
 
-      setPhase({ kind: 'success', data });
+      setPhase({ kind: "success", data });
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'Erreur inconnue lors de l\'appel.';
-      setPhase({ kind: 'error', message });
+        err instanceof Error ? err.message : "Erreur inconnue lors de l'appel.";
+      setPhase({ kind: "error", message });
     }
   }
 
@@ -121,18 +117,18 @@ export default function Export() {
             </h1>
 
             <AnimatePresence mode="wait">
-              {phase.kind === 'idle' && (
+              {phase.kind === "idle" && (
                 <IdleState key="idle" onRun={runAnalysis} />
               )}
-              {phase.kind === 'loading' && <LoadingState key="loading" />}
-              {phase.kind === 'error' && (
+              {phase.kind === "loading" && <LoadingState key="loading" />}
+              {phase.kind === "error" && (
                 <ErrorState
                   key="error"
                   message={phase.message}
                   onRetry={runAnalysis}
                 />
               )}
-              {phase.kind === 'success' && (
+              {phase.kind === "success" && (
                 <SuccessState key="success" data={phase.data} />
               )}
             </AnimatePresence>
@@ -196,16 +192,22 @@ function LoadingState() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.24 }}
     >
-      <Card variant="soft" padding="lg" className="flex flex-col items-center gap-4 text-center">
+      <Card
+        variant="soft"
+        padding="lg"
+        className="flex flex-col items-center gap-4 text-center"
+      >
         <motion.div
           animate={{ scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
           className="w-16 h-16 rounded-full bg-purple text-white inline-flex items-center justify-center"
         >
           <Loader2 size={28} className="animate-spin" />
         </motion.div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-[20px] font-bold text-ink">L'IA analyse tes réponses</h2>
+          <h2 className="text-[20px] font-bold text-ink">
+            L'IA analyse tes réponses
+          </h2>
           <p className="text-[14px] text-muted leading-relaxed max-w-[420px]">
             Compte 10 à 20 secondes. On croise tes signaux et on cherche des
             métiers cohérents.
@@ -216,7 +218,13 @@ function LoadingState() {
   );
 }
 
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorState({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry: () => void;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -224,12 +232,18 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
       exit={{ opacity: 0 }}
       transition={{ duration: 0.24 }}
     >
-      <Card variant="white" padding="lg" className="flex flex-col gap-4 border-red/30 bg-red-lt">
+      <Card
+        variant="white"
+        padding="lg"
+        className="flex flex-col gap-4 border-red/30 bg-red-lt"
+      >
         <div className="flex flex-col gap-1">
           <Pill variant="red" size="sm">
             Erreur
           </Pill>
-          <h2 className="text-[18px] font-bold text-ink mt-2">L'analyse a échoué</h2>
+          <h2 className="text-[18px] font-bold text-ink mt-2">
+            L'analyse a échoué
+          </h2>
           <p className="text-[13px] text-muted leading-relaxed">{message}</p>
         </div>
         <Button
@@ -311,102 +325,7 @@ function SuccessState({ data }: { data: ApiResponse }) {
           <h3 className="text-[18px] font-bold">Métiers ROME suggérés</h3>
         </div>
         <RomeInferenceResults data={romeRecommendations as RomeInference[]} />
-
       </Card>
     </motion.div>
-  );
-}
-
-function RomeRecommendations({ data }: { data: unknown }) {
-  const groups = parseRome(data);
-
-  if (groups.length === 0) {
-    return <RomeFallback data={data} />;
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      {groups.map((group, idx) => (
-        <div key={group.identifiant ?? idx} className="flex flex-col gap-2">
-          {group.identifiant ? (
-            <span className="text-[11px] font-bold uppercase tracking-label text-muted">
-              {group.identifiant}
-            </span>
-          ) : null}
-          <ul className="flex flex-col gap-2">
-            {group.appellations.slice(0, 3).map((m, i) => (
-              <li
-                key={`${m.codeAppellation ?? i}`}
-                className="flex items-start justify-between gap-3 rounded-2xl bg-pink-lt px-4 py-3"
-              >
-                <div className="flex flex-col">
-                  <span className="text-[15px] font-bold text-ink leading-snug">
-                    {m.libelleAppellation ?? 'Appellation inconnue'}
-                  </span>
-                  {m.codeAppellation ? (
-                    <span className="text-[11px] text-muted">
-                      Code {m.codeAppellation}
-                    </span>
-                  ) : null}
-                </div>
-                {typeof m.scorePrediction === 'number' ? (
-                  <span className="text-[14px] font-black tabular-nums text-pink shrink-0">
-                    {Math.round(m.scorePrediction * 100)}%
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function parseRome(data: unknown): { identifiant?: string; appellations: RomeAppellation[] }[] {
-  if (!data || typeof data !== 'object') return [];
-  const obj = data as { Resultats?: unknown };
-  const resultats = obj.Resultats;
-  if (!Array.isArray(resultats)) return [];
-
-  const groups: { identifiant?: string; appellations: RomeAppellation[] }[] = [];
-  for (const entry of resultats) {
-    if (!entry || typeof entry !== 'object') continue;
-    const e = entry as RomeResultEntry;
-    const list = Array.isArray(e.MetiersPredits) ? e.MetiersPredits : [];
-    if (list.length === 0) continue;
-    const sorted = list
-      .slice()
-      .sort(
-        (a, b) =>
-          (typeof b.scorePrediction === 'number' ? b.scorePrediction : 0) -
-          (typeof a.scorePrediction === 'number' ? a.scorePrediction : 0),
-      );
-    groups.push({ identifiant: e.Identifiant, appellations: sorted });
-  }
-  return groups;
-}
-
-function RomeFallback({ data }: { data: unknown }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <Card variant="soft" padding="md" className="flex flex-col gap-2">
-      <p className="text-[13px] text-muted leading-relaxed">
-        Le format des recommandations ROME n'a pas pu être interprété
-        automatiquement. Données brutes ci-dessous.
-      </p>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="self-start text-[12px] font-bold text-purple hover:underline"
-      >
-        {open ? 'Masquer' : 'Afficher'} le JSON
-      </button>
-      {open ? (
-        <pre className="text-[11px] leading-snug bg-white rounded-2xl p-3 overflow-x-auto max-h-[320px] overflow-y-auto">
-          {JSON.stringify(data, null, 2)}
-        </pre>
-      ) : null}
-    </Card>
   );
 }

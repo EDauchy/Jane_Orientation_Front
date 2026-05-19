@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Star, X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useState } from "react";
+import { Star, X } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 interface ReviewModalProps {
   appointmentId: string;
@@ -9,37 +9,44 @@ interface ReviewModalProps {
   onSuccess: () => void;
 }
 
-export default function ReviewModal({ appointmentId, professionalName, onClose, onSuccess }: ReviewModalProps) {
+export default function ReviewModal({
+  appointmentId,
+  professionalName,
+  onClose,
+  onSuccess,
+}: ReviewModalProps) {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (rating === 0) {
-      setError('Veuillez sélectionner une note');
+      setError("Veuillez sélectionner une note");
       return;
     }
 
     setSubmitting(true);
-    setError('');
+    setError("");
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       const token = session?.access_token;
 
       if (!token) {
-        throw new Error('Non authentifié');
+        throw new Error("Non authentifié");
       }
 
-      const response = await fetch('/api/reviews', {
-        method: 'POST',
+      const response = await fetch("/api/reviews", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           appointmentId,
@@ -51,14 +58,14 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Échec de la création de l\'avis');
+        throw new Error(data.error || "Échec de la création de l'avis");
       }
 
       onSuccess();
       onClose();
     } catch (err: any) {
-      console.error('Review error:', err);
-      setError(err.message || 'Une erreur est survenue');
+      console.error("Review error:", err);
+      setError(err.message || "Une erreur est survenue");
     } finally {
       setSubmitting(false);
     }
@@ -79,7 +86,8 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
             </button>
           </div>
           <p className="mt-2 text-white/90">
-            Comment s'est passé votre rendez-vous avec <span className="font-semibold">{professionalName}</span> ?
+            Comment s'est passé votre rendez-vous avec{" "}
+            <span className="font-semibold">{professionalName}</span> ?
           </p>
         </div>
 
@@ -103,8 +111,8 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
                   <Star
                     className={`w-12 h-12 ${
                       star <= (hoveredRating || rating)
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "text-gray-300"
                     }`}
                   />
                 </button>
@@ -112,11 +120,11 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
             </div>
             {rating > 0 && (
               <p className="text-center mt-2 text-gray-600 font-medium">
-                {rating === 1 && 'Très insatisfait'}
-                {rating === 2 && 'Insatisfait'}
-                {rating === 3 && 'Neutre'}
-                {rating === 4 && 'Satisfait'}
-                {rating === 5 && 'Très satisfait'}
+                {rating === 1 && "Très insatisfait"}
+                {rating === 2 && "Insatisfait"}
+                {rating === 3 && "Neutre"}
+                {rating === 4 && "Satisfait"}
+                {rating === 5 && "Très satisfait"}
               </p>
             )}
           </div>
@@ -161,7 +169,7 @@ export default function ReviewModal({ appointmentId, professionalName, onClose, 
               disabled={submitting || rating === 0}
               className="flex-1 px-4 py-3 bg-linear-to-r from-indigo-500 to-purple-500 text-white rounded-lg hover:from-indigo-600 hover:to-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg"
             >
-              {submitting ? 'Envoi...' : 'Publier l\'avis'}
+              {submitting ? "Envoi..." : "Publier l'avis"}
             </button>
           </div>
         </form>

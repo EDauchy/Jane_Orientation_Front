@@ -1,5 +1,5 @@
-import type { SocialNuanceAnswer } from '../types';
-import type { SocialSceneId } from '../validators/social-nuance';
+import type { SocialNuanceAnswer } from "../types";
+import type { SocialSceneId } from "../validators/social-nuance";
 
 export type SocialNuanceSignals = {
   sceneId: SocialSceneId | null;
@@ -7,26 +7,59 @@ export type SocialNuanceSignals = {
   uniqueFirstWords: number;
   avgCharLength: number;
   diversityScore: number;
-  diversityBucket: 'low' | 'medium' | 'high';
-  affectBalance: 'mostly-negative' | 'mostly-positive' | 'balanced';
+  diversityBucket: "low" | "medium" | "high";
+  affectBalance: "mostly-negative" | "mostly-positive" | "balanced";
   negativeCount: number;
   positiveCount: number;
 };
 
 const NEGATIVE_TERMS = [
-  'fâché', 'énervé', 'agacé', 'triste', 'désolé', 'vexé', 'angoissé', 'jaloux',
-  'déçu', 'frustré', 'en colère', 'épuisé', 'débordé', 'perdu', 'ignoré',
-  'rejeté', 'blessé', 'stress', 'peur', 'honte', 'malaise',
+  "fâché",
+  "énervé",
+  "agacé",
+  "triste",
+  "désolé",
+  "vexé",
+  "angoissé",
+  "jaloux",
+  "déçu",
+  "frustré",
+  "en colère",
+  "épuisé",
+  "débordé",
+  "perdu",
+  "ignoré",
+  "rejeté",
+  "blessé",
+  "stress",
+  "peur",
+  "honte",
+  "malaise",
 ];
 
 const POSITIVE_TERMS = [
-  'content', 'heureux', 'ravi', 'calme', 'confiance', 'concentré', 'motivé',
-  'fier', 'reconnaissant', 'détendu', 'optimiste', 'ouvert', 'curieux', 'serein',
+  "content",
+  "heureux",
+  "ravi",
+  "calme",
+  "confiance",
+  "concentré",
+  "motivé",
+  "fier",
+  "reconnaissant",
+  "détendu",
+  "optimiste",
+  "ouvert",
+  "curieux",
+  "serein",
 ];
 
 function firstWordOf(s: string): string {
-  const m = s.trim().toLowerCase().match(/[a-zàâçéèêëîïôûùüÿñæœ']+/u);
-  return m ? m[0] : '';
+  const m = s
+    .trim()
+    .toLowerCase()
+    .match(/[a-zàâçéèêëîïôûùüÿñæœ']+/u);
+  return m ? m[0] : "";
 }
 
 function countMatches(text: string, terms: string[]): number {
@@ -38,8 +71,12 @@ function countMatches(text: string, terms: string[]): number {
   return n;
 }
 
-export function analyzeSocialNuance(answer: SocialNuanceAnswer): SocialNuanceSignals {
-  const items = answer.interpretations.map((s) => s.trim()).filter((s) => s.length > 0);
+export function analyzeSocialNuance(
+  answer: SocialNuanceAnswer,
+): SocialNuanceSignals {
+  const items = answer.interpretations
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
   const count = items.length;
 
   const firstWords = new Set<string>();
@@ -54,18 +91,18 @@ export function analyzeSocialNuance(answer: SocialNuanceAnswer): SocialNuanceSig
   const diversityScore =
     count === 0 ? 0 : Math.round((firstWords.size / count) * 100) / 100;
 
-  let diversityBucket: SocialNuanceSignals['diversityBucket'] = 'low';
-  if (count < 3) diversityBucket = 'low';
-  else if (diversityScore > 0.8) diversityBucket = 'high';
-  else if (diversityScore >= 0.5) diversityBucket = 'medium';
+  let diversityBucket: SocialNuanceSignals["diversityBucket"] = "low";
+  if (count < 3) diversityBucket = "low";
+  else if (diversityScore > 0.8) diversityBucket = "high";
+  else if (diversityScore >= 0.5) diversityBucket = "medium";
 
-  const combined = items.join(' ');
+  const combined = items.join(" ");
   const negativeCount = countMatches(combined, NEGATIVE_TERMS);
   const positiveCount = countMatches(combined, POSITIVE_TERMS);
 
-  let affectBalance: SocialNuanceSignals['affectBalance'] = 'balanced';
-  if (negativeCount > positiveCount + 1) affectBalance = 'mostly-negative';
-  else if (positiveCount > negativeCount + 1) affectBalance = 'mostly-positive';
+  let affectBalance: SocialNuanceSignals["affectBalance"] = "balanced";
+  if (negativeCount > positiveCount + 1) affectBalance = "mostly-negative";
+  else if (positiveCount > negativeCount + 1) affectBalance = "mostly-positive";
 
   return {
     sceneId: (answer.sceneId as SocialSceneId) ?? null,

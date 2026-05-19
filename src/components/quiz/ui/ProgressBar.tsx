@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 type Props = {
   value: number;
@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-export function ProgressBar({ value, total, className = '' }: Props) {
+export function ProgressBar({ value, total, className = "" }: Props) {
   const pct = total <= 0 ? 0 : Math.max(0, Math.min(1, value / total));
   const pctStr = `${Math.round(pct * 100)}%`;
 

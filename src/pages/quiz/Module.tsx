@@ -1,20 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { ArrowRight, SkipForward } from 'lucide-react';
-import { AssessmentLayout } from '../../components/quiz/AssessmentLayout';
-import { Button } from '../../components/quiz/ui';
-import { MODULES } from '../../lib/quiz/modules-config';
-import { MODULE_REGISTRY } from '../../components/quiz/modules/registry';
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { ArrowRight, SkipForward } from "lucide-react";
+import { AssessmentLayout } from "../../components/quiz/AssessmentLayout";
+import { Button } from "../../components/quiz/ui";
+import { MODULES } from "../../lib/quiz/modules-config";
+import { MODULE_REGISTRY } from "../../components/quiz/modules/registry";
 import {
   indexInFlow,
   nextSlug,
   prevSlug,
   totalInFlow,
-} from '../../lib/quiz/flow/sequence';
-import { useAssessment } from '../../lib/quiz/store';
+} from "../../lib/quiz/flow/sequence";
+import { useAssessment } from "../../lib/quiz/store";
 
 export default function ModulePage() {
-  const { slug = '' } = useParams<{ slug: string }>();
+  const { slug = "" } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
   const audience = useAssessment((s) => s.state.audience);
@@ -42,7 +42,7 @@ export default function ModulePage() {
     if (!audience) return;
     const prev = prevSlug(audience, slug);
     if (!prev) {
-      navigate('/quiz/qualify');
+      navigate("/quiz/qualify");
       return;
     }
     navigate(`/quiz/assessment/${prev}`);
@@ -53,7 +53,7 @@ export default function ModulePage() {
     const next = nextSlug(audience, slug);
     if (!next) {
       markCompleted();
-      navigate('/quiz/export');
+      navigate("/quiz/export");
       return;
     }
     navigate(`/quiz/assessment/${next}`);
@@ -79,7 +79,7 @@ export default function ModulePage() {
         onClick={goNext}
         trailingIcon={<ArrowRight size={18} />}
       >
-        {isLast ? 'Terminer' : 'Continuer'}
+        {isLast ? "Terminer" : "Continuer"}
       </Button>
     </div>
   );

@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useSyncExternalStore } from "react";
 import ArticleCard from "./ArticleCard";
 import { useDevToArticles, toCardProps } from "../../lib/useDevToArticles";
 
-const isSmallScreen = (): boolean =>
-  typeof window !== "undefined" && window.innerWidth < 640;
+const SM_BREAKPOINT = 640;
+
+function subscribeResize(cb: () => void) {
+  window.addEventListener("resize", cb);
+  return () => window.removeEventListener("resize", cb);
+}
+
+function getIsSmallSnapshot() {
+  return window.innerWidth < SM_BREAKPOINT;
+}
+
+function getIsSmallServerSnapshot() {
+  return false;
+}
 
 export default function ArticleListSection(): React.JSX.Element {
   const { articles } = useDevToArticles(4);
-  const [isSmall, setIsSmall] = useState<boolean>(false);
+  const isSmall = useSyncExternalStore(
+    subscribeResize,
+    getIsSmallSnapshot,
+    getIsSmallServerSnapshot,
+  );
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setIsSmall(isSmallScreen());
-    const handleResize = () => setIsSmall(isSmallScreen());
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   if (articles.length === 0) {
     return (
@@ -31,13 +39,23 @@ export default function ArticleListSection(): React.JSX.Element {
       <div className="mt-16 flex flex-col items-center">
         <div className="relative w-full max-w-sm px-4">
           <div className="flex justify-center">
-            <a href={articles[currentIndex].url} target="_blank" rel="noopener noreferrer">
-              <ArticleCard {...toCardProps(articles[currentIndex], currentIndex)} />
+            <a
+              href={articles[currentIndex].url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ArticleCard
+                {...toCardProps(articles[currentIndex], currentIndex)}
+              />
             </a>
           </div>
           <div className="w-full flex justify-center gap-5 mt-10">
             <button
-              onClick={() => setCurrentIndex((p) => (p - 1 + articles.length) % articles.length)}
+              onClick={() =>
+                setCurrentIndex(
+                  (p) => (p - 1 + articles.length) % articles.length,
+                )
+              }
               className="p-2 hover:bg-gray-100/50 rounded-full z-10"
               aria-label="Article précédent"
             >
@@ -63,7 +81,12 @@ export default function ArticleListSection(): React.JSX.Element {
   return (
     <div className="flex gap-[18px] mt-16 justify-center flex-wrap">
       {articles.map((article, i) => (
-        <a key={article.id} href={article.url} target="_blank" rel="noopener noreferrer">
+        <a
+          key={article.id}
+          href={article.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <ArticleCard {...toCardProps(article, i)} />
         </a>
       ))}

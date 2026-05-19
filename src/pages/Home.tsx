@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Header from "../components/home/Header";
 import { useState } from "react";
@@ -17,21 +17,21 @@ import Modal from "../components/home/Modal.tsx";
 import ContactForm from "../components/home/ContactForm.tsx";
 
 export default function Home() {
-
   const [open, setOpen] = useState<boolean>(false);
   return (
     <>
       <Header />
       <Hero />
 
-  
       <CustomSection title={"DÉCOUVREZ VOTRE CHEMIN, PAS CELUI DES AUTRES"}>
         <BenefitsSection />
       </CustomSection>
 
       <VideoPromo />
 
-      <CustomSection title={"Jane vous guide là où vous êtes fait pour briller"}>
+      <CustomSection
+        title={"Jane vous guide là où vous êtes fait pour briller"}
+      >
         <Testimonials />
       </CustomSection>
 
@@ -43,7 +43,9 @@ export default function Home() {
         <CallToAction />
       </CountdownGuard>
 
-      <CustomSection title={"L’avenir appartient à ceux qui choisissent en connaissance"}>
+      <CustomSection
+        title={"L’avenir appartient à ceux qui choisissent en connaissance"}
+      >
         <ArticleListSection />
       </CustomSection>
 

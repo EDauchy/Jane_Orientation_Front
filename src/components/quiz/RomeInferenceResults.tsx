@@ -55,4 +55,3 @@ export default function RomeInferenceResults({ data }: Props) {
     </div>
   );
 }
- 

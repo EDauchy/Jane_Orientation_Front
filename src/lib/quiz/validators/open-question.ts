@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const OPEN_QUESTION_IDS = [
-  'open-energy',
-  'open-friction',
-  'open-projection',
-  'open-blank-page',
-  'open-outside-view',
+  "open-energy",
+  "open-friction",
+  "open-projection",
+  "open-blank-page",
+  "open-outside-view",
 ] as const;
 
 export type OpenQuestionId = (typeof OPEN_QUESTION_IDS)[number];

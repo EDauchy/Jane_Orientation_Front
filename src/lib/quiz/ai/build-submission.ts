@@ -1,37 +1,42 @@
-import type { AssessmentState, Audience, Qualification } from '../types';
+import type { AssessmentState, Audience, Qualification } from "../types";
 
 export type SubmissionAnswer =
   | {
       questionId: string;
-      type: 'interactive-sliders';
+      type: "interactive-sliders";
       allocations: Record<string, number>;
       totalAllocated: number;
     }
-  | { questionId: string; type: 'open-text'; response: string }
-  | { questionId: string; type: 'single-choice'; selectedOption: string }
-  | { questionId: string; type: 'values-ranking'; top3: string[]; bottom3: string[] }
+  | { questionId: string; type: "open-text"; response: string }
+  | { questionId: string; type: "single-choice"; selectedOption: string }
   | {
       questionId: string;
-      type: 'tradeoff';
+      type: "values-ranking";
+      top3: string[];
+      bottom3: string[];
+    }
+  | {
+      questionId: string;
+      type: "tradeoff";
       pairId: string;
-      choice: 'A' | 'B';
+      choice: "A" | "B";
       regretForOther: number;
     }
-  | { questionId: string; type: 'ranking'; order: string[] }
+  | { questionId: string; type: "ranking"; order: string[] }
   | {
       questionId: string;
-      type: 'riasec';
-      responses: Record<string, 'like' | 'neutral' | 'dislike'>;
+      type: "riasec";
+      responses: Record<string, "like" | "neutral" | "dislike">;
     }
   | {
       questionId: string;
-      type: 'social-nuance';
+      type: "social-nuance";
       sceneId: string;
       interpretations: string[];
     }
   | {
       questionId: string;
-      type: 'alternative-uses';
+      type: "alternative-uses";
       object: string;
       responses: string[];
     };
@@ -45,7 +50,9 @@ export type SubmissionPayload = {
   answers: SubmissionAnswer[];
 };
 
-export function buildSubmissionPayload(state: AssessmentState): SubmissionPayload {
+export function buildSubmissionPayload(
+  state: AssessmentState,
+): SubmissionPayload {
   const answers: SubmissionAnswer[] = [];
   const a = state.answers;
 
@@ -57,10 +64,13 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
       polish: a.budget.polish,
       presentation: a.budget.presentation,
     };
-    const totalAllocated = Object.values(allocations).reduce((sum, v) => sum + v, 0);
+    const totalAllocated = Object.values(allocations).reduce(
+      (sum, v) => sum + v,
+      0,
+    );
     answers.push({
-      questionId: 'budget-phases',
-      type: 'interactive-sliders',
+      questionId: "budget-phases",
+      type: "interactive-sliders",
       allocations,
       totalAllocated,
     });
@@ -68,16 +78,16 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
 
   if (a.riasec) {
     answers.push({
-      questionId: 'riasec',
-      type: 'riasec',
+      questionId: "riasec",
+      type: "riasec",
       responses: a.riasec.responses,
     });
   }
 
   if (a.valuesRanking) {
     answers.push({
-      questionId: 'values',
-      type: 'values-ranking',
+      questionId: "values",
+      type: "values-ranking",
       top3: a.valuesRanking.top3,
       bottom3: a.valuesRanking.bottom3,
     });
@@ -87,7 +97,7 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
     for (const t of a.tradeoff) {
       answers.push({
         questionId: t.pairId,
-        type: 'tradeoff',
+        type: "tradeoff",
         pairId: t.pairId,
         choice: t.choice,
         regretForOther: t.regretForOther,
@@ -97,16 +107,16 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
 
   if (a.multipleChoice) {
     for (const mc of a.multipleChoice) {
-      if (mc.kind === 'single' && typeof mc.value === 'string') {
+      if (mc.kind === "single" && typeof mc.value === "string") {
         answers.push({
           questionId: mc.questionId,
-          type: 'single-choice',
+          type: "single-choice",
           selectedOption: mc.value,
         });
-      } else if (mc.kind === 'ranking' && Array.isArray(mc.value)) {
+      } else if (mc.kind === "ranking" && Array.isArray(mc.value)) {
         answers.push({
           questionId: mc.questionId,
-          type: 'ranking',
+          type: "ranking",
           order: mc.value,
         });
       }
@@ -117,7 +127,7 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
     for (const oq of a.openQuestions) {
       answers.push({
         questionId: oq.questionId,
-        type: 'open-text',
+        type: "open-text",
         response: oq.text,
       });
     }
@@ -125,8 +135,8 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
 
   if (a.socialNuance) {
     answers.push({
-      questionId: 'social-nuance',
-      type: 'social-nuance',
+      questionId: "social-nuance",
+      type: "social-nuance",
       sceneId: a.socialNuance.sceneId,
       interpretations: a.socialNuance.interpretations,
     });
@@ -134,17 +144,17 @@ export function buildSubmissionPayload(state: AssessmentState): SubmissionPayloa
 
   if (a.alternativeUses) {
     answers.push({
-      questionId: 'alternative-uses',
-      type: 'alternative-uses',
+      questionId: "alternative-uses",
+      type: "alternative-uses",
       object: a.alternativeUses.object,
       responses: a.alternativeUses.responses,
     });
   }
 
-  if (a.textMemo && a.textMemo.mode === 'text') {
+  if (a.textMemo && a.textMemo.mode === "text") {
     answers.push({
-      questionId: 'text-memo',
-      type: 'open-text',
+      questionId: "text-memo",
+      type: "open-text",
       response: a.textMemo.content,
     });
   }

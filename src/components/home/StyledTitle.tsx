@@ -7,7 +7,9 @@ interface StyledTitleProps {
 
 const StyledTitle = ({ text, className = "" }: StyledTitleProps) => {
   return (
-    <h2 className={`text-4xl px-10 text-center font-extrabold text-primary uppercase  ${className}`}>
+    <h2
+      className={`text-4xl px-10 text-center font-extrabold text-primary uppercase  ${className}`}
+    >
       {text}
     </h2>
   );

@@ -1,16 +1,16 @@
-import type { AlternativeUsesAnswer } from '../types';
+import type { AlternativeUsesAnswer } from "../types";
 
 export type AlternativeUsesSignals = {
   fluency: number;
-  fluencyBucket: 'low' | 'medium' | 'high';
+  fluencyBucket: "low" | "medium" | "high";
   avgLength: number;
   uniqueStarts: number;
   divergenceScore: number;
-  divergenceBucket: 'low' | 'medium' | 'high';
+  divergenceBucket: "low" | "medium" | "high";
 };
 
 function firstWord(s: string): string {
-  return s.trim().toLowerCase().split(/\s+/)[0] ?? '';
+  return s.trim().toLowerCase().split(/\s+/)[0] ?? "";
 }
 
 export function analyzeAlternativeUses(
@@ -31,17 +31,17 @@ export function analyzeAlternativeUses(
   const divergenceScore =
     fluency === 0 ? 0 : Math.round((uniqueStarts / fluency) * 100) / 100;
 
-  const fluencyBucket: AlternativeUsesSignals['fluencyBucket'] =
-    fluency < 4 ? 'low' : fluency <= 7 ? 'medium' : 'high';
+  const fluencyBucket: AlternativeUsesSignals["fluencyBucket"] =
+    fluency < 4 ? "low" : fluency <= 7 ? "medium" : "high";
 
-  const divergenceBucket: AlternativeUsesSignals['divergenceBucket'] =
+  const divergenceBucket: AlternativeUsesSignals["divergenceBucket"] =
     fluency < 3
-      ? 'low'
+      ? "low"
       : divergenceScore < 0.5
-        ? 'low'
+        ? "low"
         : divergenceScore <= 0.8
-          ? 'medium'
-          : 'high';
+          ? "medium"
+          : "high";
 
   return {
     fluency,

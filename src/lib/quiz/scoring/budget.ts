@@ -1,11 +1,11 @@
-import type { BudgetAnswer } from '../types';
+import type { BudgetAnswer } from "../types";
 
 export const BUDGET_PHASES = [
-  'ideation',
-  'planning',
-  'execution',
-  'polish',
-  'presentation',
+  "ideation",
+  "planning",
+  "execution",
+  "polish",
+  "presentation",
 ] as const;
 export type BudgetPhase = (typeof BUDGET_PHASES)[number];
 
