@@ -4,9 +4,12 @@ import FollowUsCard from "./FollowUsCard";
 import PowerByApisCard from "./PowerByApisCard";
 import { useEffect, useState } from "react";
 import { APP_CONFIG } from "../../constants/config";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const [isLocked, setIsLocked] = useState(true);
+
+  const navigate = useNavigate();
   useEffect(() => {
     const checkStatus = () => {
       const now = new Date().getTime();
@@ -144,6 +147,7 @@ export default function Hero() {
 
         <div className="flex justify-center lg:justify-start">
           <button
+          onClick={() => navigate('/quiz')}
             className={`flex items-center gap-2 text-white text-base md:text-sm px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
                     ${isLocked
                 ? 'opacity-50 cursor-not-allowed grayscale'

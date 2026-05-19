@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from '../../lib/supabase';
 import Map from "../../components/Map";
+import PageLoader from '../../components/ui/PageLoader';
 
 export default function DashboardMaps() {
   //const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
@@ -46,7 +47,7 @@ export default function DashboardMaps() {
     fetchProfile();
   }, [navigate]);
 
-  if (loading) return <div className="p-8 flex justify-center">Loading...</div>;
+  if (loading) return <PageLoader />;
   if (!profile) return <div className="p-8">Error loading profile.</div>;
 
 

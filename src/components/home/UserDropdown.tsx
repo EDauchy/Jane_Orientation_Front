@@ -16,12 +16,14 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ isOpen, setIsOpen }) => {
             {user ? (
                 /* --- SI CONNECTÉ --- */
                 <>
-                    <button
+                    <Link
+                        to="/mydashboard/account"
                         onClick={() => setIsOpen(false)}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-100 text-gray-700 transition-colors font-medium"
+                        className="w-full block text-left px-4 py-3 hover:bg-gray-100 text-gray-700 transition-colors font-medium"
+                        state={{ backgroundLocation: location }}
                     >
                         Mon Profil
-                    </button>
+                    </Link>
 
                     <Link
                         to="/mydashboard"

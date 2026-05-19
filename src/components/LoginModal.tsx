@@ -17,11 +17,12 @@ import {
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  redirectTo?: string;
 }
 
 type ModalMode = "login" | "register";
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, redirectTo = '/mydashboard' }: LoginModalProps) {
   const [mode, setMode] = useState<ModalMode>("login");
   const [registerStep, setRegisterStep] = useState(0);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -76,7 +77,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
       if (authData.session) {
         onClose();
-        navigate("/dashboard");
+        navigate(redirectTo);
       }
     } catch {
       setServerError("Une erreur est survenue. Veuillez réessayer.");

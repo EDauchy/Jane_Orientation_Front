@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import PageLoader from '../components/ui/PageLoader';
 import { supabase } from '../lib/supabase';
 import SchoolMap from '../components/Map';
 import FindPro from '../components/FindPro';
@@ -66,7 +67,7 @@ export default function Dashboard() {
     fetchProfile();
   }, [navigate]);
 
-  if (loading) return <div className="p-8 flex justify-center">Loading...</div>;
+  if (loading) return <PageLoader />;
   if (!profile) return <div className="p-8">Error loading profile.</div>;
 
   const isUserA = profile.role === 'user_reconversion';

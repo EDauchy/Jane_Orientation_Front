@@ -1,5 +1,6 @@
 // pages/dashboard/DashboardHome.tsx
 import { useState } from 'react';
+import PageLoader from '../../components/ui/PageLoader';
 import { useDashboard } from '../../context/DashboardContext';
 import FindPro from '../../components/FindPro';
 import AppointmentsContainer from '../../appointments/components/index';
@@ -11,7 +12,7 @@ export default function DashboardHome() {
   const { profile, loading } = useDashboard();
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
 
-  if (loading) return <div className="p-8 flex justify-center">Chargement...</div>;
+  if (loading) return <PageLoader />;
   if (!profile) return <div className="p-8">Erreur de chargement du profil.</div>;
 
   const isPro = profile.role === 'user_pro';
@@ -42,9 +43,9 @@ export default function DashboardHome() {
 
               <div className="w-1 bg-secondary opacity-[0.4] rounded-full" />
 
-              {hasTestResults && (
-                <div className="w-[30%]">
-                  <h3 className="text-lg font-bold uppercase text-primary mb-4">Mes conseils</h3>
+              <div className="w-[30%]">
+                <h3 className="text-lg font-bold uppercase text-primary mb-4">Mes conseils</h3>
+                {hasTestResults ? (
                   <div className="flex flex-wrap gap-2">
                     {profile.details.test_results.map((job: string, idx: number) => (
                       <div
@@ -55,8 +56,12 @@ export default function DashboardHome() {
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <p className="text-sm text-gray-400 italic">
+                    Complète le quiz d'orientation pour voir tes métiers suggérés ici.
+                  </p>
+                )}
+              </div>
             </div>
             <div className="w-full bg-secondary h-1 opacity-[0.4] rounded-full" />
 

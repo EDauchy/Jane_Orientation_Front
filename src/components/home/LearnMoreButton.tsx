@@ -30,9 +30,10 @@ export default function LearnMoreButton() {
 
   return (
     <div
-      className="group w-[115px] h-[115px] relative flex items-center justify-center"
+      className="group w-[115px] h-[115px] relative flex items-center justify-center cursor-pointer"
       onMouseEnter={() => setRotationSpeed(fastDuration)}
       onMouseLeave={() => setRotationSpeed(slowDuration)}
+      onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
     >
       {/* Cercle extérieur */}
       <div className="absolute inset-0 rounded-full border-4 border-purple-600"></div>

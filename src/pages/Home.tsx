@@ -69,7 +69,7 @@ export default function Home() {
       <Header />
       <Hero />
 
-      {/* ----------- NOUVEAU BLOC IA ----------- */}
+      {/* ----------- NOUVEAU BLOC IA (masqué) -----------
       <CustomSection title={"Trouvez votre métier en quelques secondes"}>
         <div className="max-w-2xl mx-auto text-center space-y-4">
 
@@ -114,6 +114,7 @@ export default function Home() {
           )}
         </div>
       </CustomSection>
+      ----------- FIN BLOC IA ----------- */}
 
       {/* ----------- RESTE DE TA PAGE ----------- */}
       <CustomSection title={"DÉCOUVREZ VOTRE CHEMIN, PAS CELUI DES AUTRES"}>
