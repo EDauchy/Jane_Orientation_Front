@@ -58,6 +58,7 @@ export interface Testimonial {
   text: string;
   title: string;
   color: string;
+  date: string;
 }
 
 export interface TestimonialCardProps {

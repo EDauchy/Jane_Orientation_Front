@@ -1,34 +1,29 @@
 import Header from "../components/home/Header";
 import Footer from "../components/home/Footer";
-import { Mail, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const team = [
-  { name: "Dave A.", role: "Développeur Full-Stack", school: "Étudiant en Bachelor 3", img: "/img-homme.png" },
-  { name: "Dave A.", role: "Développeur Full-Stack", school: "Étudiant en Bachelor 3", img: "/img-homme.png" },
-  { name: "Dave A.", role: "Développeur Full-Stack", school: "Étudiant en Bachelor 3", img: "/img-homme.png" },
-  { name: "Dave A.", role: "Développeur Full-Stack", school: "Étudiant en Bachelor 3", img: "/img-homme.png" },
-  { name: "Dave A.", role: "Développeur Full-Stack", school: "Étudiant en Bachelor 3", img: "/img-homme.png" },
+  { name: "KHACHNANE Adenan", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "BONEFONS Alexandre", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "CARTEGNIE Nathan", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "DAUCHY Esteban", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "EL MOUDEN Anas", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "EYEANG ZEHRI Najiba Laure", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+  { name: "TAIRI Mayess", role: "Développeur Full-Stack", school: "Étudiant en Mastère 1", img: "/img-homme.png" },
+
 ];
 
 const TeamCard = ({ name, role, school, img }: { name: string; role: string; school: string; img: string }) => (
-  <div className="flex flex-col items-center bg-white border border-gray-100 rounded-3xl p-4 shadow-sm w-50px">
-    <div className="w-full h-48 rounded-2xl overflow-hidden mb-3">
+  <div className="w-70 flex flex-col items-center bg-white border border-gray-100 rounded-3xl p-4 shadow-sm w-50px">
+    <div className="w-full h-60 rounded-2xl overflow-hidden mb-3">
       <img src={img} alt={name} className="w-full h-full object-cover" />
     </div>
-    <p className="font-montserrat font-black text-primary uppercase text-2xl tracking-wide">{name}</p>
+    <p className="font-montserrat font-black text-primary uppercase text-2xl tracking-wide text-center">{name}</p>
     <span className="mt-1 bg-primary text-white text-[10px] font-semibold px-3 py-0.5 rounded-full">
       {role}
     </span>
     <p className="font-roboto font-semibold text-gray-400 text-[11px] mt-1">{school}</p>
-    <div className="flex gap-3 mt-2">
-      <a href="mailto:" className="text-gray-500 hover:text-primary transition-colors">
-        <Mail className="w-4 h-4" />
-      </a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary transition-colors">
-        <Linkedin className="w-4 h-4" />
-      </a>
-    </div>
+    
   </div>
 );
 
@@ -75,17 +70,11 @@ export default function About() {
 
         {/* Row 1 – 3 cards */}
         <div className="flex flex-wrap justify-center gap-6 mb-6">
-          {team.slice(0, 3).map((member, i) => (
+          {team.map((member, i) => (
             <TeamCard key={i} {...member} />
           ))}
         </div>
 
-        {/* Row 2 – 2 cards */}
-        <div className="flex flex-wrap justify-center gap-6">
-          {team.slice(3).map((member, i) => (
-            <TeamCard key={i} {...member} />
-          ))}
-        </div>
       </section>
 
       {/* ── ENVIE D'ÉCHANGER ── */}

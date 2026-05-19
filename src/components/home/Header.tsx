@@ -2,7 +2,7 @@
 
 import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import CountdownSimple from "./CountdownSimple";
 import { APP_CONFIG } from "../../constants/config";
 import LoginModal from "../LoginModal";
@@ -41,16 +41,16 @@ export default function Header() {
 
   const isContactPage = location.pathname === '/contact';
 
-
+const navigate = useNavigate();
 
   return (
-    <header className="absolute top-0 w-full z-50 transition">
+    <header className="absolute top-0 w-full z-50 transition font-montserrat">
       <nav className="lg:px-12 py-6 flex w-full">
 
         <div className="flex items-center w-1/2 h-[45px]">
 
           <div className="lg:pl-0 pl-5">
-            <img src="./jane-logo.png" alt="Logo" className="h-10 w-auto" />
+            <img src="/jane-logo.png" alt="Logo" className="h-10 w-auto" />
           </div>
 
 
@@ -74,7 +74,7 @@ export default function Header() {
 
           <div className="ml-auto pr-7 hidden md:block">
             <button
-              disabled={isLocked}
+              onClick={() => navigate('/quiz')}
               className={`
         relative flex items-center gap-1 text-white text-[10px] px-4 py-1.5 rounded-full uppercase font-medium transition-all duration-300
         ${isLocked
@@ -109,8 +109,8 @@ export default function Header() {
               CONTACT
             </NavLink>
 
-            <img src='./contact-selected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
-              <img src='./contact-unselected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
+            <img src='/contact-selected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
+              <img src='/contact-unselected.svg' alt="icon" className={`absolute w-[130px] top-0 -left-4 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
           </div>
 
           <button
@@ -186,7 +186,7 @@ export default function Header() {
             <div className="flex-1 rounded-4xl bg-white py-6 px-6">
 
               <button
-                disabled={isLocked}
+                onClick={() => navigate('/quiz')}
                 className={`
         relative flex items-center gap-1 text-white text-[10px] px-4 py-1.5 rounded-full uppercase font-medium transition-all duration-300
         ${isLocked
@@ -217,8 +217,8 @@ export default function Header() {
                     CONTACT
                   </NavLink>
 
-                  <img src='./contact-selected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
-                  <img src='./contact-unselected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
+                  <img src='/contact-selected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-100' : 'opacity-0'}`} />
+                  <img src='/contact-unselected.svg' alt="icon" className={`absolute w-[100px] z-50 top-10 -left-2 transition-opacity duration-200 ${isContactPage ? 'opacity-0' : 'opacity-100'}`} />
                 </div>
                 <div className="">
                   <div className="relative flex flex-col w-[220px] h-[150px] rounded-tr-[30px] bg-amber-200 overflow-hidden">
@@ -227,7 +227,7 @@ export default function Header() {
                     <div className="absolute left-0 top-0 w-[130px] h-[30px] bg-[radial-gradient(circle_at_bottom_right,transparent_30px,#ffffff_30.5px)]"></div>{" "}
                     <div className="absolute left-0 top-0 w-[30px] h-[110px] bg-[radial-gradient(circle_at_bottom_right,transparent_30px,#ffffff_30.5px)]"></div>{" "}
                     <img
-                      src="img-homme.png"
+                      src="/img-homme.png"
                       alt=""
                       className="w-full h-full object-cover"
                     />
@@ -245,7 +245,7 @@ export default function Header() {
 
                   <div className="relative w-[220px] h-[110px] rounded-b-[30px] overflow-hidden">
                     <img
-                      src="img-femme.png"
+                      src="/img-femme.png"
                       alt=""
                       className="w-full h-full object-cover"
                     />
@@ -264,7 +264,7 @@ export default function Header() {
 
                 <div className="relative flex-1 h-10 ">
                   <img
-                    src="./hero-arrow.png"
+                    src="/hero-arrow.png"
                     className="absolute -top-5 bottom-0 h-[calc(100%+40px)] -right-0 rotate-170"
                     alt=""
                   />
@@ -286,7 +286,7 @@ export default function Header() {
                     <span className="text-[#681BEF]">Laissez-vous</span>
                     <span className="text-[#FF5EAE] font-bold relative">
                       <img
-                        src="./hero-wow.png"
+                        src="/hero-wow.png"
                         className="absolute w-5 -right-5 rotate-y-180 -top-2"
                         alt=""
                       />{" "}

@@ -1,7 +1,9 @@
 import { Sparkles } from "lucide-react";
 import StyledTitle from "./StyledTitle";
+import { useNavigate } from "react-router-dom";
 
 const CallToAction = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative w-full overflow-hidden bg-white py-30 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[400px]">
 
@@ -43,6 +45,7 @@ const CallToAction = () => {
 
           {/* Le Bouton Principal */}
           <button
+          onClick={() => navigate('/quiz')}
             className="flex items-center gap-2 text-white text-lg px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
             style={{
               background:

@@ -13,15 +13,16 @@ const CustomSection: React.FC<CustomSectionProps> = ({ title, children }) => {
       >
         <span
           className="
-            text-[8rem] md:text-[12rem] lg:text-[12rem]
-            font-black 
-            uppercase 
-            leading-[0.8]
-            text-transparent 
-            tracking-[-0.08em]
+            text-[7rem] md:text-[8rem] lg:text-[10rem]
+            font-black
+            uppercase
+            leading-[0.85]
+            text-white
+            tracking-[0.06em]
             opacity-10
             whitespace-pre-line
-            [-webkit-text-stroke:5px_#671bff9b]
+            [-webkit-text-stroke:12px_#671bff9b]
+            [paint-order:stroke_fill]
             "
         >
           {title}

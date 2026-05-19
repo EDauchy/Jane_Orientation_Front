@@ -1,5 +1,6 @@
 // pages/dashboard/DashboardAccountSettings.tsx
 import { useEffect, useState } from 'react';
+import PageLoader from '../../components/ui/PageLoader';
 import { supabase } from '../../lib/supabase';
 import { useDashboard } from '../../context/DashboardContext';
 import ProfileAvatar from '../../components/ProfileAvatar';
@@ -40,7 +41,7 @@ export default function DashboardAccountSettings() {
   }, [profile]);
 
   // Early returns APRÈS tous les hooks
-  if (loading) return <div className="p-8 flex justify-center">Chargement...</div>;
+  if (loading) return <PageLoader />;
   if (!profile) return <div className="p-8">Erreur de chargement du profil.</div>;
 
   const isUserA = profile.role === 'user_reconversion';
