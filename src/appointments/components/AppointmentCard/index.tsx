@@ -1,8 +1,6 @@
 // components/AppointmentCard.tsx
 import type { Appointment } from "../../types";
-import AppointmentAvatar from "./AppointmentAvatar";
 import StatusIndicator from "./StatusIndicator";
-import AppointmentMenu from "./AppointmentMenu";
 import AppointmentDetailModal from "../AppointmentDetailModal";
 import { useState } from "react";
 
@@ -44,14 +42,6 @@ export default function AppointmentCard({
   const isUserA = apt.user_a?.id === currentUserId;
   const otherUser = isUserA ? apt.user_b : apt.user_a;
 
-  const sharedMenuProps = {
-    appointment: apt,
-    currentUserId,
-    onUpdateStatus,
-    onOpenReviewModal,
-    onOpenRescheduleModal,
-    onOpenConfirmDeleteModal,
-  };
 
   const [detailModal, setDetailModal] = useState(false);
 
