@@ -12,10 +12,14 @@ import { useAuth } from "../../context/AuthContext";
 
 interface AppointmentsContainerProps {
   variant: "list" | "calendar";
+  refreshKey?: number;
+  onAppointmentChange?: () => void;
 }
 
 export default function AppointmentsContainer({
   variant,
+  refreshKey,
+  onAppointmentChange,
 }: AppointmentsContainerProps) {
   const { user } = useAuth();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -58,6 +62,10 @@ export default function AppointmentsContainer({
     fetchAppointments();
   }, []);
 
+  useEffect(() => {
+    if (refreshKey !== undefined && refreshKey > 0) fetchAppointments();
+  }, [refreshKey]);
+
   // ─── Status update ────────────────────────────────────────────────────────────
 
   const updateStatus = async (
@@ -79,6 +87,7 @@ export default function AppointmentsContainer({
 
       showToast(successMessage, "success");
       fetchAppointments();
+      onAppointmentChange?.();
     } catch (error: any) {
       showToast(error.message || "Erreur lors de la mise à jour", "error");
     }

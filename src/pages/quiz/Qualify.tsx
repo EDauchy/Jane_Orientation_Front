@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 import { Button, Highlight } from "../../components/quiz/ui";
 import {
   AUDIENCE_OPTIONS,
@@ -18,6 +19,10 @@ import type {
 } from "../../lib/quiz/types";
 
 export default function Qualify() {
+  const { user } = useAuth();
+  const userRole = user?.user_metadata?.role ?? (user as any)?.role;
+  const [proError, setProError] = useState(false);
+
   const navigate = useNavigate();
   const setAudience = useAssessment((s) => s.setAudience);
   const setQualification = useAssessment((s) => s.setQualification);
@@ -55,6 +60,10 @@ export default function Qualify() {
 
   function submit() {
     if (!audience || !horizon) return;
+    if (userRole === "user_pro") {
+      setProError(true);
+      return;
+    }
     if (Object.keys(existingAnswers).length === 0) {
       startSession();
     }
@@ -209,6 +218,11 @@ export default function Qualify() {
             >
               Commencer le test
             </Button>
+            {proError && (
+              <p className="text-[13px] text-red-600 font-medium">
+                Ce quiz est réservé aux utilisateurs en recherche d'orientation. Votre compte professionnel n'y a pas accès.
+              </p>
+            )}
             <p className="text-[12px] leading-relaxed text-muted max-w-[520px]">
               Ceci n'est pas un diagnostic. Les réponses alimentent un
               compte-rendu personnel — aucun jugement, aucune note.

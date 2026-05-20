@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Appointment } from "../types";
-import { getAppointments } from "../services/getAppointments";
-import { useAuth } from "../../context/AuthContext";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { addDays, startOfWeek, format, isSameDay } from "date-fns";
 import AppointmentCard from "./AppointmentCard";
 
 type AppointmentCalendarProps = {
+  appointments: Appointment[];
+  currentUserId: string;
+  loading: boolean;
   onUpdateStatus: (
     id: string,
     status: string | undefined,
@@ -27,36 +28,20 @@ type AppointmentCalendarProps = {
 };
 
 export default function AppointmentCalendar({
+  appointments,
+  currentUserId,
+  loading,
   onUpdateStatus,
   onOpenReviewModal,
   onOpenRescheduleModal,
   onOpenConfirmDeleteModal,
 }: AppointmentCalendarProps) {
-  const { user } = useAuth();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentWeekStart, setCurrentWeekStart] = useState(
-    startOfWeek(new Date(), { weekStartsOn: 1 }), // Monday start
+    startOfWeek(new Date(), { weekStartsOn: 1 }),
   );
 
-  const fetchAppointments = async () => {
-    try {
-      setLoading(true);
-      const data = await getAppointments();
-      setAppointments(data);
-    } catch (error) {
-      console.error("Error fetching appointments", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAppointments();
-  }, []);
-
   // Monday to Friday only (no Saturday & Sunday)
-  const weekDays = Array.from({ length: 5 }).map((_, i) =>
+  const weekDays = Array.from({ length: 7 }).map((_, i) =>
     addDays(currentWeekStart, i),
   );
 
@@ -75,7 +60,7 @@ export default function AppointmentCalendar({
         </button>
         <span className="uppercase text-xl font-bold text-primary">
           {format(currentWeekStart, "dd MMM yyyy")} -{" "}
-          {format(addDays(currentWeekStart, 6), "dd MMM yyyy")}
+          {format(addDays(currentWeekStart, 4), "dd MMM yyyy")}
         </span>
         <button
           onClick={nextWeek}
@@ -86,7 +71,7 @@ export default function AppointmentCalendar({
       </div>
 
       {/* Weekly Grid (Mon–Fri) */}
-      <div className="grid grid-cols-5 gap-6">
+      <div className="grid grid-cols-7 gap-6">
         {weekDays.map((day) => {
           const dayAppointments = appointments.filter((apt) =>
             isSameDay(new Date(apt.date), day),
@@ -109,7 +94,7 @@ export default function AppointmentCalendar({
                   variant="minimal"
                   key={apt.id}
                   appointment={apt}
-                  currentUserId={user?.id || ""}
+                  currentUserId={currentUserId}
                   onUpdateStatus={onUpdateStatus}
                   onOpenReviewModal={onOpenReviewModal}
                   onOpenRescheduleModal={onOpenRescheduleModal}

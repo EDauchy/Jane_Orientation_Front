@@ -89,15 +89,13 @@ export default function AppointmentList({
       ))}
       {!isUserA && !loadingProfile && currentProfile && (
         <>
-          {
-            <button
-              onClick={() => setShowAvailabilityEditor(true)}
-              className="button-primary"
-            >
-              <Clock className="w-4 h-4" />
-              Gérer mes disponibilités
-            </button>
-          }
+          <button
+            onClick={() => setShowAvailabilityEditor(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl shadow-md hover:bg-secondary hover:shadow-lg transition-all duration-200 cursor-pointer mt-2"
+          >
+            <Clock className="w-4 h-4 shrink-0" />
+            Gérer mes disponibilités
+          </button>
           {currentProfile && (
             <AvailabilityEditor
               initialAvailability={currentProfile.details?.availability}

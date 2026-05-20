@@ -41,12 +41,14 @@ interface FindProSingleProps {
   professional: Professional;
   open: boolean;
   onClose: () => void;
+  onBooked?: () => void;
 }
 
 export default function FindProSingle({
   professional,
   open,
   onClose,
+  onBooked,
 }: FindProSingleProps) {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [userAppointments, setUserAppointments] = useState<any[]>([]);
@@ -211,6 +213,7 @@ export default function FindProSingle({
         });
         setTimeout(() => {
           setToast(null);
+          onBooked?.();
           onClose();
         }, 2000);
       } else {

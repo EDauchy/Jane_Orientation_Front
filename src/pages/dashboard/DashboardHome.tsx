@@ -11,6 +11,8 @@ import FavoritesList from "../../components/FavoritesList";
 export default function DashboardHome() {
   const { profile, loading } = useDashboard();
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const handleRefresh = () => setRefreshKey((k) => k + 1);
 
   if (loading) return <PageLoader />;
   if (!profile)
@@ -26,13 +28,21 @@ export default function DashboardHome() {
         {isPro ? (
           <div className="flex flex-col gap-8">
             <div className="min-h-[400px]">
-              <AppointmentsContainer variant="calendar" />
+              <AppointmentsContainer
+                variant="calendar"
+                refreshKey={refreshKey}
+                onAppointmentChange={handleRefresh}
+              />
             </div>
             <div className="w-full bg-secondary h-1 opacity-[0.4] rounded-full" />
             <h3 className="text-2xl font-bold uppercase text-primary">
               Mes RDV
             </h3>
-            <AppointmentsContainer variant="list" />
+            <AppointmentsContainer
+              variant="list"
+              refreshKey={refreshKey}
+              onAppointmentChange={handleRefresh}
+            />
           </div>
         ) : (
           <div className="flex flex-col gap-8">
@@ -42,7 +52,11 @@ export default function DashboardHome() {
                 <h3 className="text-lg font-bold uppercase text-primary">
                   Mes RDV
                 </h3>
-                <AppointmentsContainer variant="list" />
+                <AppointmentsContainer
+                  variant="list"
+                  refreshKey={refreshKey}
+                  onAppointmentChange={handleRefresh}
+                />
               </div>
 
               <div className="w-1 bg-secondary opacity-[0.4] rounded-full" />
@@ -79,7 +93,11 @@ export default function DashboardHome() {
                 <h3 className="text-lg font-bold uppercase text-primary">
                   Demander un Rendez-vous
                 </h3>
-                <ProsCarousel jobs={profile.details?.test_results || []} />
+                <ProsCarousel
+                  jobs={profile.details?.test_results || []}
+                  refreshKey={refreshKey}
+                  onBooked={handleRefresh}
+                />
               </div>
               <div className="w-1 bg-secondary opacity-[0.4] rounded-full" />
 

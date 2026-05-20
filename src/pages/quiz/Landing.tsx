@@ -21,6 +21,9 @@ export default function Landing() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [proError, setProError] = useState(false);
+
+  const userRole = user?.user_metadata?.role ?? (user as any)?.role;
 
   const assessmentState = useAssessment((s) => s.state);
   const resetSession = useAssessment((s) => s.resetSession);
@@ -44,6 +47,10 @@ export default function Landing() {
       setIsLoginOpen(true);
       return;
     }
+    if (userRole === "user_pro") {
+      setProError(true);
+      return;
+    }
     if (hasSession && currentSlug) {
       navigate(`/quiz/assessment/${currentSlug}`);
     } else {
@@ -59,6 +66,10 @@ export default function Landing() {
   function handleDemo() {
     if (!user) {
       setIsLoginOpen(true);
+      return;
+    }
+    if (userRole === "user_pro") {
+      setProError(true);
       return;
     }
     seedDemoData();
@@ -145,6 +156,12 @@ export default function Landing() {
                   <RotateCcw size={12} aria-hidden="true" />
                   Recommencer depuis le début
                 </button>
+              )}
+
+              {proError && (
+                <p className="text-[13px] text-red-600 font-medium">
+                  Ce quiz est réservé aux utilisateurs en recherche d'orientation. Votre compte professionnel n'y a pas accès.
+                </p>
               )}
 
               <p className="text-[13px] text-muted">
