@@ -3,7 +3,7 @@ import { useAssessment } from "./store";
 export function seedDemoData() {
   const s = useAssessment.getState();
 
-  s.startSession();
+  s.startDemo();
   s.setAudience("student-exploring");
   s.setQualification({ horizon: "one-year", constraints: ["finances"] });
 
