@@ -29,7 +29,8 @@ function AppRoutes() {
   const location = useLocation();
 
   // On récupère l'état 'backgroundLocation' si on a navigué via un state
-  const background = location.state && location.state.backgroundLocation;
+  const background = location.state?.backgroundLocation || 
+    (location.pathname.startsWith('/mydashboard') ? { pathname: "/" } : null);
 
   return (
     <>

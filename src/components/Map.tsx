@@ -378,7 +378,7 @@ const Map = ({ city, suggestedJobs }: MapProps) => {
             zoom={6}
             zoomControl={false}
             doubleClickZoom={false} // Empêche le zoom au double-clic
-            style={{ height: "100vh", width: "100%" }}
+            style={{ height: "100%", width: "100%"  }}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <MapLogic city={city} suggestedJobs={suggestedJobs} />

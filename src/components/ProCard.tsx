@@ -1,7 +1,9 @@
+// components/ProCard.tsx
 import React, { useEffect, useState } from 'react';
 import type { Professional } from './FindPro';
 import { IoMdMail } from "react-icons/io";
-import { BiCalendar } from "react-icons/bi"; // calendar icon
+import { BiCalendar } from "react-icons/bi";
+import { User } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import FindProSingle from './FindProSignle';
 
@@ -14,10 +16,6 @@ const ProCard: React.FC<ProCardProps> = ({ pro }) => {
     const [userAppointments, setUserAppointments] = useState<any[]>([]);
     const [loadingAppointments, setLoadingAppointments] = useState(true);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    // Fetch user appointments on mount
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
@@ -41,7 +39,6 @@ const ProCard: React.FC<ProCardProps> = ({ pro }) => {
         fetchAppointments();
     }, []);
 
-    // Find active appointment for this professional
     const appointment = userAppointments.find(a =>
         a.user_b_id === pro.id &&
         ['PENDING', 'CONFIRMED', 'RESCHEDULED'].includes(a.status)
@@ -50,58 +47,51 @@ const ProCard: React.FC<ProCardProps> = ({ pro }) => {
     const appointmentDateStr = appointment?.date;
 
     return (
-        <div className="p-4 bg-white rounded-3xl shadow-md w-full max-w-[300px] flex flex-col gap-3 items-center">
-            {/* Avatar & Mail */}
-            <div className='relative'>
-                <div className="flex justify-center items-center absolute top-0 left-0 z-10 w-[35px] h-[35px] bg-white rounded-br-[10px]">
-                    <IoMdMail className="text-primary text-xl" />
+        <div className="p-2 bg-white rounded-xl shadow-md w-[150px] flex flex-col gap-1.5 items-center flex-shrink-0">
+            {/* Avatar */}
+            <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20">
+                <div className="flex justify-center items-center absolute top-0 left-0 z-10 w-[22px] h-[22px] bg-white rounded-br-[6px]">
+                    <IoMdMail className="text-primary text-[10px]" />
                 </div>
-                <div className="absolute left-0 top-0 w-[10px] h-[45px] bg-[radial-gradient(circle_at_bottom_right,transparent_10px,#ffffff_10px)]"></div>
-                <div className="absolute left-0 top-0 w-[45px] h-[10px] bg-[radial-gradient(circle_at_bottom_right,transparent_10px,#ffffff_10px)]"></div>
-                <img src={pro.avatar_url} className='rounded-2xl aspect-square object-cover' />
-            </div>
 
-            {/* Name & Profession */}
-            <div className='flex flex-col gap-1 items-center w-full max-w-[240px]'>
-                <p className="font-extrabold text-primary self-center">
-                    {pro.first_name} {pro.last_name}
-                </p>
-                <p className="rounded-full py-1 px-3 bg-primary text-white font-medium">
-                    {pro.user_b_details.profession}
-                </p>
-            </div>
-
-            {/* Appointment Status / Dummy Date Picker */}
-            <div className='bg-white rounded-2xl w-full max-w-[250px] shadow-md'>
-                <div className='bg-secondary text-white rounded-t-2xl p-2 text-center'>Date du rendez-vous</div>
-
-                {loadingAppointments ? (
-                    <div className="p-3 text-center text-gray-500">Chargement...</div>
-                ) : appointmentDateStr ? (
-                    <div className="flex items-center justify-center p-2 gap-2">
-                        <BiCalendar className="text-primary text-lg" />
-                        <span className="text-gray-700 font-bold">
-                            {new Date(appointmentDateStr).toLocaleString()}
-                        </span>
-                    </div>
+                {pro.avatar_url ? (
+                    <img src={pro.avatar_url} className="w-full h-full object-cover" alt={pro.first_name} />
                 ) : (
-                    <div
-                        className="flex items-center gap-2 p-2 cursor-pointer rounded-2xl mt-1 hover:bg-gray-50 transition-colors"
-                        onClick={handleOpen}
-                    >
-                        <BiCalendar className="text-gray-400 text-lg" />
-                        <input
-                            type="text"
-                            className="flex-1 bg-transparent border-none focus:outline-none text-gray-500 cursor-pointer"
-                            placeholder="Sélectionner une date"
-                            readOnly
-                        />
+                    <div className="w-full h-full flex items-center justify-center">
+                        <User className="w-10 h-10 text-primary/40" />
                     </div>
                 )}
             </div>
 
-            {/* Booking Modal */}
-            <FindProSingle professional={pro} open={open} onClose={handleClose} />
+            {/* Name & Profession */}
+            <p className="font-extrabold text-primary text-xs leading-tight text-center">
+                {pro.first_name} {pro.last_name?.charAt(0)}.
+            </p>
+            <p className="rounded-full py-0.5 px-2 bg-primary text-white text-[10px] font-medium leading-tight">
+                {pro.user_b_details.profession}
+            </p>
+
+            {/* Date */}
+            {loadingAppointments ? (
+                <span className="text-[9px] text-gray-400">...</span>
+            ) : appointmentDateStr ? (
+                <div className="flex items-center gap-1">
+                    <BiCalendar className="text-primary text-[10px]" />
+                    <span className="text-[10px] font-bold text-gray-700">
+                        {new Date(appointmentDateStr).toLocaleDateString()}
+                    </span>
+                </div>
+            ) : (
+                <div
+                    className="flex items-center gap-1 cursor-pointer hover:opacity-70 transition-opacity"
+                    onClick={() => setOpen(true)}
+                >
+                    <BiCalendar className="text-secondary text-[10px]" />
+                    <span className="text-[10px] text-secondary font-medium">Prendre RDV</span>
+                </div>
+            )}
+
+            <FindProSingle professional={pro} open={open} onClose={() => setOpen(false)} />
         </div>
     );
 };

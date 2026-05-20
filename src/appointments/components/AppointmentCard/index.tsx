@@ -1,3 +1,4 @@
+// components/AppointmentCard.tsx
 import type { Appointment } from '../../types';
 import AppointmentAvatar from './AppointmentAvatar';
 import StatusIndicator from './StatusIndicator';
@@ -45,7 +46,7 @@ export default function AppointmentCard({
         <>
             <div
                 onClick={() => setDetailModal(true)}
-                className="bg-white border border-3 border-primary rounded-full shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all flex items-center gap-4 cursor-pointer"
+                className="bg-white border border-3 border-primary rounded-full shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer"
             >
                 {/* Avatar */}
                 <AppointmentAvatar
@@ -59,20 +60,20 @@ export default function AppointmentCard({
                     <div className="flex flex-col">
                         <span
                             title={`${otherUser?.first_name} ${otherUser?.last_name}`}
-                            className="font-extrabold text-primary w-full max-w-[80px] text-sm text-ellipsis overflow-hidden whitespace-nowrap"
+                            className="font-extrabold text-primary w-full max-w-[80px] text-xs text-ellipsis overflow-hidden whitespace-nowrap"
                         >
                             {otherUser?.first_name} {otherUser?.last_name}
                         </span>
-                        <span className="font-bold text-primary text-xs">
+                        <span className="font-bold text-primary text-[10px]">
                             {aptDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                     </div>
                 ) : (
                     <>
-                        <div className="font-extrabold text-primary pr-4 py-1 border-r-3 border-primary whitespace-nowrap self-center">
+                        <div className="font-extrabold text-primary text-xs pr-3 py-1 border-r-3 border-primary whitespace-nowrap self-center">
                             {otherUser?.first_name} {otherUser?.last_name}
                         </div>
-                        <div className="font-bold text-primary flex flex-col uppercase grow text-sm py-1">
+                        <div className="font-bold text-primary flex flex-col uppercase grow text-[11px] py-1">
                             <span>Le {aptDate.toLocaleDateString('fr-FR')}</span>
                             <span>à {aptDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>

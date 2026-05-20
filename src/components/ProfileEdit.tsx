@@ -75,7 +75,6 @@ export default function ProfileEdit({ profile, onUpdate }: ProfileEditProps) {
 
   return (
     <div className='flex flex-col items-center gap-8'>
-      <h2 className="headline-primary">Mes Informations</h2>
 
       <div className='flex flex-col gap-2 w-full max-w-[30rem]'>
         <ProfileAvatar
