@@ -6,9 +6,11 @@ import ProCard from "./ProCard";
 
 interface ProsCarouselProps {
   jobs: string[];
+  refreshKey?: number;
+  onBooked?: () => void;
 }
 
-function ProsCarousel({ jobs }: ProsCarouselProps) {
+function ProsCarousel({ jobs, refreshKey, onBooked }: ProsCarouselProps) {
   const [pros, setPros] = useState<Professional[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -84,7 +86,7 @@ function ProsCarousel({ jobs }: ProsCarouselProps) {
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {pros.map((pro) => (
-          <ProCard key={pro.id} pro={pro} />
+          <ProCard key={pro.id} pro={pro} refreshKey={refreshKey} onBooked={onBooked} />
         ))}
       </div>
 

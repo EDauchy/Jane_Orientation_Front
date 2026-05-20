@@ -59,15 +59,10 @@ export default function AppointmentCard({
     <>
       <div
         onClick={() => setDetailModal(true)}
-        className="bg-white border border-3 border-primary rounded-full shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer"
+        className="bg-white border border-3 px-2 border-primary rounded-full shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer"
       >
-        {/* Avatar */}
-        <AppointmentAvatar
-          src={otherUser?.avatar_url}
-          size={isMinimal ? "sm" : "md"}
-          alt={`${otherUser?.first_name} ${otherUser?.last_name}`}
-        />
-
+ 
+  
         {/* Identity + date */}
         {isMinimal ? (
           <div className="flex flex-col">
@@ -75,7 +70,7 @@ export default function AppointmentCard({
               title={`${otherUser?.first_name} ${otherUser?.last_name}`}
               className="font-extrabold text-primary w-full max-w-[80px] text-xs text-ellipsis overflow-hidden whitespace-nowrap"
             >
-              {otherUser?.first_name} {otherUser?.last_name}
+             {otherUser?.first_name?.[0]?.toUpperCase()}{otherUser?.last_name?.[0]?.toUpperCase()}
             </span>
             <span className="font-bold text-primary text-[10px]">
               {aptDate.toLocaleTimeString([], {
@@ -112,9 +107,7 @@ export default function AppointmentCard({
         />
 
         {/* Actions menu */}
-        <div onClick={(e) => e.stopPropagation()}>
-          <AppointmentMenu {...sharedMenuProps} showStatus={isMinimal} />
-        </div>
+        
       </div>
 
       {/* Detail modal */}

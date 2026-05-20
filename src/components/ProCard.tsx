@@ -9,9 +9,11 @@ import FindProSingle from "./FindProSignle";
 
 interface ProCardProps {
   pro: Professional;
+  refreshKey?: number;
+  onBooked?: () => void;
 }
 
-const ProCard: React.FC<ProCardProps> = ({ pro }) => {
+const ProCard: React.FC<ProCardProps> = ({ pro, refreshKey, onBooked }) => {
   const [open, setOpen] = useState(false);
   const [userAppointments, setUserAppointments] = useState<any[]>([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
@@ -39,7 +41,7 @@ const ProCard: React.FC<ProCardProps> = ({ pro }) => {
     };
 
     fetchAppointments();
-  }, []);
+  }, [refreshKey]);
 
   const appointment = userAppointments.find(
     (a) =>
@@ -104,6 +106,7 @@ const ProCard: React.FC<ProCardProps> = ({ pro }) => {
         professional={pro}
         open={open}
         onClose={() => setOpen(false)}
+        onBooked={onBooked}
       />
     </div>
   );
