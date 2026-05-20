@@ -31,6 +31,7 @@ const PILL_VARIANTS = ["purple", "pink", "orange", "yellow", "green"] as const;
 
 export default function Export() {
   const state = useAssessment((s) => s.state);
+  const resetSession = useAssessment((s) => s.resetSession);
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
 
   const hasAnswers = useMemo(
@@ -85,6 +86,7 @@ export default function Export() {
       }
 
       setPhase({ kind: "success", data });
+      resetSession();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur inconnue lors de l'appel.";
