@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { FaCalendarAlt } from 'react-icons/fa';
-import Popover from '@mui/material/Popover';
+import { useState, useRef } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FaCalendarAlt } from "react-icons/fa";
+import Popover from "@mui/material/Popover";
 
 interface AvailableDatePickerProps {
   availability: Record<string, string[]> | null;
@@ -27,7 +27,7 @@ export default function AvailableDatePicker({
   // ─── Date helpers ─────────────────────────────────────────────────────────
 
   const getDayName = (date: Date) =>
-    date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+    date.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
 
   const isDateAvailable = (date: Date) => {
     const today = new Date();
@@ -54,26 +54,27 @@ export default function AvailableDatePicker({
     const days: (Date | null)[] = [];
     const startPadding = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
     for (let i = 0; i < startPadding; i++) days.push(null);
-    for (let d = 1; d <= lastDay.getDate(); d++) days.push(new Date(year, month, d));
+    for (let d = 1; d <= lastDay.getDate(); d++)
+      days.push(new Date(year, month, d));
 
     return days;
   };
 
   const formatDisplay = (date: Date) => {
-    const d = String(date.getDate()).padStart(2, '0');
-    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, "0");
+    const m = String(date.getMonth() + 1).padStart(2, "0");
     return `${d}/${m}/${date.getFullYear()}`;
   };
 
   const formatValue = (date: Date) => {
     const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
   };
 
   const parseDateLocal = (dateStr: string) => {
-    const [y, m, d] = dateStr.split('-').map(Number);
+    const [y, m, d] = dateStr.split("-").map(Number);
     return new Date(y, m - 1, d);
   };
 
@@ -86,7 +87,10 @@ export default function AvailableDatePicker({
   };
 
   const days = getDaysInMonth();
-  const monthYear = currentMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  const monthYear = currentMonth.toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
   const selectedDateObj = selectedDate ? parseDateLocal(selectedDate) : null;
 
   return (
@@ -98,8 +102,8 @@ export default function AvailableDatePicker({
         onClick={isOpen ? closePopover : openPopover}
         className="w-full cursor-pointer input-base"
       >
-        <span className={selectedDateObj ? 'text-gray-900' : 'text-gray-400'}>
-          {selectedDateObj ? formatDisplay(selectedDateObj) : 'JJ/MM/AAAA'}
+        <span className={selectedDateObj ? "text-gray-900" : "text-gray-400"}>
+          {selectedDateObj ? formatDisplay(selectedDateObj) : "JJ/MM/AAAA"}
         </span>
         <FaCalendarAlt className="text-primary text-lg" />
       </button>
@@ -109,13 +113,13 @@ export default function AvailableDatePicker({
         open={isOpen}
         anchorEl={anchorEl}
         onClose={closePopover}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
         slotProps={{
           paper: {
             sx: {
-              borderRadius: '12px',
-              boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
+              borderRadius: "12px",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
               mt: 0.5,
             },
           },
@@ -126,16 +130,32 @@ export default function AvailableDatePicker({
           <div className="flex items-center justify-between mb-4">
             <button
               type="button"
-              onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(
+                    currentMonth.getFullYear(),
+                    currentMonth.getMonth() - 1,
+                  ),
+                )
+              }
               className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Mois précédent"
             >
               <ChevronLeft className="w-5 h-5 text-gray-600" />
             </button>
-            <span className="font-semibold text-sm capitalize text-gray-900">{monthYear}</span>
+            <span className="font-semibold text-sm capitalize text-gray-900">
+              {monthYear}
+            </span>
             <button
               type="button"
-              onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(
+                    currentMonth.getFullYear(),
+                    currentMonth.getMonth() + 1,
+                  ),
+                )
+              }
               className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
               aria-label="Mois suivant"
             >
@@ -145,8 +165,11 @@ export default function AvailableDatePicker({
 
           {/* Day-of-week headers */}
           <div className="grid grid-cols-7 gap-1 mb-2">
-            {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((day, i) => (
-              <div key={i} className="text-center text-xs font-semibold text-gray-500 py-1.5">
+            {["L", "M", "M", "J", "V", "S", "D"].map((day, i) => (
+              <div
+                key={i}
+                className="text-center text-xs font-semibold text-gray-500 py-1.5"
+              >
                 {day}
               </div>
             ))}
@@ -158,7 +181,9 @@ export default function AvailableDatePicker({
               if (!date) return <div key={`empty-${index}`} />;
 
               const available = isDateAvailable(date);
-              const isSelected = selectedDateObj && formatValue(date) === formatValue(selectedDateObj);
+              const isSelected =
+                selectedDateObj &&
+                formatValue(date) === formatValue(selectedDateObj);
 
               return (
                 <button
@@ -168,12 +193,18 @@ export default function AvailableDatePicker({
                   disabled={!available}
                   className={`
                     w-9 h-9 text-sm rounded-lg transition-all font-medium
-                    ${available
-                      ? 'hover:bg-indigo-50 hover:text-indigo-700 cursor-pointer'
-                      : 'text-gray-300 cursor-not-allowed bg-gray-50/50'}
-                    ${isSelected
-                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm'
-                      : available ? 'text-gray-700' : ''}
+                    ${
+                      available
+                        ? "hover:bg-indigo-50 hover:text-indigo-700 cursor-pointer"
+                        : "text-gray-300 cursor-not-allowed bg-gray-50/50"
+                    }
+                    ${
+                      isSelected
+                        ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm"
+                        : available
+                          ? "text-gray-700"
+                          : ""
+                    }
                   `}
                 >
                   {date.getDate()}

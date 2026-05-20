@@ -1,5 +1,5 @@
 export default function BenefitsSection() {
-return (
+  return (
     <section className="w-full py-8">
       {/* SECTION PRINCIPALE */}
       <div className="w-full flex flex-col lg:flex-row px-8 lg:px-16 mt-10 gap-5 items-stretch">
@@ -33,13 +33,13 @@ return (
                 />
               </div>
 
-          <div className="absolute w-[400px] h-[500px] -left-[200px] top-0 overflow-hidden">
-          <img
-            src="/Benefits-infini-icon.png"
-            alt="infini icon"
-            className="absolute top-1 h-[300px] left-10 object-cover rounded-3xl rotate-100"
-          />
-        </div>
+              <div className="absolute w-[400px] h-[500px] -left-[200px] top-0 overflow-hidden">
+                <img
+                  src="/Benefits-infini-icon.png"
+                  alt="infini icon"
+                  className="absolute top-1 h-[300px] left-10 object-cover rounded-3xl rotate-100"
+                />
+              </div>
 
               <div className="h-full overflow-hidden rounded-3xl">
                 <img

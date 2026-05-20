@@ -7,7 +7,6 @@ export default function MyDashboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const previousPage = location.state?.backgroundLocation?.pathname || "/";
 
   const handleClose = () => {
@@ -24,8 +23,7 @@ export default function MyDashboard() {
   return (
     <DashboardProvider>
       <div
-          className="glass-scroll fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-
+        className="glass-scroll fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
         onClick={handleClose}
       >
         <div
@@ -57,7 +55,6 @@ export default function MyDashboard() {
             </button>
             <Outlet />
           </div>
-
         </div>
       </div>
     </DashboardProvider>

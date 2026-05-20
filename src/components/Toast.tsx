@@ -1,14 +1,19 @@
-import { useEffect } from 'react';
-import { X, CheckCircle, AlertCircle } from 'lucide-react';
+import { useEffect } from "react";
+import { X, CheckCircle, AlertCircle } from "lucide-react";
 
 interface ToastProps {
   message: string;
-  type?: 'success' | 'error' | 'info';
+  type?: "success" | "error" | "info";
   onClose: () => void;
   duration?: number;
 }
 
-export default function Toast({ message, type = 'info', onClose, duration = 3000 }: ToastProps) {
+export default function Toast({
+  message,
+  type = "info",
+  onClose,
+  duration = 3000,
+}: ToastProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -18,15 +23,22 @@ export default function Toast({ message, type = 'info', onClose, duration = 3000
   }, [onClose, duration]);
 
   const bgColor = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500',
+    success: "bg-green-500",
+    error: "bg-red-500",
+    info: "bg-blue-500",
   }[type];
 
-  const Icon = type === 'success' ? CheckCircle : type === 'error' ? AlertCircle : CheckCircle;
+  const Icon =
+    type === "success"
+      ? CheckCircle
+      : type === "error"
+        ? AlertCircle
+        : CheckCircle;
 
   return (
-    <div className={`fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 min-w-[300px]`}>
+    <div
+      className={`fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 min-w-[300px]`}
+    >
       <Icon size={20} />
       <span className="flex-1">{message}</span>
       <button onClick={onClose} className="hover:opacity-80">

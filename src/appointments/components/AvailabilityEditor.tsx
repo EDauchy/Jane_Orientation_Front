@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import { Clock, Save, X } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
-import SelectInput from '../../components/SelectInput';
+import { useState } from "react";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { Clock, Save, X } from "lucide-react";
+import { supabase } from "../../lib/supabase";
+import SelectInput from "../../components/SelectInput";
 
 interface AvailabilityEditorProps {
   initialAvailability: Record<string, string[]>;
@@ -14,24 +14,24 @@ interface AvailabilityEditorProps {
 }
 
 const modalStyle = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '100%',
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "100%",
   maxWidth: 560,
-  outline: 'none',
+  outline: "none",
   mx: 2,
 };
 
 const DAYS = [
-  { key: 'monday', label: 'Lundi' },
-  { key: 'tuesday', label: 'Mardi' },
-  { key: 'wednesday', label: 'Mercredi' },
-  { key: 'thursday', label: 'Jeudi' },
-  { key: 'friday', label: 'Vendredi' },
-  { key: 'saturday', label: 'Samedi' },
-  { key: 'sunday', label: 'Dimanche' },
+  { key: "monday", label: "Lundi" },
+  { key: "tuesday", label: "Mardi" },
+  { key: "wednesday", label: "Mercredi" },
+  { key: "thursday", label: "Jeudi" },
+  { key: "friday", label: "Vendredi" },
+  { key: "saturday", label: "Samedi" },
+  { key: "sunday", label: "Dimanche" },
 ];
 
 export default function AvailabilityEditor({
@@ -42,20 +42,20 @@ export default function AvailabilityEditor({
   isRegistration = false,
 }: AvailabilityEditorProps) {
   const [availability, setAvailability] = useState<Record<string, string[]>>(
-    initialAvailability || {}
+    initialAvailability || {},
   );
   const [saving, setSaving] = useState(false);
 
   const handleTimeChange = (
     day: string,
-    type: 'start' | 'end',
-    value: string
+    type: "start" | "end",
+    value: string,
   ) => {
     setAvailability((prev) => {
-      const current = prev[day] || ['09:00', '17:00'];
+      const current = prev[day] || ["09:00", "17:00"];
       const newTimes = [...current];
 
-      if (type === 'start') newTimes[0] = value;
+      if (type === "start") newTimes[0] = value;
       else newTimes[1] = value;
 
       return { ...prev, [day]: newTimes };
@@ -69,7 +69,7 @@ export default function AvailabilityEditor({
       if (newAvail[day]) {
         delete newAvail[day];
       } else {
-        newAvail[day] = ['09:00', '17:00'];
+        newAvail[day] = ["09:00", "17:00"];
       }
 
       return newAvail;
@@ -91,10 +91,10 @@ export default function AvailabilityEditor({
 
       if (!session) return;
 
-      const res = await fetch('/api/user/profile', {
-        method: 'PUT',
+      const res = await fetch("/api/user/profile", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({ availability }),
@@ -104,11 +104,11 @@ export default function AvailabilityEditor({
         onSave(availability);
         onClose();
       } else {
-        alert('Erreur lors de la sauvegarde');
+        alert("Erreur lors de la sauvegarde");
       }
     } catch (error) {
       console.error(error);
-      alert('Erreur lors de la sauvegarde');
+      alert("Erreur lors de la sauvegarde");
     } finally {
       setSaving(false);
     }
@@ -123,7 +123,6 @@ export default function AvailabilityEditor({
     >
       <Box sx={modalStyle}>
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-
           {/* HEADER */}
           <div className="bg-primary p-6 text-white flex justify-between items-center">
             <div className="flex items-center gap-3">
@@ -149,15 +148,16 @@ export default function AvailabilityEditor({
           <div className="p-6 max-h-[60vh] overflow-y-auto space-y-4">
             {DAYS.map(({ key, label }) => {
               const isOpen = !!availability[key];
-              const times = availability[key] || ['09:00', '17:00'];
+              const times = availability[key] || ["09:00", "17:00"];
 
               return (
                 <div
                   key={key}
-                  className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${isOpen
-                    ? 'border-primary bg-primary/20'
-                    : 'border-gray-200 bg-gray-50'
-                    }`}
+                  className={`flex items-center justify-between p-3 rounded-lg border-2 transition-all ${
+                    isOpen
+                      ? "border-primary bg-primary/20"
+                      : "border-gray-200 bg-gray-50"
+                  }`}
                 >
                   {/* LEFT */}
                   <div className="flex items-center gap-3">
@@ -168,8 +168,9 @@ export default function AvailabilityEditor({
                       className="w-5 h-5 accent-primary cursor-pointer"
                     />
                     <div
-                      className={`font-bold uppercase ${isOpen ? 'text-primary' : 'text-gray-500'
-                        }`}
+                      className={`font-bold uppercase ${
+                        isOpen ? "text-primary" : "text-gray-500"
+                      }`}
                     >
                       {label}
                     </div>
@@ -185,7 +186,7 @@ export default function AvailabilityEditor({
                         label=""
                         value={times[0]}
                         onChange={(e) =>
-                          handleTimeChange(key, 'start', e.target.value)
+                          handleTimeChange(key, "start", e.target.value)
                         }
                         className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
                       >
@@ -193,11 +194,11 @@ export default function AvailabilityEditor({
                           (h) => (
                             <option
                               key={h}
-                              value={`${h.toString().padStart(2, '0')}:00`}
+                              value={`${h.toString().padStart(2, "0")}:00`}
                             >
                               {h}:00
                             </option>
-                          )
+                          ),
                         )}
                       </SelectInput>
 
@@ -207,7 +208,7 @@ export default function AvailabilityEditor({
                         label=""
                         value={times[1]}
                         onChange={(e) =>
-                          handleTimeChange(key, 'end', e.target.value)
+                          handleTimeChange(key, "end", e.target.value)
                         }
                         className="border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-purple-500 outline-none"
                       >
@@ -215,18 +216,16 @@ export default function AvailabilityEditor({
                           (h) => (
                             <option
                               key={h}
-                              value={`${h.toString().padStart(2, '0')}:00`}
+                              value={`${h.toString().padStart(2, "0")}:00`}
                             >
                               {h}:00
                             </option>
-                          )
+                          ),
                         )}
                       </SelectInput>
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-400 italic">
-                      Fermé
-                    </span>
+                    <span className="text-sm text-gray-400 italic">Fermé</span>
                   )}
                 </div>
               );
@@ -244,7 +243,7 @@ export default function AvailabilityEditor({
               className="button-primary flex items-center gap-2 disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
-              {saving ? 'Enregistrement...' : 'Enregistrer'}
+              {saving ? "Enregistrement..." : "Enregistrer"}
             </button>
           </div>
         </div>

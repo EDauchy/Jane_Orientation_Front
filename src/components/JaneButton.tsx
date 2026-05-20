@@ -32,7 +32,8 @@ export default function JaneButton({
   };
 
   const variantClasses = {
-    primary: "border-2 border-jane-purple bg-white text-jane-purple hover:bg-gray-50",
+    primary:
+      "border-2 border-jane-purple bg-white text-jane-purple hover:bg-gray-50",
     secondary: "bg-primary text-white hover:bg-primary-light",
   };
 
@@ -40,7 +41,7 @@ export default function JaneButton({
     "flex items-center justify-center gap-2 rounded-full font-bold uppercase tracking-wide transition-colors font-montserrat disabled:opacity-50 disabled:cursor-not-allowed",
     sizeClasses[size],
     variantClasses[variant],
-    className
+    className,
   );
 
   if (to) {
@@ -57,4 +58,3 @@ export default function JaneButton({
     </button>
   );
 }
-
