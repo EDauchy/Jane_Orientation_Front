@@ -1,14 +1,14 @@
 "use client";
 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import {useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Formation, MapLogicProps } from "../shard/types.ts";
 
 const schoolIcon = L.divIcon({
-    className: "",
-    html: `
+  className: "",
+  html: `
       <div style="
         background:#6D28D9;
         color:white;
@@ -24,12 +24,12 @@ const schoolIcon = L.divIcon({
         🎓
       </div>
     `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
 });
 
 function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
-    const map = useMap();
+  const map = useMap();
 
     useEffect(() => {
         map.doubleClickZoom.disable();
@@ -166,6 +166,13 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
             setErrorMsg("Géolocalisation non supportée");
             return;
         }
+      },
+      () => {
+        setErrorMsg("Impossible de récupérer votre position");
+        setLoadingGeo(false);
+      },
+    );
+  };
 
         setLoadingGeo(true);
 
@@ -290,7 +297,28 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
 
                         {loadingGeo && <span className="animate-spin">⏳</span>}
                     </div>
+                  ))}
                 </div>
+              </Popup>
+            </Marker>
+          );
+        })}
+
+      {/* Zoom */}
+      <div className="absolute bottom-6 left-4 z-[1000] flex flex-col gap-2">
+        <button
+          onClick={() => map.zoomIn()}
+          className="bg-violet-600 text-white rounded-full w-10 h-10 shadow text-lg"
+        >
+          +
+        </button>
+        <button
+          onClick={() => map.zoomOut()}
+          className="bg-violet-600 text-white rounded-full w-10 h-10 shadow text-lg"
+        >
+          −
+        </button>
+      </div>
 
                 <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center invisible">
                     ✕
@@ -365,8 +393,8 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
 }
 
 export interface MapProps {
-    city?: string;
-    suggestedJobs?: string[];
+  city?: string;
+  suggestedJobs?: string[];
 }
 
 const Map = ({ city, suggestedJobs }: MapProps) => {

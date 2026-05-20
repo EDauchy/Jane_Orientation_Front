@@ -1,53 +1,62 @@
 // pages/dashboard/DashboardAccountSettings.tsx
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
-import { useDashboard } from '../../context/DashboardContext';
-import ProfileAvatar from '../../components/ProfileAvatar';
-import TextInput from '../../components/TextInput';
-import SelectInput from '../../components/SelectInput';
-import TextArea from '../../components/TextArea';
-import StyledTitle from '../../components/home/StyledTitle';
-import { User } from 'lucide-react';
+import { useEffect, useState } from "react";
+import PageLoader from "../../components/ui/PageLoader";
+import { supabase } from "../../lib/supabase";
+import { useDashboard } from "../../context/DashboardContext";
+import ProfileAvatar from "../../components/ProfileAvatar";
+import TextInput from "../../components/TextInput";
+import SelectInput from "../../components/SelectInput";
+import TextArea from "../../components/TextArea";
+import StyledTitle from "../../components/home/StyledTitle";
+import { User } from "lucide-react";
 
 export default function DashboardAccountSettings() {
   const { profile, loading, refreshProfile } = useDashboard();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    birthDate: '',
-    gender: '',
-    cityPreference: '',
-    bio: '',
-    yearsExperience: '',
+    firstName: "",
+    lastName: "",
+    birthDate: "",
+    gender: "",
+    cityPreference: "",
+    bio: "",
+    yearsExperience: "",
   });
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   // Sync formData quand profile arrive ou change
   useEffect(() => {
     if (profile) {
       setFormData({
-        firstName: profile.first_name || '',
-        lastName: profile.last_name || '',
-        birthDate: profile.birth_date || '',
-        gender: profile.gender || '',
-        cityPreference: profile.details?.city_preference || '',
-        bio: profile.details?.bio || '',
-        yearsExperience: profile.details?.years_experience || '',
+        firstName: profile.first_name || "",
+        lastName: profile.last_name || "",
+        birthDate: profile.birth_date || "",
+        gender: profile.gender || "",
+        cityPreference: profile.details?.city_preference || "",
+        bio: profile.details?.bio || "",
+        yearsExperience: profile.details?.years_experience || "",
       });
     }
   }, [profile]);
 
   // Early returns APRÈS tous les hooks
-  if (loading) return <div className="p-8 flex justify-center">Chargement...</div>;
-  if (!profile) return <div className="p-8">Erreur de chargement du profil.</div>;
+  if (loading) return <PageLoader />;
+  if (!profile)
+    return <div className="p-8">Erreur de chargement du profil.</div>;
 
-  const isUserA = profile.role === 'user_reconversion';
-  const isPro = profile.role === 'user_pro';
+  const isUserA = profile.role === "user_reconversion";
+  const isPro = profile.role === "user_pro";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
+    setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -59,18 +68,23 @@ export default function DashboardAccountSettings() {
     setMessage(null);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!session?.access_token) {
-        setMessage({ type: 'error', text: 'Session expirée. Veuillez vous reconnecter.' });
+        setMessage({
+          type: "error",
+          text: "Session expirée. Veuillez vous reconnecter.",
+        });
         return;
       }
 
-      const res = await fetch('/api/profile/update', {
-        method: 'PUT',
+      const res = await fetch("/api/profile/update", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
           firstName: formData.firstName,
@@ -79,16 +93,19 @@ export default function DashboardAccountSettings() {
           gender: formData.gender,
           cityPreference: isUserA ? formData.cityPreference : undefined,
           bio: isPro ? formData.bio : undefined,
-          yearsExperience: isPro && formData.yearsExperience ? parseInt(formData.yearsExperience) : undefined,
+          yearsExperience:
+            isPro && formData.yearsExperience
+              ? parseInt(formData.yearsExperience)
+              : undefined,
         }),
       });
 
-      if (!res.ok) throw new Error('Erreur lors de la mise à jour du profil');
+      if (!res.ok) throw new Error("Erreur lors de la mise à jour du profil");
 
-      setMessage({ type: 'success', text: 'Profil mis à jour avec succès !' });
+      setMessage({ type: "success", text: "Profil mis à jour avec succès !" });
       refreshProfile();
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message });
+      setMessage({ type: "error", text: error.message });
     } finally {
       setSaving(false);
     }
@@ -96,43 +113,43 @@ export default function DashboardAccountSettings() {
 
   const handleReset = () => {
     setFormData({
-      firstName: profile.first_name || '',
-      lastName: profile.last_name || '',
-      birthDate: profile.birth_date || '',
-      gender: profile.gender || '',
-      cityPreference: profile.details?.city_preference || '',
-      bio: profile.details?.bio || '',
-      yearsExperience: profile.details?.years_experience || '',
+      firstName: profile.first_name || "",
+      lastName: profile.last_name || "",
+      birthDate: profile.birth_date || "",
+      gender: profile.gender || "",
+      cityPreference: profile.details?.city_preference || "",
+      bio: profile.details?.bio || "",
+      yearsExperience: profile.details?.years_experience || "",
     });
     setMessage(null);
   };
 
   return (
     <div className="flex flex-col items-center gap-8 p-8">
-      <StyledTitle text='mon compte' className='text-[1.7rem] pt-1' />
+      <StyledTitle text="mon compte" className="text-[1.7rem] pt-1" />
 
       {/* Avatar + Role toggle */}
       <div className="flex flex-col gap-2 w-full max-w-[30rem]">
-     {profile.avatar_url ? (
-  <ProfileAvatar
-    userId={profile.id}
-    avatarUrl={profile.avatar_url}
-    onUpdated={refreshProfile}
-  />
-) : (
-  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mx-auto">
-    <User className="w-12 h-12 text-primary/40" />
-  </div>
-)}
-
-    
+        {profile.avatar_url ? (
+          <ProfileAvatar
+            userId={profile.id}
+            avatarUrl={profile.avatar_url}
+            onUpdated={refreshProfile}
+          />
+        ) : (
+          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center mx-auto">
+            <User className="w-12 h-12 text-primary/40" />
+          </div>
+        )}
       </div>
 
       {/* Feedback message */}
       {message && (
         <div
           className={`w-full max-w-[55rem] p-3 rounded transition-opacity ${
-            message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
           }`}
         >
           {message.text}
@@ -196,8 +213,12 @@ export default function DashboardAccountSettings() {
         {isPro && (
           <>
             <div className="bg-gray-50 border border-gray-300 p-4 rounded-xl">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
-              <p className="text-gray-600">{profile.details?.profession || 'Non renseignée'}</p>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Profession
+              </label>
+              <p className="text-gray-600">
+                {profile.details?.profession || "Non renseignée"}
+              </p>
               <p className="text-xs text-gray-500 mt-1">
                 La profession ne peut pas être modifiée pour éviter les abus.
               </p>
@@ -231,7 +252,7 @@ export default function DashboardAccountSettings() {
             disabled={saving}
             className="bg-primary text-white px-4 py-2 text-sm rounded-xl font-semibold uppercase hover:opacity-90 disabled:opacity-50 transition-opacity"
           >
-            {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
+            {saving ? "Enregistrement..." : "Enregistrer les modifications"}
           </button>
           <button
             type="button"

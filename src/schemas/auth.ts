@@ -52,7 +52,7 @@ export const registerReconversionSchema = baseRegisterSchema.refine(
   {
     message: "Les mots de passe ne correspondent pas",
     path: ["confirmPassword"],
-  }
+  },
 );
 
 // Schema for user_pro (with additional fields)
@@ -74,7 +74,9 @@ export const registerProSchema = baseRegisterSchema
   });
 
 export type RegisterRoleData = z.infer<typeof registerRoleSchema>;
-export type RegisterReconversionData = z.infer<typeof registerReconversionSchema>;
+export type RegisterReconversionData = z.infer<
+  typeof registerReconversionSchema
+>;
 export type RegisterProData = z.infer<typeof registerProSchema>;
 
 // Combined type for form state

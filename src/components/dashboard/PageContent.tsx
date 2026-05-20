@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
 interface PageContentProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function PageContent({ children }: PageContentProps) {
@@ -30,5 +30,5 @@ export default function PageContent({ children }: PageContentProps) {
 
       {children}
     </div>
-  )
+  );
 }

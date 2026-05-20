@@ -4,7 +4,6 @@ import { RiInstagramFill } from "react-icons/ri";
 import { AiFillTikTok } from "react-icons/ai";
 import type { SocialIcon, SocialLinksProps } from "../../shard/types";
 
-
 const socialIcons: SocialIcon[] = [
   { key: "x", url: "https://twitter.com", Icon: FaSquareXTwitter },
   { key: "instagram", url: "https://instagram.com", Icon: RiInstagramFill },
@@ -25,11 +24,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ color = "#F8A128" }) => {
         >
           <Icon
             size={
-              key === "tiktok"
-                ? 27
-                : key === "instagram"
-                ? 26
-                : 24 // Par défaut pour LinkedIn et X
+              key === "tiktok" ? 27 : key === "instagram" ? 26 : 24 // Par défaut pour LinkedIn et X
             }
             style={{ color }}
           />

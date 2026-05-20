@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react'
-import Sidebar from './Sidebar'
+import type { ReactNode } from "react";
+import Sidebar from "./Sidebar";
 
 interface DashboardLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -13,5 +13,5 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {children}
       </div>
     </div>
-  )
+  );
 }

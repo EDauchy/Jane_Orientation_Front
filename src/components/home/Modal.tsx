@@ -14,7 +14,9 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     } else {
       document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = "unset"; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -25,11 +27,11 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4"
       onClick={onClose} // Close when clicking the backdrop
     >
-      <div 
+      <div
         className=" rounded-xl max-w-4xl w-full relative overflow-hidden"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
         onKeyDown={handleKeyDown}
@@ -49,15 +51,17 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
               stroke="currentColor"
               className="w-6 h-6"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         {/* Content Area */}
-        <div className="p-6">
-          {children}
-        </div>
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );

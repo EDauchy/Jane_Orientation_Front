@@ -64,9 +64,9 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        
+
         <div className="h-full "></div>
-        
+
         <div className="xl:w-1/3 lg:w-2/5 md:w-full  flex lg:flex-col md:flex-row flex-col lg:gap-0 gap-5">
           <div className="lg:flex-1 lg:w-full md:w-1/2 pb-5 lg:pl-5 ">
             <div className="flex flex-col gap-3 bg-[#74F3BF] py-10 px-6 h-full rounded-[25px]">
@@ -88,11 +88,13 @@ export default function Footer() {
                 </span>
               </p>
 
-              <div className="flex gap-3 w-full"> {/* Ajout de w-full pour occuper l'espace */}
-  <input
-    type="email"
-    placeholder="nom@email.fr"
-    className="
+              <div className="flex gap-3 w-full">
+                {" "}
+                {/* Ajout de w-full pour occuper l'espace */}
+                <input
+                  type="email"
+                  placeholder="nom@email.fr"
+                  className="
       py-3 px-2
       flex-1
       min-w-0  /* CRUCIAL : permet à l'input de descendre en dessous de sa taille par défaut */
@@ -106,10 +108,9 @@ export default function Footer() {
       focus:outline-hidden 
       focus:ring-2 focus:ring-purple-500
     "
-  />
-
-  <button
-    className="
+                />
+                <button
+                  className="
       bg-[#681BEF] 
       text-white 
       font-bold 
@@ -121,22 +122,23 @@ export default function Footer() {
       transition duration-150
       flex-shrink-0 /* Empêche le bouton de s'écraser lui aussi */
     "
-  >
-    <span className="hidden sm:inline">ENVOYER</span> {/* Optionnel : cache le texte sur mobile très petit */}
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-5 rotate-90"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="#ffffff"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 22V2M12 2l-10 10M12 2l10 10" />
-    </svg>
-  </button>
-</div>
+                >
+                  <span className="hidden sm:inline">ENVOYER</span>{" "}
+                  {/* Optionnel : cache le texte sur mobile très petit */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 rotate-90"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 22V2M12 2l-10 10M12 2l10 10" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
           <div className="relative lg:w-full md:w-1/2 flex flex-col justify-between items-end bg-primary lg:rounded-r-[25px] rounded-t-[25px] p-3 text-white">

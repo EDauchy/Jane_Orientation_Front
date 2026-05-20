@@ -1,14 +1,10 @@
 import React from "react";
 import type { TestimonialCardProps } from "../../shard/types";
 
-
-
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   return (
     <div className="relative h-[285px] min-w-[330px] transition-all duration-500">
-      <div
-        className="h-[190px] bg-primary px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300"
-      >
+      <div className="h-[190px] bg-primary px-8 py-4 rounded-[25px] rounded-br-none transition-all duration-300">
         <p className="text-white text-xl font-bold text-center leading-relaxed mb-2">
           {testimonial.title}
         </p>
@@ -24,14 +20,18 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
         ></div>
 
         <div className="flex gap-[15px] w-full h-[100px] pt-[15px]">
-          <div className="h-[85px] w-[85px] bg-primary rounded-[25px]"></div>
+          <img
+            src={testimonial.avatar}
+            alt={testimonial.name}
+            className="h-[85px] w-[85px] rounded-[25px] object-cover shrink-0"
+          />
           <div className="flex-1 bg-primary rounded-[25px]">
             <div className="w-full h-full flex flex-col py-2 px-4">
               <p className="text-base font-bold text-white">
                 {testimonial.name}
               </p>
               <span className="text-sm text-white">{testimonial.role}</span>
-              <span className="text-sm text-white">12/12/2025</span>
+              <span className="text-sm text-white">{testimonial.date}</span>
             </div>
           </div>
         </div>

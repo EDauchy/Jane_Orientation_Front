@@ -19,7 +19,7 @@ export default function Login() {
         {
           email,
           password,
-        }
+        },
       );
 
       if (authError) {
@@ -27,7 +27,7 @@ export default function Login() {
       }
 
       if (data.session) {
-        navigate("/dashboard");
+        navigate("/mydashboard");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {

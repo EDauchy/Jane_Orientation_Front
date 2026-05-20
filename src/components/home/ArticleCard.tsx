@@ -1,7 +1,6 @@
 import React from "react";
 import type { ArticleProps } from "../../shard/types";
 
-
 const ArticleCard: React.FC<ArticleProps> = ({
   imageUrl,
   title,
@@ -21,7 +20,9 @@ const ArticleCard: React.FC<ArticleProps> = ({
         />
 
         {/* Superposition de dégradé */}
-        <div className={`absolute inset-0 bg-linear-to-t ${gradientColorClass}`}></div>
+        <div
+          className={`absolute inset-0 bg-linear-to-t ${gradientColorClass}`}
+        ></div>
 
         {/* Contenu */}
         <div className="relative flex flex-col h-full p-4 text-white justify-between">

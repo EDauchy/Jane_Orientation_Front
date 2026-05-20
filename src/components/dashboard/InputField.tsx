@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from "react";
 
 interface InputFieldProps {
   label: string;
@@ -7,7 +6,7 @@ interface InputFieldProps {
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string; 
+  placeholder?: string;
   required?: boolean;
   minLength?: number;
   className?: string;
@@ -19,7 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({
   type = "text",
   value,
   onChange,
-  placeholder = "", 
+  placeholder = "",
   required = false,
   minLength,
   className = "",

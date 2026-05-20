@@ -17,11 +17,16 @@ import {
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  redirectTo?: string;
 }
 
 type ModalMode = "login" | "register";
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+export default function LoginModal({
+  isOpen,
+  onClose,
+  redirectTo = "/mydashboard",
+}: LoginModalProps) {
   const [mode, setMode] = useState<ModalMode>("login");
   const [registerStep, setRegisterStep] = useState(0);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -49,7 +54,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     profession: "",
     experienceVerified: false,
   });
-  const [registerErrors, setRegisterErrors] = useState<Record<string, string>>({});
+  const [registerErrors, setRegisterErrors] = useState<Record<string, string>>(
+    {},
+  );
 
   // Handle login submit
   const handleLogin = async (data: LoginFormData) => {
@@ -67,7 +74,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         if (authError.message.includes("Invalid login credentials")) {
           setServerError("Email ou mot de passe incorrect");
         } else if (authError.message.includes("Email not confirmed")) {
-          setServerError("Veuillez confirmer votre email avant de vous connecter");
+          setServerError(
+            "Veuillez confirmer votre email avant de vous connecter",
+          );
         } else {
           setServerError(authError.message);
         }
@@ -76,7 +85,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
       if (authData.session) {
         onClose();
-        navigate("/dashboard");
+        navigate(redirectTo);
       }
     } catch {
       setServerError("Une erreur est survenue. Veuillez réessayer.");
@@ -107,7 +116,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   };
 
   const handleRegisterChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -149,7 +160,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           profession:
             formData.role === "user_pro" ? formData.profession : undefined,
           experienceVerified:
-            formData.role === "user_pro" ? formData.experienceVerified : undefined,
+            formData.role === "user_pro"
+              ? formData.experienceVerified
+              : undefined,
         }),
       });
 
@@ -162,7 +175,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             .join(". ");
           throw new Error(errorMessages);
         }
-        throw new Error(data.error || "Échec de l'inscription. Veuillez réessayer.");
+        throw new Error(
+          data.error || "Échec de l'inscription. Veuillez réessayer.",
+        );
       }
 
       // Success - switch to login mode
@@ -208,7 +223,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <>
       {mode === "login" && (
         <>
-          <JaneButton type="button" onClick={switchToRegister} size="xs" className="w-max">
+          <JaneButton
+            type="button"
+            onClick={switchToRegister}
+            size="xs"
+            className="w-max"
+          >
             Inscrivez-vous
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -336,7 +356,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     <div className="relative w-full">
                       <div className="absolute inset-y-0 left-1.5 flex items-center pointer-events-none">
                         <div className="w-12 h-12 rounded-[10px] bg-primary flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">@</span>
+                          <span className="text-white text-2xl font-bold">
+                            @
+                          </span>
                         </div>
                       </div>
                       <input
@@ -351,7 +373,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         placeholder="email@email.fr"
                       />
                     </div>
-                    <FieldError message={loginForm.formState.errors.email?.message} />
+                    <FieldError
+                      message={loginForm.formState.errors.email?.message}
+                    />
                   </div>
 
                   {/* Password Input */}
@@ -362,7 +386,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     <div className="relative w-full">
                       <div className="absolute inset-y-0 left-1.5 flex items-center pointer-events-none">
                         <div className="w-12 h-12 rounded-[10px] bg-primary flex items-center justify-center">
-                          <img src="key.png" className="h-5 w-5 -rotate-45 text-white" alt="" />
+                          <img
+                            src="key.png"
+                            className="h-5 w-5 -rotate-45 text-white"
+                            alt=""
+                          />
                         </div>
                       </div>
                       <input
@@ -383,7 +411,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         J'ai oublie
                       </button>
                     </div>
-                    <FieldError message={loginForm.formState.errors.password?.message} />
+                    <FieldError
+                      message={loginForm.formState.errors.password?.message}
+                    />
                   </div>
                 </div>
 
@@ -408,12 +438,17 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                 {/* Step 0: Role Selection */}
                 {registerStep === 0 && (
                   <div className="flex flex-col items-center gap-6 py-8 w-full">
-                    <p className="text-white text-center text-lg mb-2">Je cherche...</p>
+                    <p className="text-white text-center text-lg mb-2">
+                      Je cherche...
+                    </p>
                     <div className="flex flex-col gap-4 w-full sm:w-auto">
                       <button
                         type="button"
                         onClick={() => {
-                          setFormData((prev) => ({ ...prev, role: "user_reconversion" }));
+                          setFormData((prev) => ({
+                            ...prev,
+                            role: "user_reconversion",
+                          }));
                           setRegisterStep(1);
                         }}
                         className="px-8 py-4 rounded-2xl bg-white text-jane-purple font-bold text-lg uppercase transition-all hover:scale-105 hover:shadow-lg w-full sm:min-w-[300px]"
@@ -423,7 +458,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       <button
                         type="button"
                         onClick={() => {
-                          setFormData((prev) => ({ ...prev, role: "user_pro" }));
+                          setFormData((prev) => ({
+                            ...prev,
+                            role: "user_pro",
+                          }));
                           setRegisterStep(1);
                         }}
                         className="px-8 py-4 rounded-2xl bg-white/20 text-white font-bold text-lg uppercase transition-all hover:bg-white/30 hover:scale-105 w-full sm:min-w-[300px] border-2 border-white/50"
@@ -439,12 +477,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     {/* Name Fields */}
                     <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full">
                       <div className="flex flex-col gap-1 w-full sm:w-auto">
-                        <label className="text-white text-sm font-medium ml-1">Prenom</label>
+                        <label className="text-white text-sm font-medium ml-1">
+                          Prenom
+                        </label>
                         <input
                           name="firstName"
                           type="text"
                           className={`w-full sm:w-80 px-4 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                            registerErrors.firstName ? "ring-2 ring-red-400" : "focus:ring-white"
+                            registerErrors.firstName
+                              ? "ring-2 ring-red-400"
+                              : "focus:ring-white"
                           }`}
                           placeholder="Votre prenom"
                           value={formData.firstName}
@@ -453,12 +495,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         <FieldError message={registerErrors.firstName} />
                       </div>
                       <div className="flex flex-col gap-1 w-full sm:w-auto">
-                        <label className="text-white text-sm font-medium ml-1">Nom</label>
+                        <label className="text-white text-sm font-medium ml-1">
+                          Nom
+                        </label>
                         <input
                           name="lastName"
                           type="text"
                           className={`w-full sm:w-80 px-4 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                            registerErrors.lastName ? "ring-2 ring-red-400" : "focus:ring-white"
+                            registerErrors.lastName
+                              ? "ring-2 ring-red-400"
+                              : "focus:ring-white"
                           }`}
                           placeholder="Votre nom"
                           value={formData.lastName}
@@ -470,18 +516,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
                     {/* Email - Full Width */}
                     <div className="flex flex-col gap-1 w-full">
-                      <label className="text-white text-sm font-medium ml-1">Email</label>
+                      <label className="text-white text-sm font-medium ml-1">
+                        Email
+                      </label>
                       <div className="relative w-full">
                         <div className="absolute inset-y-0 left-1.5 flex items-center pointer-events-none">
                           <div className="w-10 h-10 rounded-[10px] bg-primary flex items-center justify-center">
-                            <span className="text-white text-xl font-bold">@</span>
+                            <span className="text-white text-xl font-bold">
+                              @
+                            </span>
                           </div>
                         </div>
                         <input
                           name="email"
                           type="email"
                           className={`w-full pl-14 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                            registerErrors.email ? "ring-2 ring-red-400" : "focus:ring-white"
+                            registerErrors.email
+                              ? "ring-2 ring-red-400"
+                              : "focus:ring-white"
                           }`}
                           placeholder="email@email.fr"
                           value={formData.email}
@@ -494,12 +546,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     {/* Password & Confirm Password */}
                     <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full">
                       <div className="flex flex-col gap-1 w-full sm:w-auto">
-                        <label className="text-white text-sm font-medium ml-1">Mot de passe</label>
+                        <label className="text-white text-sm font-medium ml-1">
+                          Mot de passe
+                        </label>
                         <input
                           name="password"
                           type="password"
                           className={`w-full sm:w-80 px-4 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                            registerErrors.password ? "ring-2 ring-red-400" : "focus:ring-white"
+                            registerErrors.password
+                              ? "ring-2 ring-red-400"
+                              : "focus:ring-white"
                           }`}
                           placeholder="Votre mot de passe"
                           value={formData.password}
@@ -508,12 +564,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         <FieldError message={registerErrors.password} />
                       </div>
                       <div className="flex flex-col gap-1 w-full sm:w-auto">
-                        <label className="text-white text-sm font-medium ml-1">Confirmation</label>
+                        <label className="text-white text-sm font-medium ml-1">
+                          Confirmation
+                        </label>
                         <input
                           name="confirmPassword"
                           type="password"
                           className={`w-full sm:w-80 px-4 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                            registerErrors.confirmPassword ? "ring-2 ring-red-400" : "focus:ring-white"
+                            registerErrors.confirmPassword
+                              ? "ring-2 ring-red-400"
+                              : "focus:ring-white"
                           }`}
                           placeholder="Confirmer mot de passe"
                           value={formData.confirmPassword}
@@ -527,12 +587,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                     {formData.role === "user_pro" && (
                       <>
                         <div className="flex flex-col gap-1 w-full">
-                          <label className="text-white text-sm font-medium ml-1">Profession</label>
+                          <label className="text-white text-sm font-medium ml-1">
+                            Profession
+                          </label>
                           <input
                             name="profession"
                             type="text"
                             className={`w-full px-4 h-12 rounded-xl bg-white text-gray-700 placeholder-gray-400 text-md focus:outline-none focus:ring-2 ${
-                              registerErrors.profession ? "ring-2 ring-red-400" : "focus:ring-white"
+                              registerErrors.profession
+                                ? "ring-2 ring-red-400"
+                                : "focus:ring-white"
                             }`}
                             placeholder="Votre profession"
                             value={formData.profession}
@@ -559,7 +623,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                               >
                                 <svg
                                   className={`w-4 h-4 text-jane-purple transition-opacity ${
-                                    formData.experienceVerified ? "opacity-100" : "opacity-0"
+                                    formData.experienceVerified
+                                      ? "opacity-100"
+                                      : "opacity-0"
                                   }`}
                                   fill="none"
                                   stroke="currentColor"
@@ -578,7 +644,9 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                               Je certifie exercer ce metier depuis 3 ans+
                             </span>
                           </label>
-                          <FieldError message={registerErrors.experienceVerified} />
+                          <FieldError
+                            message={registerErrors.experienceVerified}
+                          />
                         </div>
                       </>
                     )}

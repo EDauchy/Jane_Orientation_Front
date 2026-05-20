@@ -20,7 +20,7 @@ export default function Register() {
     yearsExperience: "",
   });
   const [availability, setAvailability] = useState<Record<string, string[]>>(
-    {}
+    {},
   );
   const [showAvailabilityEditor, setShowAvailabilityEditor] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export default function Register() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const { name, value, type } = e.target as HTMLInputElement;
     const checked = (e.target as HTMLInputElement).checked;
@@ -105,7 +105,7 @@ export default function Register() {
           errorMsg.toLowerCase().includes("déjà")
         ) {
           throw new Error(
-            errorMsg + " Si vous avez déjà un compte, veuillez vous connecter."
+            errorMsg + " Si vous avez déjà un compte, veuillez vous connecter.",
           );
         }
 
@@ -366,7 +366,6 @@ export default function Register() {
             </JaneButton>
           </div>
         </form>
-
 
         <AvailabilityEditor
           initialAvailability={availability}

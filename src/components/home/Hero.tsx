@@ -4,9 +4,12 @@ import FollowUsCard from "./FollowUsCard";
 import PowerByApisCard from "./PowerByApisCard";
 import { useEffect, useState } from "react";
 import { APP_CONFIG } from "../../constants/config";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const [isLocked, setIsLocked] = useState(true);
+
+  const navigate = useNavigate();
   useEffect(() => {
     const checkStatus = () => {
       const now = new Date().getTime();
@@ -24,8 +27,6 @@ export default function Hero() {
   return (
     <section className="w-full px-11 py-5 flex flex-col-reverse overflow-x-hidden lg:flex-row">
       <div className="w-full lg:w-1/2 pt-10 lg:pt-[90px] lg:pr-4 pr-0 ">
-
-
         <div className="headline lg:text-[2.5vw] md:text-[4vw] text-[4vw]">
           <div>
             <div className="relative hidden md:inline-block top-1  h-[35px] w-[23px]  border-4 border-primary rounded-full  text-primary mr-2 ">
@@ -82,16 +83,13 @@ export default function Hero() {
             "
               ></div>{" "}
               <div className="absolute md:block hidden -right-16 top-1 w-10 h-10 z-10 flex items-center justify-center">
-
                 <div className="absolute inset-[2px] bg-[#f8a128]/40 rounded-full"></div>
 
                 <div className="absolute inset-[9px] bg-[#f8a128]/60 rounded-full flex items-center justify-center">
-
-
                   <div className="w-2 h-2 bg-[#f8a128] rounded-full shadow-[0_0_8px_rgba(248,161,40,0.9)]"></div>
-
                 </div>
-              </div>    <div className="absolute md:block hidden -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-primary border-dashed"></div>
+              </div>{" "}
+              <div className="absolute md:block hidden -right-[calc(320px)] top-1/2 w-0 z-5 h-[calc(50%+80px)] border-l-4 border-primary border-dashed"></div>
               <div className="absolute hidden md:block -right-[320px] top-[calc(100%+80px)] z-5 h-0 w-[300px] border-t-4 border-primary border-dashed rotate-180"></div>
             </span>
           </div>
@@ -144,11 +142,13 @@ export default function Hero() {
 
         <div className="flex justify-center lg:justify-start">
           <button
+            onClick={() => navigate("/quiz")}
             className={`flex items-center gap-2 text-white text-base md:text-sm px-6 py-3 rounded-xl uppercase transition font-medium text-center leading-5 focus:outline-hidden"
-                    ${isLocked
-                ? 'opacity-50 cursor-not-allowed grayscale'
-                : 'opacity-100 cursor-pointer hover:scale-105 active:scale-95 shadow-lg'
-              }
+                    ${
+                      isLocked
+                        ? "opacity-50 cursor-not-allowed grayscale"
+                        : "opacity-100 cursor-pointer hover:scale-105 active:scale-95 shadow-lg"
+                    }
       `}
             style={{
               background:
@@ -246,8 +246,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-
     </section>
   );
 }
