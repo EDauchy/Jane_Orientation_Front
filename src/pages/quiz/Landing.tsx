@@ -182,12 +182,6 @@ export default function Landing() {
         </div>
       </section>
 
-      <footer className="w-full border-t border-ink/5">
-        <div className="max-w-[1120px] mx-auto px-6 py-6 flex flex-wrap items-center justify-between gap-3 text-[12px] text-muted">
-          <span>Preview — projet de fac, usage pédagogique.</span>
-          <span>© {new Date().getFullYear()} boussole</span>
-        </div>
-      </footer>
 
       <LoginModal
         isOpen={isLoginOpen}
