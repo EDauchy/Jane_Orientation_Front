@@ -83,6 +83,7 @@ export default function Export() {
               });
             }
           } catch {
+            // Sauvegarde profil best-effort : ne pas bloquer l'affichage des résultats
           }
         }
       }

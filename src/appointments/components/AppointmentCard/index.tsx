@@ -42,7 +42,6 @@ export default function AppointmentCard({
   const isUserA = apt.user_a?.id === currentUserId;
   const otherUser = isUserA ? apt.user_b : apt.user_a;
 
-
   const [detailModal, setDetailModal] = useState(false);
 
   return (
@@ -51,8 +50,6 @@ export default function AppointmentCard({
         onClick={() => setDetailModal(true)}
         className="bg-white border border-3 px-2 border-primary rounded-full shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all flex items-center gap-2 cursor-pointer"
       >
- 
-  
         {/* Identity + date */}
         {isMinimal ? (
           <div className="flex flex-col">
@@ -60,7 +57,8 @@ export default function AppointmentCard({
               title={`${otherUser?.first_name} ${otherUser?.last_name}`}
               className="font-extrabold text-primary w-full max-w-[80px] text-xs text-ellipsis overflow-hidden whitespace-nowrap"
             >
-             {otherUser?.first_name?.[0]?.toUpperCase()}{otherUser?.last_name?.[0]?.toUpperCase()}
+              {otherUser?.first_name?.[0]?.toUpperCase()}
+              {otherUser?.last_name?.[0]?.toUpperCase()}
             </span>
             <span className="font-bold text-primary text-[10px]">
               {aptDate.toLocaleTimeString([], {
@@ -97,7 +95,6 @@ export default function AppointmentCard({
         />
 
         {/* Actions menu */}
-        
       </div>
 
       {/* Detail modal */}

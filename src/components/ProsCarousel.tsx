@@ -86,7 +86,12 @@ function ProsCarousel({ jobs, refreshKey, onBooked }: ProsCarouselProps) {
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {pros.map((pro) => (
-          <ProCard key={pro.id} pro={pro} refreshKey={refreshKey} onBooked={onBooked} />
+          <ProCard
+            key={pro.id}
+            pro={pro}
+            refreshKey={refreshKey}
+            onBooked={onBooked}
+          />
         ))}
       </div>
 
