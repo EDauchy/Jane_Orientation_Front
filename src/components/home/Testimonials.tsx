@@ -18,7 +18,7 @@ const Testimonials: React.FC = () => {
     },
     {
       name: "Yanis Bencheikh",
-      role: "Lycéen en Terminale",
+      role: "En reconversion",
       avatar: "https://i.pravatar.cc/85?img=11",
       rating: 5,
       text: "Je ne savais pas du tout quoi faire après le bac. Jane m'a proposé 3 pistes concrètes qui collent vraiment à ma personnalité.",

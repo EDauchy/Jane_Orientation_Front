@@ -31,13 +31,16 @@ const PILL_VARIANTS = ["purple", "pink", "orange", "yellow", "green"] as const;
 
 export default function Export() {
   const state = useAssessment((s) => s.state);
+  const isDemo = useAssessment((s) => s.isDemo);
+  const resetSession = useAssessment((s) => s.resetSession);
+  const endDemo = useAssessment((s) => s.endDemo);
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
 
   const hasAnswers = useMemo(
     () => Object.keys(state.answers ?? {}).length > 0,
     [state.answers],
   );
-  const canSubmit = hasAnswers;
+  const canSubmit = hasAnswers || phase.kind !== "idle";
 
   async function runAnalysis() {
     setPhase({ kind: "loading" });
@@ -58,33 +61,38 @@ export default function Export() {
 
       const data = (await res.json()) as ApiResponse;
 
-      // Save ROME job names to profile test_results (best-effort, non-blocking)
-      const romeData = data.romeRecommendations as RomeInference[];
-      const jobNames =
-        romeData?.flatMap((g) =>
-          g.metiersRome.slice(0, 3).map((m) => m.libelleAppellation),
-        ) ?? [];
-      if (jobNames.length > 0) {
-        try {
-          const {
-            data: { session },
-          } = await supabase.auth.getSession();
-          if (session?.access_token) {
-            await fetch("/api/profile/update", {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${session.access_token}`,
-              },
-              body: JSON.stringify({ testResults: jobNames }),
-            });
+      if (!isDemo) {
+        const romeData = data.romeRecommendations as RomeInference[];
+        const jobNames =
+          romeData?.flatMap((g) =>
+            g.metiersRome.slice(0, 3).map((m) => m.libelleAppellation),
+          ) ?? [];
+        if (jobNames.length > 0) {
+          try {
+            const {
+              data: { session },
+            } = await supabase.auth.getSession();
+            if (session?.access_token) {
+              await fetch("/api/profile/update", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({ testResults: jobNames }),
+              });
+            }
+          } catch {
           }
-        } catch {
-          // Non-blocking: ignore save errors
         }
       }
 
       setPhase({ kind: "success", data });
+      if (isDemo) {
+        endDemo();
+      } else {
+        resetSession();
+      }
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur inconnue lors de l'appel.";
@@ -97,7 +105,7 @@ export default function Export() {
       <header className="w-full border-b border-ink/5">
         <div className="max-w-[720px] mx-auto px-4 sm:px-6 py-3 flex items-center">
           <Link
-            to="/quiz"
+            to="/"
             aria-label="Retour à l'accueil"
             className="inline-flex items-center gap-1.5 h-10 px-3 rounded-full hover:bg-ink/5 transition-colors text-[13px] font-bold text-ink"
           >

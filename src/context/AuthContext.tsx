@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
+import { useAssessment } from "../lib/quiz/store";
 
 interface AuthContextType {
   session: Session | null;
@@ -31,6 +32,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (_event === "SIGNED_OUT") {
+        useAssessment.getState().resetSession();
+      }
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);

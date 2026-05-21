@@ -19,6 +19,8 @@ import type {
 import { SCHEMA_VERSION } from "./types";
 import { totalInFlow } from "./flow/sequence";
 
+let _demoBackup: AssessmentState | null = null;
+
 function randomId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -41,10 +43,13 @@ function freshState(): AssessmentState {
 
 type StoreApi = {
   state: AssessmentState;
+  isDemo: boolean;
 
   startSession: () => void;
   resetSession: () => void;
   markCompleted: () => void;
+  startDemo: () => void;
+  endDemo: () => void;
 
   setAudience: (a: Audience) => void;
   setQualification: (q: Qualification) => void;
@@ -88,8 +93,9 @@ const STORE_VERSION = 2;
 
 export const useAssessment = create<StoreApi>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       state: freshState(),
+      isDemo: false,
 
       startSession: () => set({ state: freshState() }),
       resetSession: () => set({ state: freshState() }),
@@ -97,6 +103,15 @@ export const useAssessment = create<StoreApi>()(
         set((s) => ({
           state: { ...s.state, completedAt: new Date().toISOString() },
         })),
+      startDemo: () => {
+        _demoBackup = get().state;
+        set({ state: freshState(), isDemo: true });
+      },
+      endDemo: () => {
+        const backup = _demoBackup;
+        _demoBackup = null;
+        set({ state: backup ?? freshState(), isDemo: false });
+      },
 
       setAudience: (a) =>
         set((s) => ({
