@@ -160,7 +160,8 @@ export default function Landing() {
 
               {proError && (
                 <p className="text-[13px] text-red-600 font-medium">
-                  Ce quiz est réservé aux utilisateurs en recherche d'orientation. Votre compte professionnel n'y a pas accès.
+                  Ce quiz est réservé aux utilisateurs en recherche
+                  d'orientation. Votre compte professionnel n'y a pas accès.
                 </p>
               )}
 
@@ -181,7 +182,6 @@ export default function Landing() {
           </motion.div>
         </div>
       </section>
-
 
       <LoginModal
         isOpen={isLoginOpen}

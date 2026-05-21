@@ -6,9 +6,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { Formation, MapLogicProps } from "../shard/types.ts";
 
-/* =======================
-   Icône établissement (style image)
-======================= */
 const schoolIcon = L.divIcon({
   className: "",
   html: `
@@ -34,7 +31,6 @@ const schoolIcon = L.divIcon({
 function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
   const map = useMap();
 
-  // Force disable doubleClickZoom
   useEffect(() => {
     map.doubleClickZoom.disable();
   }, [map]);
@@ -45,20 +41,46 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
   const [loadingSchools, setLoadingSchools] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [formationType, setFormationType] = useState("");
+  const [filterByJobs, setFilterByJobs] = useState(true);
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
+  const [loadingFav, setLoadingFav] = useState<string | null>(null);
 
-  /* =======================
-       Géocodage ville
-    ======================= */
+  const fetchSchools = async (
+    city: string,
+    withFilter: boolean = filterByJobs,
+  ) => {
+    setLoadingSchools(true);
+    try {
+      const { supabase } = await import("../lib/supabase");
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      const res = await fetch(
+        `/api/map/school?city=${encodeURIComponent(city)}&type=${formationType}&filter=${withFilter}`,
+        {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        },
+      );
+      const data: Formation[] = await res.json();
+      setSchools(data);
+    } catch {
+      setErrorMsg("Impossible de récupérer les écoles");
+    } finally {
+      setLoadingSchools(false);
+    }
+  };
+
   const geocodeCity = async (city: string) => {
     setLoadingGeo(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          city,
-        )}&limit=1`,
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}&limit=1`,
       );
       const data = await res.json();
-
       if (data.length > 0) {
         return [parseFloat(data[0].lat), parseFloat(data[0].lon)] as [
           number,
@@ -73,21 +95,46 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
     return null;
   };
 
-  /* =======================
-       Fetch écoles
-    ======================= */
-  const fetchSchools = async (city: string) => {
-    setLoadingSchools(true);
+  const handleAddFavorite = async (formation: Formation) => {
+    const id = formation.rnd;
+    if (favoriteIds.has(id) || loadingFav === id) return;
+
+    setLoadingFav(id);
     try {
-      const res = await fetch(
-        `/api/map/school?city=${encodeURIComponent(city)}&type=${formationType}`,
-      );
-      const data: Formation[] = await res.json();
-      setSchools(data);
+      const { supabase } = await import("../lib/supabase");
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const token = session?.access_token;
+
+      const res = await fetch("/api/favorites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          resourceType: "SCHOOL",
+          resourceExternalId: formation.rnd,
+          resourceData: {
+            rnd: formation.rnd,
+            etab_nom: formation.etab_nom,
+            etab_gps: formation.etab_gps,
+            nm: formation.nm,
+            fiche: formation.fiche,
+          },
+        }),
+      });
+
+      if (res.ok) {
+        setFavoriteIds((prev) => new Set([...prev, id]));
+      } else {
+        setErrorMsg("Impossible d'ajouter en favori");
+      }
     } catch {
-      setErrorMsg("Impossible de récupérer les écoles");
+      setErrorMsg("Erreur lors de l'ajout en favori");
     } finally {
-      setLoadingSchools(false);
+      setLoadingFav(null);
     }
   };
 
@@ -104,62 +151,58 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
     }
   }, [formationType]);
 
-  /* =======================
-       Recherche ville
-    ======================= */
+  const handleToggleFilter = () => {
+    const newFilter = !filterByJobs;
+    setFilterByJobs(newFilter);
+    if (searchCity) {
+      fetchSchools(searchCity, newFilter);
+    }
+  };
+
   const searchCityHandler = async () => {
     if (!searchCity.trim()) return;
-
     const coords = await geocodeCity(searchCity);
     if (!coords) {
       setErrorMsg("Ville introuvable");
       return;
     }
-
     map.flyTo(coords, 13);
     setErrorMsg("");
     fetchSchools(searchCity);
   };
 
-  /* =======================
-       Géolocalisation
-    ======================= */
   const locateUser = () => {
     if (!navigator.geolocation) {
       setErrorMsg("Géolocalisation non supportée");
       return;
     }
 
-    setLoadingGeo(true); // Indiquer le chargement
+    setLoadingGeo(true);
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
-
-        // 1. Centrer la carte
         map.flyTo([latitude, longitude], 13);
 
         try {
-          // 2. Reverse Geocoding pour trouver la ville
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
           );
           const data = await res.json();
 
-          // Nominatim retourne l'adresse dans plusieurs champs possibles
-          const city =
+          const detectedCity =
             data.address.city ||
             data.address.town ||
             data.address.village ||
             data.address.municipality;
 
-          if (city) {
-            setSearchCity(city); // Remplir le champ
-            fetchSchools(city); // Lancer la recherche
+          if (detectedCity) {
+            setSearchCity(detectedCity);
+            fetchSchools(detectedCity);
           } else {
             setErrorMsg("Ville non trouvée pour cette position");
           }
-        } catch (err) {
+        } catch {
           setErrorMsg("Erreur lors de la récupération de la ville");
         } finally {
           setLoadingGeo(false);
@@ -172,25 +215,17 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
     );
   };
 
-  /* =======================
-       Regroupement par coordonnées
-    ======================= */
   const groupedByCoords = useMemo(() => {
     const groups: Record<string, Formation[]> = {};
-
     schools.forEach((s) => {
       if (!s.etab_gps) return;
       const key = `${s.etab_gps.lat}-${s.etab_gps.lon}`;
       if (!groups[key]) groups[key] = [];
       groups[key].push(s);
     });
-
     return Object.values(groups);
   }, [schools]);
 
-  /* =======================
-       UI (STYLE MODIFIÉ)
-    ======================= */
   return (
     <>
       {/* Barre haute */}
@@ -199,17 +234,33 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
           ←
         </button>
 
-        <div className="flex gap-2 flex-1 justify-end">
+        <div className="flex gap-2 flex-1 justify-end flex-wrap">
+          {/* Toggle filtre métiers */}
+          <button
+            onClick={handleToggleFilter}
+            className={`w-10 h-10 rounded-full shadow text-lg transition-colors flex items-center justify-center border border-violet-600 ${
+              filterByJobs
+                ? "bg-violet-600 text-white hover:bg-violet-700"
+                : "bg-white text-violet-600 hover:bg-violet-50"
+            }`}
+            title={
+              filterByJobs
+                ? "Afficher toutes les formations"
+                : "Afficher les formations recommandées (IA)"
+            }
+          >
+            {filterByJobs ? "🎯" : "🌐"}
+          </button>
+
           {/* Transport */}
           <div className="relative">
-            <select className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer flex items-center">
+            <select className="appearance-none bg-violet-600 text-white px-6 pr-10 h-10 rounded-lg shadow text-sm outline-none cursor-pointer">
               <option value="">Transport</option>
               <option value="bus">Bus</option>
               <option value="metro">Métro</option>
               <option value="tramway">Tramway</option>
               <option value="gare">Gare</option>
             </select>
-
             <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
               viewBox="0 0 20 20"
@@ -233,7 +284,6 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
               <option value="">Toutes les formations</option>
               <option value="alternance">Formation en alternance</option>
             </select>
-
             <svg
               className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white pointer-events-none"
               viewBox="0 0 20 20"
@@ -276,16 +326,15 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
             {loadingGeo && <span className="animate-spin">⏳</span>}
           </div>
         </div>
-
-        <button className="bg-violet-600 text-white rounded-full w-10 h-10 shadow flex items-center justify-center invisible">
-          ✕
-        </button>
       </div>
 
       {/* Markers */}
       {!loadingSchools &&
         groupedByCoords.map((group) => {
           const first = group[0];
+          const allFaved = group.every((f) => favoriteIds.has(f.rnd));
+          const anyLoading = group.some((f) => loadingFav === f.rnd);
+
           return (
             <Marker
               key={`${first.etab_gps!.lat}-${first.etab_gps!.lon}`}
@@ -296,11 +345,22 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
                 <div className="w-64">
                   <div className="flex justify-between items-center mb-2">
                     <strong className="text-sm">{first.etab_nom}</strong>
-                    <button className="bg-violet-600 text-white rounded-full w-6 h-6 text-xs">
-                      +
+                    <button
+                      onClick={() => group.forEach((f) => handleAddFavorite(f))}
+                      disabled={allFaved || anyLoading}
+                      title={
+                        allFaved ? "Déjà en favoris" : "Ajouter en favoris"
+                      }
+                      className={`rounded-full w-6 h-6 text-xs font-bold transition-colors flex items-center justify-center
+                                                ${
+                                                  allFaved
+                                                    ? "bg-green-500 text-white cursor-default"
+                                                    : "bg-violet-600 text-white hover:bg-violet-700"
+                                                }`}
+                    >
+                      {anyLoading ? "⏳" : allFaved ? "✓" : "+"}
                     </button>
                   </div>
-
                   {group.map((f) => (
                     <div key={f.rnd} className="text-xs text-gray-600 mb-2">
                       {f.nm.join(", ")}
@@ -340,6 +400,11 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
       {/* Compteur */}
       <div className="absolute bottom-6 right-4 bg-white rounded-full shadow px-4 py-2 text-xs z-[1000]">
         🎓 {groupedByCoords.length} établissements · {schools.length} formations
+        {filterByJobs && (
+          <span className="ml-2 text-violet-600 font-medium">
+            · Filtre métiers actif
+          </span>
+        )}
       </div>
 
       {/* Erreurs */}
@@ -352,9 +417,6 @@ function MapLogic({ city, suggestedJobs: _s }: MapLogicProps) {
   );
 }
 
-/* =======================
-   Map Container
-======================= */
 export interface MapProps {
   city?: string;
   suggestedJobs?: string[];
@@ -366,7 +428,7 @@ const Map = ({ city, suggestedJobs }: MapProps) => {
       center={[48.8566, 2.3522]}
       zoom={6}
       zoomControl={false}
-      doubleClickZoom={false} // Empêche le zoom au double-clic
+      doubleClickZoom={false}
       style={{ height: "100%", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

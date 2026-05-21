@@ -220,7 +220,8 @@ export default function Qualify() {
             </Button>
             {proError && (
               <p className="text-[13px] text-red-600 font-medium">
-                Ce quiz est réservé aux utilisateurs en recherche d'orientation. Votre compte professionnel n'y a pas accès.
+                Ce quiz est réservé aux utilisateurs en recherche d'orientation.
+                Votre compte professionnel n'y a pas accès.
               </p>
             )}
             <p className="text-[12px] leading-relaxed text-muted max-w-[520px]">
